@@ -46,5 +46,16 @@ function setValidateVariable($vartocheck){
       );
       return $ofactorArray[$defvalue];
  }
+ function checkwrongpwhid($pwhid,$chapterid){
+   $ci=& get_instance();
+   $ci->load->database(); 
+   $checkQuery="select * from tbl_pat_personal 
+          where patient_id=".$pwhid." and chap_id=".$chapterid;
+  $qryResult=$ci->db->query($checkQuery);
+  $numrows=$qryResult->num_rows();
+  if ($numrows==0){
+   redirect("homepage/notauthorised");
+  }       
+ }
 
 ?>
