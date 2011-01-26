@@ -1,0 +1,42 @@
+/* tabs form labels */
+.label{
+	width:34%;
+	float:left;
+	padding:5px;
+}
+.boxarea{
+	float:left;
+	width:62%;
+	padding:5px;
+}
+.clearfield{
+	clear:both;
+}
+/*------- Vertical Tabs-----------*/
+.ui-tabs-vertical { width: 70em; border:1px solid #004997;}
+.ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 14em;}
+.ui-tabs-vertical .ui-tabs-nav li { 
+	clear: left; 
+	width: 100%; 
+	border-bottom-width: 1px !important; 
+	border-right-width: 0 !important; 
+	margin: 0 -1px .2em 0; 
+}
+.ui-tabs-vertical .ui-tabs-nav li a { display:block; }
+.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-selected { 
+	padding-bottom: 0; 
+	padding-right: .1em; 
+	border-right-width: 1px; 
+	border-right-width: 1px; 
+}
+.ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: right; width: 53em;}
+#tabs h2{font-size:1em;color:#0A7DD6;border-bottom:1px dotted #93C9F5;padding-bottom:5px;margin-bottom:10px;}
+#tabs li{margin-top:1px;margin-bottom:1px;font-weight:normal}
+#tabs li a{padding:2px;margin:0px;font-weight:normal}
+#tabs li a:hover{padding:2px;margin:0px;font-weight:normal;color:#C30451}
+.separater{
+	border-bottom:1px dotted #93C9F5;
+	height:2px;
+	margin:5px 0px;;
+}
+.ulhead{color:#0A7DD6;font-weight:bold;font-size:.8em}
