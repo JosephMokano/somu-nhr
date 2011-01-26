@@ -549,11 +549,13 @@ class Homepage extends Controller {
 		$this->load->view('login',$data);
 	}
   
-  
+ 
 	function patient_form($id=0){
+	  $this->load->library('session');
+	  checkwrongpwhid($id,$this->session->userdata('chapter'));
 		$this->load->database();
 		$this->load->helper('form');
-		$this->load->library('session');
+		
 		//$this->load->library('form_validation');
 		
 		//Check for new entry session data
@@ -1822,6 +1824,15 @@ class Homepage extends Controller {
 		//$this->template->write_view('','','PWH Management Form',true);
 		$this->template->render();*/
 	}
+function notauthorised(){
+  $displaylist="<div align='center'>Data you are looking is not matched <br/><a href='".$this->config->item('base_url')."managepatient/patient_listdata'>Back to List</a> </div>";
+      
+      $data= array('formdisplay'=>$displaylist);
+      $this->template->write('pageheader', 'Not Authorised');
+      $this->template->write_view('content','members/list_member',$data, True);
+      $this->template->render();
+}
+
 	function patient_listdata($pageNumber=0){
 		
 		$this->load->database();
