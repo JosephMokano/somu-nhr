@@ -1,0 +1,4 @@
+<?php
+   class brand_model extends Model
+   {
+?>

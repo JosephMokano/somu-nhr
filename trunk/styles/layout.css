@@ -1,0 +1,296 @@
+@import url("rounded.css");
+body {
+	margin:0px;
+	padding:0px;	
+	font-family:"Trebuchet MS",Arial, Helvetica, sans-serif;
+	font-size:9pt;
+	background-color:#999999;
+}
+html{
+	margin:0px;
+	padding:0px;
+}
+#wrapper{
+	width:1020px;
+	margin:0px auto;
+	background:url(../images/backpatti.jpg) repeat-y top left;
+	border:1px solid #999999;
+	height:100%;
+	min-height:100%;
+}
+#pageheaderright{
+	width:30%;
+	float:right;
+	text-align:right;	
+}
+#pageheaderright img{
+	border:none;
+}
+#pageheaderleft{
+	width:69%;
+	float:left;
+}
+#pageBlock{
+	margin:0px 25px;
+}
+#header{
+	width:100%;
+	height:60px;
+	background:url(../images/logo.jpg) no-repeat top left;
+	border-bottom:1px solid #006666;
+}
+#header #left{
+	width:70%;
+	float:left;	
+	height:inherit;
+	padding-top:5px;
+	color:#006666;
+	margin-left:55px;
+}
+#left h1{
+	font-size:1.6em;
+	padding:0px;
+	margin:0px;
+	vertical-align:middle;
+}
+#header #right{
+	width:24%;
+	float:left;
+	border:0px solid #ff0000;
+	height:inherit;
+	text-align:right;	
+}
+
+#content{
+	clear:both;
+	height:100%;
+	min-height:450px;
+}
+#footer{
+	margin-top:10px;
+	clear:both;
+	border-top:1px solid #006666;
+}
+h2{
+	color:#006666;
+	font-size:1.4em;
+	padding:0px;
+	margin:0px;
+	font-weight:normal;
+}
+.tableheading{
+	width:99%;	
+	margin:10px 0px;
+	padding:5px;
+	background: url(../images/fleximages/wbg.gif) repeat-x top;
+  border: 1px solid #ccc;
+}
+table.memberList{
+	border:1px solid #ccc;
+}
+.memberList th{
+	/*color:#CF0B0C;*/
+	font-size:1em;
+	background-color:#E6EEEE;
+}
+.memberList td{
+  padding:5px 2px;
+}
+.topnew{
+	text-align:right;
+	padding-right:10px;
+}
+.icons{
+	float:left;
+}
+#graph{
+	padding-left:10px;
+	float:left;
+	
+	width:680px;
+}
+.icons td{
+	border:1px solid #ccc;
+}
+.icons img{
+	border:none;
+}
+.login{
+	background:url(../images/login_background.gif) no-repeat top;
+	padding:10px 0px;
+	border:0px solid #ccc;
+}
+.login table{
+	text-align:center;
+}
+.leftbar{
+	float:left;
+	padding:70px 20px 10px 20px;
+	width:210px;
+	border:0px solid #999;
+}
+.leftbar img{
+	padding:2px 0px;
+	border:none;
+}
+.rightbar{
+	float:right;
+	width:300px;
+	padding:70px 10px 10px 0px;
+	border:0px solid #999;
+}
+table.needassitable{
+	border:1px solid #ccc;
+}
+table.registertable{
+	border:1px solid #ccc;
+	width:400px;
+}
+.regheading{
+	background-color:#ccc
+}
+.registertable input{
+	width:200px;
+}
+#error{
+	background-color:#ccc;
+	text-align:center;
+}
+.mailmessage{
+	text-align:center;
+	padding-top:120px;
+}
+/* For Table Sorting */
+.memberList th.headerSortUp{
+	background:url(../images/desc.gif) no-repeat right 5px;
+	background-color:#D8DFDF;
+} 
+.memberList th.headerSortDown{
+	background:url(../images/asc.gif) no-repeat right 5px;
+	background-color:#D8DFDF;
+}
+.memberList .even{
+	background-color:#ffffff;
+}
+.memberList .odd{
+	background-color:#F3F3F3;
+	
+}
+.topnew{
+	margin:10px;
+}
+.numbersstyle{
+	text-align:right;
+	padding-right:20px;
+}
+#reporticons img{
+	text-align:center;
+	border:none;
+}
+#reporticons td{
+	padding:4px;
+	border:1px solid #ccc;
+}
+#reporticons a{
+	text-decoration:none;
+	color:#6D6D6D;
+}
+.paginationstyle{
+	
+}
+.paginationstyle a{
+	padding:0px 5px;
+	background-color:#EFEFEF;
+}
+.paginationstyle strong{
+	padding:0px 5px;
+	background-color:#EFEFEF;
+	border:1px solid #CFCFCF;
+}
+a{
+color:#716FFF;
+}
+.topnewright{
+  background: #fafafa url(../images/fleximages/bg.gif) repeat-x top;
+  position: relative;     
+  border: 1px solid #ccc;
+  
+  overflow: hidden;
+  height:26px;
+  text-align:right;
+  padding:0px 10px;
+  padding-top:8px;
+}
+td{
+  vertical-align:top;
+}
+.pwhdetails {
+  border: 1px solid #ccc;
+}
+.pwhdetails td{
+  text-align:left;
+  padding:5px 2px;
+}
+.pwhdetails th{
+  text-align:left;
+  width:100px;
+  vertical-align:top;
+}
+.pwhimage{
+  width:120px;
+  text-align:center;
+}
+.pwhimage img{
+  border:1px dotted #808080;
+}
+.pwhnavigation{
+  border:1px solid #ccCCCC;
+  margin:5px 0px;
+  padding:2px;
+  text-align:center;
+}
+img{
+  border:none;
+}
+.pwhnavigation img{
+  margin:0px 10px;
+}
+.pwh_detailscall{
+  cursor:pointer;
+  color:#0001FF;
+  text-decoration:underline;
+}
+.infoMessage{
+  border:1px solid #444444;
+  background-color:#E3E3E3;
+  margin:10px;
+}
+.infoMessage p{
+  padding:0px;
+  margin:5px;
+}
+.nhrIcon{
+  width:20px;
+  float:left;
+  padding:2px;
+}
+.nhrpaneltitle{
+  padding:5px;
+  text-align:center;
+}
+.pwhdetailslink{
+  cursor:pointer;
+}
+.wipstyle{
+  color:#E3E3E3;
+}
+.factDet{
+  border:1px solid #DADADA;
+}
+.factDet th{
+  background-color:#E7E7E7;
+}
+.factDet td{
+  text-align:center;
+  padding:5px
+}

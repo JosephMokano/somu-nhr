@@ -1,0 +1,23 @@
+.label{
+  
+	float:left;
+	padding-left:10px;
+	width:30%;
+	border:0px solid #ccc;
+}
+.boxarea{
+	float:left;
+	width:40%;
+	border:0px solid #ccc;
+}
+.clearfield{
+	clear:both;
+	padding:5px;
+}
+#organization_frm{
+	border:0px solid #000;
+}
+.submit{
+	padding-left:50px;
+}
+
