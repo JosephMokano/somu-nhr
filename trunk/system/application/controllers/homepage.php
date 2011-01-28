@@ -2390,6 +2390,7 @@ function notauthorised(){
 		  
        $this->load->library("nhrpwhdetails");
       $pwhcount=$this->nhrpwhdetails->fetch_factorwise();
+      $emptycount=$this->nhrpwhdetails->fetch_empty();
 			$formdisplay.='<div id="graph">';
        $formdisplay.='<table width="100%" cellpadding="0" celspacing="0" border="0" >';
        $formdisplay.='<tr><td width="50%">';
@@ -2410,6 +2411,16 @@ function notauthorised(){
        $formdisplay.='<td>'.$pwhcount['count_total'].'</td>';
        $formdisplay.='<tr>';
         $formdisplay.='</tr>';
+      $formdisplay.='</table>';
+      $formdisplay.='<br/><table width="100%" cellpadding="0" celspacing="0" border="0" class="factDet">';
+      $formdisplay.='<tr><td class="ui-accordion-header ui-state-default 
+      ui-corner-all nhrpaneltitle" colspan="2">Data to be Collected</td></tr>';
+      $formdisplay.='<tr><th width="180">Data of Birth</td><td>'.$emptycount['patient_dob'].'</td></tr>';
+       $formdisplay.='<tr><th>Factor Deficiency</th><td>'.$emptycount['patient_factor'].'</td></tr>';
+        $formdisplay.='<tr><th>Blood Group</th><td>'.$emptycount['patient_bloodgroup'].'</td></tr>';
+         $formdisplay.='<tr><th>Father Name</th><td>'.$emptycount['patient_fathername'].'</td></tr>';
+          $formdisplay.='<tr><th>Address</th><td>'.$emptycount['patient_address'].'</td></tr>';
+          $formdisplay.='<tr><th>Phone number</th><td>'.$emptycount['patient_phone'].'</td></tr>';
       $formdisplay.='</table>';
         $formdisplay.='</td><td width="50%" style="padding-left:10px;">';
 			$formdisplay.='<table width="100%" cellpadding="0" celspacing="0" border="0" class="factDet">';
