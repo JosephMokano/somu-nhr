@@ -40,7 +40,8 @@ class adminmanage extends Controller {
     $formdisplay.='</tr>';
     $formdisplay.='</table>';
     $formdisplay.='</td>';
-    $formdisplay.='<td width="50%">';
+    $formdisplay.='<td width="530">';
+    $formdisplay.='<div id="pwhstatus" style="width:530px;"></div>';
     $formdisplay.='</td>';
     $formdisplay.='</tr>';
     $formdisplay.="</table>";
@@ -58,7 +59,18 @@ class adminmanage extends Controller {
               $("#chapterlist").html(data);
             }
           });
-         })
+         });
+         
+         $("#chapterlist").change(function(){
+           var clickValue=$(this).val();
+            $.ajax({
+            url: "'.base_url().'adminmanage/chapterdetails/"+clickValue,
+            success: function(data) {
+            //  $(#shipping_method options).remove(); 
+              $("#pwhstatus").html(data);
+            }
+          });
+         });
      })','embed');   
         $this->template->write('pageheader', 'Chapter Information');
        $this->template->write_view('content','members/list_member',$data, True);
@@ -80,9 +92,56 @@ class adminmanage extends Controller {
     echo $dispOption;
   }
 
-  function chapterdetails($chapid){
-    $chapdetails='';
+  function chapterdetails($chapid=0){
     
+     
+    $formdisplay='';
+    $chapcount='select * from tbl_pat_personal where chap_id='.$chapid;
+    $this->load->database();
+    $chapRes=$this->db->query($chapcount);
+    if ($chapRes->num_rows()>0){
+      $chapid=array('chapid'=>$chapid);
+      $this->load->library("nhrpwhdetails",$chapid);
+      $pwhcount=$this->nhrpwhdetails->fetch_factorwise();
+      $emptycount=$this->nhrpwhdetails->fetch_empty();
+      $formdisplay.='<div id="graph">';
+
+      $formdisplay.='<table width="500" cellpadding="0" celspacing="0" border="0" class="factDet">';
+      $formdisplay.='<tr><td class="ui-accordion-header ui-state-default 
+      ui-corner-all nhrpaneltitle" colspan="5">PwH Factorwise Count</td></tr>';
+       $formdisplay.='<tr>';
+      $formdisplay.='<th >Factor 8</th>';
+      $formdisplay.='<th >Factor 9</th>';
+      $formdisplay.='<th >Others</th>';
+      $formdisplay.='<th >Not Known</th>';
+      $formdisplay.='<th > Tot Num</th>';
+      $formdisplay.='</tr>';
+       $formdisplay.='<td>'.$pwhcount['count_f8'].'</td>';
+       $formdisplay.='<td>'.$pwhcount['count_f9'].'</td>';
+       $formdisplay.='<td>'.$pwhcount['count_other_total'].'</td>';
+       $formdisplay.='<td>'.$pwhcount['count_empty'].'</td>';
+       $formdisplay.='<td>'.$pwhcount['count_total'].'</td>';
+       $formdisplay.='<tr>';
+        $formdisplay.='</tr>';
+      $formdisplay.='</table>';
+      $formdisplay.='<br/><table width="300" cellpadding="0" celspacing="0" border="0" class="factDet">';
+      $formdisplay.='<tr><td class="ui-accordion-header ui-state-default 
+      ui-corner-all nhrpaneltitle" colspan="2">Data to be Collected</td></tr>';
+      $formdisplay.='<tr><th width="180">Data of Birth</td><td>'.$emptycount['patient_dob'].'</td></tr>';
+       $formdisplay.='<tr><th>Factor Deficiency</th><td>'.$emptycount['patient_factor'].'</td></tr>';
+        $formdisplay.='<tr><th>Blood Group</th><td>'.$emptycount['patient_bloodgroup'].'</td></tr>';
+         $formdisplay.='<tr><th>Father Name</th><td>'.$emptycount['patient_fathername'].'</td></tr>';
+          $formdisplay.='<tr><th>Address</th><td>'.$emptycount['patient_address'].'</td></tr>';
+          $formdisplay.='<tr><th>Phone number</th><td>'.$emptycount['patient_phone'].'</td></tr>';
+      $formdisplay.='</table>';
+       
+      
+      $formdisplay.='</div>';
+    }else{
+      $formdisplay="No Data found";
+      
+    }
+    echo $formdisplay;
     
   }
 }
