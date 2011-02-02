@@ -14,12 +14,20 @@ class nhrpwhdetails{
   var $arrobjpwh=array();
   var $chapterid=0;
   var $obj='';
-    public function nhrpwhdetails()
+    public function nhrpwhdetails($chapterid=0)
     {
     $this->obj =& get_instance();
     //Load config
+    
+    if ($chapterid==0){
      $this->obj->load->library('session');
+    
+    
     $this->chapterid= $this->obj->session->userdata('chapter');
+    }else{
+      $this->chapterid=$chapterid['chapid'];
+    }
+    
     }
     //get Factor Details
     public function fetch_factorwise(){
