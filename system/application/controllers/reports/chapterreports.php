@@ -3,6 +3,7 @@ class chapterreports extends Controller {
 	function chapterreports(){
 	parent::Controller();
 		$this->load->library('session');
+     $this->template->write_view('header','header',$this->session->userdata('headerdata'), True);
 	}
 	function index(){
 		$this->listreports();
@@ -48,6 +49,57 @@ class chapterreports extends Controller {
 		$this->template->write_view('header','header',$headerdata, True);
 		$this->template->write_view('content', 'reports/adminreports', $data, True);
 		$this->template->render();
+	}
+	function factordef(){
+	  $headerdata="Factor Info";
+    $reportsdisplay='';
+    $reportsdisplay='<div id="chart1" style="height:400px;width:400px; "></div>
+      <div id="info3"></div>';
+    $this->load->library("nhrpwhdetails");
+      $pwhcount=$this->nhrpwhdetails->fetch_factorwise();
+    
+    $data = array('reportsdisplay'=>$reportsdisplay);
+    $this->template->add_js('js/jquery.jqplot.min.js','import');
+     $this->template->add_js('js/plot/jqplot.pieRenderer.js','import');
+    
+     $this->template->add_css('styles/jquery.jqplot.min.css');
+     $this->template->write_view('header','header',$headerdata, True);
+    $this->template->write_view('content', 'reports/adminreports', $data, True);
+     $this->template->add_js('
+      $(document).ready(function() {
+           $.jqplot.config.enablePlugins = true;
+          s1 = [["Factor 8",'.$pwhcount['count_f8'].'], 
+          ["Factor 9",'.$pwhcount['count_f9'].'], 
+          ["Others",'.$pwhcount['count_other_total'].'], 
+          ["Empty",'.$pwhcount['count_empty'].']];
+           plot1 = $.jqplot("chart1", [s1], {
+             title: "Pie Chart Factor Deficiency",
+             
+        seriesDefaults:{
+            renderer:$.jqplot.PieRenderer,
+            rendererOptions:{
+                sliceMargin: 4,
+                startAngle: -90,
+                showLabel:true
+            }
+            
+        },
+        legend: {show:true,showLabels:true,placement: "insideGrid"}
+    });
+        $("#chart1").bind("jqplotDataClick", 
+        function (ev, seriesIndex, pointIndex, data) {
+            $("#info3").html("series: "+seriesIndex+", point: "+pointIndex+", data: "+data);
+            
+        }
+    );  
+
+      });
+      function piaclickHandler(ev, gridpos, datapos, neighbor, plot) {
+        alert("hello");
+      }
+     ', 'embed');
+	  
+    $this->template->render();
 	}
 	function generateReport($reportType=-1){
 		$reportsdisplay="Reports to be displayed";
