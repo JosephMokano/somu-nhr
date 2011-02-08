@@ -57,7 +57,7 @@ class nhrpwhdetails{
        //Other Factors       
       $qryother="select count(patient_ID) as fcount from tbl_pat_personal 
               where chap_id=".$this->chapterid."  and 
-              not (patient_factor_deficient in (8,9))";
+              not (patient_factor_deficient in (8,9,0))";
         $this->arrobjpwh['count_other']=$this->getcoutresult($qryother);
       //To Addup other Factor deficiency
       $qryother="select count(patient_ID) as fcount from tbl_pat_personal 
@@ -74,7 +74,7 @@ class nhrpwhdetails{
           
        //total Records;       
         $this->arrobjpwh['count_total']=$this->arrobjpwh['count_f8']
-            +$this->arrobjpwh['count_f9']+$this->arrobjpwh['count_other']
+            +$this->arrobjpwh['count_f9']+0
             +$this->arrobjpwh['count_empty'];   
                                    
     }
@@ -110,7 +110,9 @@ class nhrpwhdetails{
       $qryfactor="select count(patient_ID) as fcount from tbl_pat_personal 
               where chap_id=".$this->chapterid."  and 
               (patient_factor_deficient is null or patient_factor_deficient='0')";
+             
        $this->arrobjpwh['patient_factor']=$this->getcoutresult($qryfactor);
+       
          //check for level
       $qrylevel="select count(patient_ID) as fcount from tbl_pat_personal 
               where chap_id=".$this->chapterid."  and 
