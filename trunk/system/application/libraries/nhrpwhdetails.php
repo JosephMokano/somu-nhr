@@ -78,6 +78,38 @@ class nhrpwhdetails{
             +$this->arrobjpwh['count_empty'];   
                                    
     }
+   
+   function assayFactor($factValue){
+     $arrAssay=array();
+     
+     //Assay <1
+      $assay1="select count(patient_id) as fcount from tbl_pat_personal 
+      where (REPLACE(patient_factor_level, ' ', '' ) in ('1.00','<1.00','1')) 
+      and chap_id=".$this->chapterid."  and 
+              patient_factor_deficient=".$factValue;
+      $arrAssay[]=$this->getcoutresult($assay1);  
+      //Assay 1 to 5
+      $assay2="select count(patient_id) as fcount from tbl_pat_personal 
+      where ((patient_factor_level*1)>=1 and (patient_factor_level*1)<=5)
+      and chap_id=".$this->chapterid."  and 
+              patient_factor_deficient=".$factValue;
+      $arrAssay[]=$this->getcoutresult($assay2);  
+      //Assay >5
+      $assay3="select count(patient_id) as fcount from tbl_pat_personal 
+      where ((patient_factor_level*1)>5=1)
+      and chap_id=".$this->chapterid."  and 
+              patient_factor_deficient=".$factValue;
+      $arrAssay[]=$this->getcoutresult($assay3);  
+      //Assay >5
+      $assay4="select count(patient_id) as fcount from tbl_pat_personal 
+      where chap_id=".$this->chapterid."  and 
+              (patient_factor_level is null or patient_factor_deficient='0')";
+      $arrAssay[]=$this->getcoutresult($assay4);  
+      
+      return  $arrAssay;
+   }
+   
+   
     private function fetch_emptywise(){
       //check for Dob
       $qrydob="select count(patient_ID) as fcount from tbl_pat_personal 
