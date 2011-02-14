@@ -53,8 +53,10 @@ class chapterreports extends Controller {
 	function factordef(){
 	  $headerdata="Factor Info";
     $reportsdisplay='';
-    $reportsdisplay='<div id="chart1" style="height:400px;width:400px; "></div>
+    $reportsdisplay='<table width="750" cellpadding="0" cellspacing="0">';
+    $reportsdisplay.='<tr><td><div id="chart1" style="height:400px;width:400px; "></div>
       <div id="info3"></div>';
+    $reportsdisplay.='</td><td><div id="chart2">ddd</td></tr></table>';  
     $this->load->library("nhrpwhdetails");
       $pwhcount=$this->nhrpwhdetails->fetch_factorwise();
     
@@ -66,6 +68,7 @@ class chapterreports extends Controller {
      $this->template->write_view('header','header',$headerdata, True);
     $this->template->write_view('content', 'reports/adminreports', $data, True);
      $this->template->add_js('
+     var url="'.$this->config->item('base_url').'reports/chapterreports/severitygrp";
       $(document).ready(function() {
            $.jqplot.config.enablePlugins = true;
           s1 = [["Factor 8",'.$pwhcount['count_f8'].'], 
@@ -89,11 +92,22 @@ class chapterreports extends Controller {
         $("#chart1").bind("jqplotDataClick", 
         function (ev, seriesIndex, pointIndex, data) {
             $("#info3").html("series: "+seriesIndex+", point: "+pointIndex+", data: "+data);
-            
+            $.ajax({
+              type: "POST",
+              url: url,
+              data: "selfactor="+pointIndex,
+               success: function(msg){
+                alert( "Data Saved: " + msg );
+              }
+            });
         }
     );  
 
       });
+      //Function to handle after ajax
+      function updateassay(seldata){
+        $("#chart2").html(seldata);
+      }
       function piaclickHandler(ev, gridpos, datapos, neighbor, plot) {
         alert("hello");
       }
@@ -101,6 +115,10 @@ class chapterreports extends Controller {
 	  
     $this->template->render();
 	}
+    function severitygrp(){
+      $postval=$_POST['selfactor'];
+      echo $postval."Added this";
+    }
 	function generateReport($reportType=-1){
 		$reportsdisplay="Reports to be displayed";
 		//echo $reportType;
