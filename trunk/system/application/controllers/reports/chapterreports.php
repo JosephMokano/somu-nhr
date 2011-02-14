@@ -53,10 +53,10 @@ class chapterreports extends Controller {
 	function factordef(){
 	  $headerdata="Factor Info";
     $reportsdisplay='';
-    $reportsdisplay='<table width="750" cellpadding="0" cellspacing="0">';
-    $reportsdisplay.='<tr><td><div id="chart1" style="height:400px;width:400px; "></div>
+    $reportsdisplay='<table width="950" cellpadding="0" cellspacing="0" border="0">';
+    $reportsdisplay.='<tr><td width="400"><div id="chart1" style="height:400px;width:450px; "></div>
       <div id="info3"></div>';
-    $reportsdisplay.='</td><td><div id="chart2">ddd</td></tr></table>';  
+    $reportsdisplay.='</td><td width="400"><div id="chart2" style="height:400px;width:450px; "></td></tr></table>';  
     $this->load->library("nhrpwhdetails");
       $pwhcount=$this->nhrpwhdetails->fetch_factorwise();
     
@@ -69,12 +69,13 @@ class chapterreports extends Controller {
     $this->template->write_view('content', 'reports/adminreports', $data, True);
      $this->template->add_js('
      var url="'.$this->config->item('base_url').'reports/chapterreports/severitygrp";
+     var selectedfact=-1;
       $(document).ready(function() {
            $.jqplot.config.enablePlugins = true;
-          s1 = [["Factor 8",'.$pwhcount['count_f8'].'], 
-          ["Factor 9",'.$pwhcount['count_f9'].'], 
-          ["Others",'.$pwhcount['count_other_total'].'], 
-          ["Empty",'.$pwhcount['count_empty'].']];
+          s1 = [["Factor 8: "+'.$pwhcount['count_f8'].','.$pwhcount['count_f8'].'], 
+          ["Factor 9: "+'.$pwhcount['count_f9'].','.$pwhcount['count_f9'].'], 
+          ["Others: "+'.$pwhcount['count_other_total'].','.$pwhcount['count_other_total'].'], 
+          ["Empty: "+'.$pwhcount['count_empty'].','.$pwhcount['count_empty'].']];
            plot1 = $.jqplot("chart1", [s1], {
              title: "Pie Chart Factor Deficiency",
              
@@ -92,12 +93,13 @@ class chapterreports extends Controller {
         $("#chart1").bind("jqplotDataClick", 
         function (ev, seriesIndex, pointIndex, data) {
             $("#info3").html("series: "+seriesIndex+", point: "+pointIndex+", data: "+data);
+            selectedfact=pointIndex;
             $.ajax({
               type: "POST",
               url: url,
               data: "selfactor="+pointIndex,
                success: function(msg){
-                
+                $("#chart2").html("");
                 updateassay(msg)
               }
             });
@@ -108,10 +110,36 @@ class chapterreports extends Controller {
       //Function to handle after ajax
       function updateassay(seldata){
         if (seldata==":"){
-          $("#chart2").html("<b>Oops! you can select Factor 8 or Factor 9</b>");
+          $("#chart2").html("<br/><br/><b>Oops! you can select Factor 8 or Factor 9</b>");
         }else{
+          if (selectedfact==0){
+            factstatment="Factor 8";
+          }else{
+            factstatment="Factor 9";
+          }
         var assayarray=seldata.split(",");
-        $("#chart2").html(assayarray[1]);
+          $.jqplot.config.enablePlugins = true;
+          var s2 = [["Severe: "+assayarray[0],parseInt(assayarray[0])], 
+          ["Mild: "+assayarray[1],parseInt(assayarray[1])], 
+          ["Moderate: "+assayarray[2],parseInt(assayarray[2])], 
+          ["Empty/Not Known: "+assayarray[3],parseInt(assayarray[3])]];
+        
+               plot2 = $.jqplot("chart2", [s2], {
+             title: "Pie Chart showing severity of "+factstatment,
+             
+        seriesDefaults:{
+            renderer:$.jqplot.PieRenderer,
+            rendererOptions:{
+                sliceMargin: 4,
+                startAngle: -90,
+                showLabel:true
+            }
+            
+        },
+        legend: {show:true,showLabels:true,placement: "insideGrid"}
+    });
+        
+       // $("#chart2").html(assayarray[1]);
         }
       }
       function piaclickHandler(ev, gridpos, datapos, neighbor, plot) {
@@ -126,7 +154,7 @@ class chapterreports extends Controller {
       if ($postval<2){
       $tempArray=array(8,9);
       $this->load->library("nhrpwhdetails");
-      $assaycount=$this->nhrpwhdetails->assayFactor($postval);
+      $assaycount=$this->nhrpwhdetails->assayFactor($tempArray[$postval]);
       
       $sendata=implode(",",$assaycount);
       echo $sendata;
