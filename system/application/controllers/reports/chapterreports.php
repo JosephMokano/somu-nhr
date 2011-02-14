@@ -97,7 +97,8 @@ class chapterreports extends Controller {
               url: url,
               data: "selfactor="+pointIndex,
                success: function(msg){
-                alert( "Data Saved: " + msg );
+                
+                updateassay(msg)
               }
             });
         }
@@ -106,7 +107,12 @@ class chapterreports extends Controller {
       });
       //Function to handle after ajax
       function updateassay(seldata){
-        $("#chart2").html(seldata);
+        if (seldata==":"){
+          $("#chart2").html("<b>Oops! you can select Factor 8 or Factor 9</b>");
+        }else{
+        var assayarray=seldata.split(",");
+        $("#chart2").html(assayarray[1]);
+        }
       }
       function piaclickHandler(ev, gridpos, datapos, neighbor, plot) {
         alert("hello");
@@ -117,7 +123,16 @@ class chapterreports extends Controller {
 	}
     function severitygrp(){
       $postval=$_POST['selfactor'];
-      echo $postval."Added this";
+      if ($postval<2){
+      $tempArray=array(8,9);
+      $this->load->library("nhrpwhdetails");
+      $assaycount=$this->nhrpwhdetails->assayFactor($postval);
+      
+      $sendata=implode(",",$assaycount);
+      echo $sendata;
+      }else{
+        echo ":";
+      }
     }
 	function generateReport($reportType=-1){
 		$reportsdisplay="Reports to be displayed";
