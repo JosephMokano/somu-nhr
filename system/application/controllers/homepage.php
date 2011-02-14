@@ -2356,7 +2356,7 @@ function notauthorised(){
 			$formdisplay.='<img src="/images/pwh_members.jpg"/></a>';
 			$formdisplay.='</td>';
 			$formdisplay.='<td>';
-			$formdisplay.='<a href="'.$this->config->item('base_url').'reports/chapterreports/listreports">';
+			$formdisplay.='<a href="'.$this->config->item('base_url').'reports/chapterreports/factordef">';
 			$formdisplay.='<img src="/images/reports.jpg"/></a>';
 			$formdisplay.='</td>';
 			//$formdisplay.='<td rowspan="2">';
