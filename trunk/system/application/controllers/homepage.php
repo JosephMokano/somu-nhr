@@ -2457,7 +2457,7 @@ function notauthorised(){
 			$formdisplay.='<table class="icons" border="0">';
 			$formdisplay.='<tr>';
 			$formdisplay.='<td>';
-			$formdisplay.='<a href="patient_form">';
+			$formdisplay.='<a href="http://nhr.app/adminmanage/societysatus">';
 			$formdisplay.='<img src="/images/pwh_members.jpg"/></a>';
 			$formdisplay.='</td>';
 			$formdisplay.='<td>';
@@ -2474,7 +2474,7 @@ function notauthorised(){
 			$formdisplay.='<img src="/images/user_details.jpg"/></a>';
 			$formdisplay.='</td>';
 			$formdisplay.='<td>';
-			$formdisplay.='<a href="/reports/adminreports/listreports">';
+			$formdisplay.='<a href="/reports/adminreports2/zoneinfo">';
 			$formdisplay.='<img src="/images/reports.jpg"/></a>';
 			$formdisplay.='</td>';
 			$formdisplay.='<td>';
