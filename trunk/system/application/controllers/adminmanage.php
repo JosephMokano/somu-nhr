@@ -14,10 +14,10 @@ class adminmanage extends Controller {
   function societysatus(){
     
     $formdisplay='';
-    $formdisplay.='<table cellpadding="0" cellspacing="0" border="1" width="100%">';
+    $formdisplay.='<table cellpadding="0" cellspacing="0" border="0" width="100%">';
     $formdisplay.='<tr>';
     $formdisplay.='<td width="50%">';
-   $formdisplay.='<table cellpadding="0" cellspacing="0" border="1" width="100%">';
+   $formdisplay.='<table cellpadding="0" cellspacing="0" border="0ab" width="100%">';
    $formdisplay.='<tr>';
     $formdisplay.='<th width="20%">Select zone:</th>'; 
     $formdisplay.='<td><select id="chapzone" name="chapzone">';
