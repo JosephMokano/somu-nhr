@@ -700,7 +700,7 @@ class Homepage extends Controller {
 		$txtformElement=array(
 				'id'=>'txtfatname',
 				'name'=>'txtfatname',
-				'class'=>'required',	
+				'class'=>'',	
 				'value'=>$formdata[0]['patient_father_name'],
 			);
 		$formdisplay.=form_input($txtformElement);
@@ -1052,25 +1052,84 @@ class Homepage extends Controller {
 		$formdisplay.='<div class="clearfield"></div>';
 		
 		$formdisplay.='<div class="label">';
-		$formdisplay.=form_label('Employment Type: ','lblSOM');
+		$formdisplay.=form_label('Employment Type: ','lblEmploymentType');
 		$formdisplay.='</div>';
 		
 		$formdisplay.='<div class="boxarea">';
 		$txtformElement=array(
-				'0'=>'Select type',
-				'1'=>'Self',
-				'2'=>'Office',
-				'3'=>'MNC',
-				'4'=>'Business',
-				'5'=>'Farmer',
-				'6'=>'Service',
-				
-			);
-		$formdisplay.=form_dropdown('txtSOM',$txtformElement);
+        'id'=>'txtEmploymentType',
+        'name'=>'txtEmploymentType',
+        'class'=>'',  
+        'value'=>$formdata[0]['patient_employment_type']
+      );
+		$formdisplay.=form_input($txtformElement);
 		$formdisplay.='</div>';
 		
 		$formdisplay.='<div class="clearfield"></div>';
-		
+    
+		$formdisplay.='<div class="label">';
+    $formdisplay.=form_label('Remboursement : ','lblrembour');
+    $formdisplay.='</div>';
+    
+    $formdisplay.='<div class="boxarea">';
+    $txtformElement=array(
+        'id'=>'radrembour',
+        'name'=>'radrembour',
+        'class'=>'',
+        'value'=>1
+      );
+    if($formdata[0]['patient_Remboursement_faclity']==1){
+      $formdisplay.=form_radio($txtformElement,1,true);
+    }else{
+      $formdisplay.=form_radio($txtformElement);
+    }
+    $formdisplay.=form_label('Yes');
+    
+    $txtformElement=array(
+        'id'=>'radrembour',
+        'name'=>'radrembour',
+        'class'=>'',
+        'value'=>0
+      );
+    if($formdata[0]['patient_Remboursement_faclity']==0){
+      $formdisplay.=form_radio($txtformElement,0,true);
+    }else{
+      $formdisplay.=form_radio($txtformElement);
+    }
+    $formdisplay.=form_label('No');
+    $formdisplay.='</div>';
+    
+    $formdisplay.='<div class="clearfield"></div>';
+    $formdisplay.='<div class="infoMessage">
+   
+    <b>Note: </b> If PWH has remboursement faclity, please fill below details</div>';
+    $formdisplay.='<div class="label">';
+    $formdisplay.=form_label('Empl. Org. Name: ','lblEmployedOrgName');
+    $formdisplay.='</div>';
+    
+    $formdisplay.='<div class="boxarea">';
+    $txtformElement=array(
+        'id'=>'txtEmplOrgName',
+        'name'=>'txtEmplOrgName',
+        'class'=>'',  
+        'value'=>$formdata[0]['employment_organization']
+      );
+    $formdisplay.=form_input($txtformElement);
+    $formdisplay.='</div>';
+     $formdisplay.='<div class="clearfield"></div>';
+     $formdisplay.='<div class="label">';
+    $formdisplay.=form_label('Remboursement/Employment Reference Number: ','lblReferenceNumber');
+    $formdisplay.='</div>';
+    
+    $formdisplay.='<div class="boxarea">';
+    $txtformElement=array(
+        'id'=>'txtEmplReferenceNumber',
+        'name'=>'txtEmplReferenceNumber',
+        'class'=>'',  
+        'value'=>$formdata[0]['employment_ref_number']
+      );
+    $formdisplay.=form_input($txtformElement);
+    $formdisplay.='</div>';
 		/*$formdisplay.='<div class="label">';
 		$formdisplay.=form_label('Skilled/Manual: ','lblSM');
 		$formdisplay.='</div>';
@@ -1471,38 +1530,20 @@ class Homepage extends Controller {
 		$formdisplay.='</div>';
 		
 		$formdisplay.='<div class="clearfield"></div>';
-		
+		 
 		$formdisplay.='<div class="label">';
-		$formdisplay.=form_label('Remboursement : ','lblrembour');
-		$formdisplay.='</div>';
-		
-		$formdisplay.='<div class="boxarea">';
-		$txtformElement=array(
-				'id'=>'radrembour',
-				'name'=>'radrembour',
-				'class'=>'',
-				'value'=>1
-			);
-		if($formdata[0]['patient_Remboursement_faclity']==1){
-			$formdisplay.=form_radio($txtformElement,1,true);
-		}else{
-			$formdisplay.=form_radio($txtformElement);
-		}
-		$formdisplay.=form_label('Yes');
-		
-		$txtformElement=array(
-				'id'=>'radrembour',
-				'name'=>'radrembour',
-				'class'=>'',
-				'value'=>0
-			);
-		if($formdata[0]['patient_Remboursement_faclity']==0){
-			$formdisplay.=form_radio($txtformElement,0,true);
-		}else{
-			$formdisplay.=form_radio($txtformElement);
-		}
-		$formdisplay.=form_label('No');
-		$formdisplay.='</div>';
+    $formdisplay.=form_label('BPL Ref Number: ','lblBplRef');
+    $formdisplay.='</div>';
+    
+    $formdisplay.='<div class="boxarea">';
+    $txtformElement=array(
+        'id'=>'txtBPLrefNo',
+        'name'=>'txtBPLrefNo',
+        'class'=>'',
+        'value'=>$formdata[0]['bpl_ref_number']
+      );
+    $formdisplay.=form_input($txtformElement);
+    $formdisplay.='</div>';
 		
 		//close tabs-5
 		$formdisplay.='</div>';
@@ -1603,7 +1644,7 @@ class Homepage extends Controller {
         
         
         jQuery.validator.addMethod("accept", function(value, element, param) {
-            return value.match(new RegExp("." + param + "$"));
+            return value.match(new RegExp(param ));
         });
         
         $( "#txtdob" ).datepicker({
@@ -1615,7 +1656,7 @@ class Homepage extends Controller {
      
        $("#pat_dispform").validate({
          rules:{
-            txtfaclel:{ accept: "[<.0-9]+" }            
+            txtfaclel:{ accept: "[<0-9.]" }            
          },
          messages: {
            txtfaclel:"Valid input, 0-9 OR < OR ."
@@ -1738,6 +1779,7 @@ class Homepage extends Controller {
 			'patient_studying' => $_POST['radstudy'],
 			'patient_highestedu' => $_POST['txthighEdu'],
 			'patient_working' => $_POST['rademp'],
+			'patient_employment_type' => $_POST['txtEmploymentType'],
 			'patient_age_Diagnose' => $_POST['txtagdia'],
 			'patient_hospital_diagnose' => $_POST['txthosdia'],
 			'patient_form_diagnose'=>$_POST['txtfrmdia'],
@@ -1749,7 +1791,11 @@ class Homepage extends Controller {
 			'patient_Remboursement_faclity' => $_POST['radrembour'],
 			'patient_membership_id' => $_POST['txtmemid'],
 			'chap_id' => $chapterid,
+			'employment_organization' => $_POST['txtEmplOrgName'],
+			'employment_ref_number' => $_POST['txtEmplReferenceNumber'],
+			'bpl_ref_number' => $_POST['txtBPLrefNo'],
 			'last_updated' => $lastupdated
+			
 		);
 		
 		$this->db->insert('tbl_pat_personal',$tabledata);
@@ -1794,6 +1840,10 @@ class Homepage extends Controller {
 			$this->db->set('patient_bpl_eligibility' , $_POST['radbpl']);
 			$this->db->set('patient_Remboursement_faclity' ,$_POST['radrembour']);
 			$this->db->set('patient_membership_id' , $_POST['txtmemid']);
+      $this->db->set('employment_organization' , $_POST['txtEmplOrgName']);
+      $this->db->set('employment_ref_number' , $_POST['txtEmplReferenceNumber']);
+      $this->db->set('bpl_ref_number' , $_POST['txtBPLrefNo']);
+      $this->db->set('patient_employment_type' , $_POST['txtEmploymentType']);
 			//$this->db->set('chap_id' , $this->session->userdata('chapter'));
 			$this->db->set('chap_id' , $chapterid);
 			$this->db->set('last_updated', $lastupdated);
