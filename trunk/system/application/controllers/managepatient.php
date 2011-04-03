@@ -100,11 +100,11 @@ class managepatient extends Controller {
                var scriptobj   = document.createElement("script");
               scriptobj.type  = "text/javascript";
             
-            scriptobj.text  = testobj.jsnhrscript;              // use this for inline script
-            document.body.appendChild(scriptobj);
+           // scriptobj.text  = testobj.jsnhrscript;              // use this for inline script
+          //  document.body.appendChild(scriptobj);
              // $("#nhrdynamicjs").html(scriptobj);
               
-               eval(testobj.nhrcallfunc);
+           //    eval(testobj.nhrcallfunc);
               
              }  
           }
@@ -417,14 +417,18 @@ class managepatient extends Controller {
     $pwh_details.='<td>'.$pwh_result['commu_phone'].' '.$pwh_result['commu_cellnumber'].'</td>';
 
     $pwh_details.='</tr>';
+    $buttonlink=array();
+    $buttonlink[]=base_url().'homepage/patient_form/'.$pwh_result['patient_ID'];
+    $buttonlink[]=base_url().'managemed/med_list/'.$pwh_result['patient_ID'];
+    $buttonlink[]=base_url().'manageclinical/list_clinical/'.$pwh_result['patient_ID'];
     $pwh_details.='<tr>
       <td></td>
       <td colspan="2">
-       <button id="pwhdataedit"><span class="ui-icon ui-icon-folder-open nhrIcon"></span>Edit</button>
+       <a href="'.$buttonlink[0].'"><button id="pwhdataedit"><span class="ui-icon ui-icon-folder-open nhrIcon"></span>Edit</button></a>
        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <button id="managemed"><span class="ui-icon ui-icon-document nhrIcon"></span>Medicine Log</button>
+      <a href="'.$buttonlink[1].'"><button id="managemed"><span class="ui-icon ui-icon-document nhrIcon"></span>Medicine Log</button></a>
      
-      <button id="manageclinical"><span class="ui-icon ui-icon-contact nhrIcon"></span>Clinical</button>
+     <a href="'.$buttonlink[2].'"> <button id="manageclinical"><span class="ui-icon ui-icon-contact nhrIcon"></span>Clinical</button></a>
       </td>
     </tr>';
     $pwh_details.='</table>';
@@ -439,8 +443,8 @@ class managepatient extends Controller {
      $retData['jsnhrscript']='
       
         function bindcontrols(){
-          alert("am called");
-          $(\'#pwhdataedit\').bind(\'click\', function() {
+        //  alert("am called");
+        /*  $(\'#pwhdataedit\').bind(\'click\', function() {
             window.location.replace("'.base_url().'homepage/patient_form/'.$pwh_result['patient_ID'].'");
         
           });
@@ -451,7 +455,7 @@ class managepatient extends Controller {
           $(\'#manageclinical\').bind(\'click\', function() {
             window.location.replace("'.base_url().'manageclinical/list_clinical/'.$pwh_result['patient_ID'].'");
         
-          });
+          });*/
           
         }
       
@@ -540,6 +544,10 @@ class managepatient extends Controller {
      * Json build WITH json_encode. If you do not have this function please read
      * http://flexigrid.eyeviewdesign.com/index.php/flexigrid/example#s3 to know how to use the alternative
      */
+   
+     
+     
+     
      $startValuePage=$_POST['rp']*($_POST['page']-1);
      $i=$startValuePage;
     foreach ($records['records']->result() as $row)
