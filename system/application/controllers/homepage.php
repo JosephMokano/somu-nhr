@@ -71,10 +71,10 @@ class Homepage extends Controller {
 		$logindisplay.='</div>';
 		
 		$logindisplay.='<div class="leftbar">';
-		$logindisplay.='<a href="'.$this->config->item('base_url').'homepage/register">';
-		$logindisplay.='<img src="'.$this->config->item('base_url').'images/login_register.jpg" />';
-		$logindisplay.='</a>';
-		$logindisplay.='<img src="'.$this->config->item('base_url').'images/login_usenhr.jpg" />';
+		//$logindisplay.='<a href="'.$this->config->item('base_url').'homepage/register">';
+		//$logindisplay.='<img src="'.$this->config->item('base_url').'images/login_register.jpg" />';
+		//$logindisplay.='</a>';
+		//$logindisplay.='<img src="'.$this->config->item('base_url').'images/login_usenhr.jpg" />';
 		$logindisplay.='<a href="'.$this->config->item('base_url').'homepage/need_assistance">';
 		$logindisplay.='<img src="'.$this->config->item('base_url').'images/login_assis.jpg" />';
 		$logindisplay.='</a>';
@@ -83,7 +83,9 @@ class Homepage extends Controller {
 		
 		$logindisplay.='<div class="rightbar">';
 		$logindisplay.='<h2>National Hemophilia Registry (India)</h2>';
-		$logindisplay.='<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>';
+		$logindisplay.='<p>NHR is a  initiative of  Hemophilia Federation(India) to  create database of  Person With Hemophilia India.  Our National hemophilia
+ organizations and hemophilia treatment centres are key partners in this network. Ours is  a <b>Mixed systems</b> combining of Patient, Medical and Home Ministry registry.(WFH, National Patient Registry Guide by Bruce Evatt, MD).  
+		</p>';
 		$logindisplay.='</div>';
 		
 		$data = array(
@@ -1656,7 +1658,7 @@ class Homepage extends Controller {
      
        $("#pat_dispform").validate({
          rules:{
-            txtfaclel:{ accept: "[<0-9.]" }            
+            txtfaclel:{ accept: "[<0-9]" }            
          },
          messages: {
            txtfaclel:"Valid input, 0-9 OR < OR ."
