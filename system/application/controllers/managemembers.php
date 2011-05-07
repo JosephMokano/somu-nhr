@@ -232,7 +232,7 @@ class managemembers extends Controller {
     
     $this->template->render();
      }else{
-       redirect(base_path()."homepage/patient_form/");
+       redirect($this->config->item("base_path")."homepage/patient_form/");
      }
   }
 }
