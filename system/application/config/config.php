@@ -20,6 +20,8 @@ $config['abspro_path'] = "/home/tatwa/projects/nhr_national/development/trunk/pr
 $config['abs_path'] = "/home/tatwa/projects/nhr_national/development/trunk/graphimage";
 $config['project_abs_path']=FCPATH;
 $config['abs_path_server'] = FCPATH."graphimage";
+$config['secction_head']="ui-accordion-header ui-state-default 
+      ui-corner-all nhrpaneltitle";
 /*
 |--------------------------------------------------------------------------
 | Index File
