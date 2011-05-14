@@ -14,11 +14,17 @@ class nhrpwhdetails{
   var $arrobjpwh=array();
   var $chapterid=0;
   var $obj='';
-    public function nhrpwhdetails($chapterid=0)
+    public function nhrpwhdetails($params='')
     {
     $this->obj =& get_instance();
     //Load config
     
+    if (empty($params)){
+    	$chapterid=0;
+    }else{
+    	
+    	$chapterid=$params['chapter_id'];
+    }
     if ($chapterid==0){
      $this->obj->load->library('session');
     
@@ -30,13 +36,14 @@ class nhrpwhdetails{
     
     }
     //get Factor Details
-    public function fetch_factorwise(){
-     
+    
+    public function fetch_factorwise($chapter_id=0){
+     $this->chapterid=$chapter_id;
       $this->buildfactorQuery();
       return $this->arrobjpwh;
     }
-     public function fetch_empty(){
-     
+     public function fetch_empty($chapter_id=0){
+     $this->chapterid=$chapter_id;
       $this->fetch_emptywise();
       return $this->arrobjpwh;
     }
@@ -72,11 +79,11 @@ class nhrpwhdetails{
        $this->arrobjpwh['count_empty']=$this->getcoutresult($qryempty); 
        
           
-       //total Records;       
-        $this->arrobjpwh['count_total']=$this->arrobjpwh['count_f8']
-            +$this->arrobjpwh['count_f9']+0
-            +$this->arrobjpwh['count_empty'];   
-                                   
+       //total Records;      
+       //Empty Fields        
+      $qryempty="select count(patient_ID) as fcount from tbl_pat_personal 
+              where chap_id=".$this->chapterid; 
+        $this->arrobjpwh['count_total']=$this->getcoutresult($qryempty);                
     }
    
    function assayFactor($factValue){
@@ -114,50 +121,107 @@ class nhrpwhdetails{
       //check for Dob
       $qrydob="select count(patient_ID) as fcount from tbl_pat_personal 
               where chap_id=".$this->chapterid."  and 
-              patient_dob is null";
+              (patient_dob is null)";
        $this->arrobjpwh['patient_dob']=$this->getcoutresult($qrydob);
        
+      //check for bloodgroup
+      $qrybloodgroup="select count(patient_ID) as fcount from tbl_pat_personal 
+              where chap_id=".$this->chapterid."  and 
+              patient_bloodgroup is null";
+       $this->arrobjpwh['patient_bloodgroup']=$this->getcoutresult($qrybloodgroup);
+       
+        //check for factor
+      $qryfactor="select count(patient_ID) as fcount from tbl_pat_personal 
+              where chap_id=".$this->chapterid."  and 
+              (patient_factor_deficient is null or patient_factor_deficient='0')";             
+       $this->arrobjpwh['patient_factor']=$this->getcoutresult($qryfactor);
+
+      //check for level
+      $qrylevel="select count(patient_ID) as fcount from tbl_pat_personal 
+      		where chap_id=".$this->chapterid." and (patient_inhibitor_screen='0' or (patient_inhibitor_screen is null)) ";
+       $this->arrobjpwh['patient_level']=$this->getcoutresult($qrylevel);
+
+      //check Deformity
+      $qrylevel="select count(patient_ID) as fcount from tbl_pat_personal 
+      		where chap_id=".$this->chapterid." and (patient_Deformity='0' or (patient_Deformity is null)) ";
+       $this->arrobjpwh['patient_Deformity']=$this->getcoutresult($qrylevel);
+       
+//--------------------------------------- Block - 2
+
+      //check Inhibitors
+      $qrylevel="select count(patient_ID) as fcount from tbl_pat_personal 
+      		where chap_id=".$this->chapterid." and (patient_inhibitor_screen='0' or (patient_inhibitor_screen is null)) ";
+       $this->arrobjpwh['patient_inhibitor_screen']=$this->getcoutresult($qrylevel);
+       
+       //check H2
+      $qrylevel="select count(patient_ID) as fcount from tbl_pat_personal 
+      		where chap_id=".$this->chapterid." and (h2='0' or (h2 is null)) ";
+       $this->arrobjpwh['h2']=$this->getcoutresult($qrylevel);
+
+     //check H3
+      $qrylevel="select count(patient_ID) as fcount from tbl_pat_personal 
+      		where chap_id=".$this->chapterid." and (h3='0' or (h3 is null)) ";
+       $this->arrobjpwh['h3']=$this->getcoutresult($qrylevel);
+
+     //check BPL Eligibility
+      $qrylevel="select count(patient_ID) as fcount from tbl_pat_personal 
+      		where chap_id=".$this->chapterid." and (patient_bpl_eligibility='0' or (patient_bpl_eligibility is null)) ";
+       $this->arrobjpwh['patient_bpl_eligibility']=$this->getcoutresult($qrylevel);
+
+     //check BPL Refrence
+      $qrylevel="select count(patient_ID) as fcount from tbl_pat_personal 
+      		where chap_id=".$this->chapterid." and (bpl_ref_number='' or (bpl_ref_number is null)) ";
+       $this->arrobjpwh['bpl_ref_number']=$this->getcoutresult($qrylevel);
+
+//--------------------------------------- Block - 3
        //check for father name
       $qryfathername="select count(patient_ID) as fcount from tbl_pat_personal 
               where chap_id=".$this->chapterid."  and 
               patient_father_name is null";
        $this->arrobjpwh['patient_fathername']=$this->getcoutresult($qryfathername);
        
-           //check for Address
+      //check for Address
       $qryaddress="select count(patient_ID) as fcount from tbl_pat_personal 
               where chap_id=".$this->chapterid."  and 
               comm_flat is null";
        $this->arrobjpwh['patient_address']=$this->getcoutresult($qryaddress);
-                  //check for Phone
+      
+       //check for Phone
       $qryPhone="select count(patient_ID) as fcount from tbl_pat_personal 
               where chap_id=".$this->chapterid."  and 
               commu_phone is null";
        $this->arrobjpwh['patient_phone']=$this->getcoutresult($qryPhone);
-                 //check for bloodgroup
-      $qrybloodgroup="select count(patient_ID) as fcount from tbl_pat_personal 
-              where chap_id=".$this->chapterid."  and 
-              patient_bloodgroup is null";
-       $this->arrobjpwh['patient_bloodgroup']=$this->getcoutresult($qrybloodgroup);
-        //check for factor
-      $qryfactor="select count(patient_ID) as fcount from tbl_pat_personal 
-              where chap_id=".$this->chapterid."  and 
-              (patient_factor_deficient is null or patient_factor_deficient='0')";
-             
-       $this->arrobjpwh['patient_factor']=$this->getcoutresult($qryfactor);
-       
-         //check for level
+
+       //check is Studing
       $qrylevel="select count(patient_ID) as fcount from tbl_pat_personal 
-              where chap_id=".$this->chapterid."  and 
-              (patient_factor_level is null or patient_factor_deficient='0')";
-       $this->arrobjpwh['patient_level']=$this->getcoutresult($qrylevel);
+      		where chap_id=".$this->chapterid." and (patient_studying='0' or (patient_studying is null)) ";
+       $this->arrobjpwh['patient_studying']=$this->getcoutresult($qrylevel);
+
+      //check Highest Refrence
+      $qrylevel="select count(patient_ID) as fcount from tbl_pat_personal 
+      		where chap_id=".$this->chapterid." and (patient_highestedu='' or (patient_highestedu is null)) ";
+       $this->arrobjpwh['patient_highestedu']=$this->getcoutresult($qrylevel);
+
+      //check is working
+      $qrylevel="select count(patient_ID) as fcount from tbl_pat_personal 
+      		where chap_id=".$this->chapterid." and (patient_working='0' or (patient_working is null)) ";
+       $this->arrobjpwh['patient_working']=$this->getcoutresult($qrylevel);
+
+       //check is working
+      $qrylevel="select count(patient_ID) as fcount from tbl_pat_personal 
+      		where chap_id=".$this->chapterid." and (patient_Remboursement_faclity='0' or (patient_Remboursement_faclity is null)) ";
+       $this->arrobjpwh['patient_Remboursement_faclity']=$this->getcoutresult($qrylevel);
+       
+
     }
+    
     
     
     private function getcoutresult($resQuery){
        $this->obj->load->database();
       $qryObj= $this->obj->db->query($resQuery);
-      $tempvar=$qryObj->row_array();
+      $tempvar=$qryObj->row();
    
-      return $tempvar['fcount']; 
+      return $tempvar->fcount; 
     }
 }
