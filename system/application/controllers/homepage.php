@@ -2447,8 +2447,7 @@ function notauthorised(){
        $formdisplay.='<table width="100%" cellpadding="0" celspacing="0" border="0" >';
        $formdisplay.='<tr><td width="50%">';
       $formdisplay.='<table width="100%" cellpadding="0" celspacing="0" border="0" class="factDet">';
-      $formdisplay.='<tr><td class="ui-accordion-header ui-state-default 
-      ui-corner-all nhrpaneltitle" colspan="5">PwH Factorwise Count</td></tr>';
+      $formdisplay.='<tr><td class="'.$this->config->item("secction_head").'" colspan="5">PwH Factorwise Count</td></tr>';
        $formdisplay.='<tr>';
       $formdisplay.='<th >Factor 8</th>';
       $formdisplay.='<th >Factor 9</th>';
@@ -2509,14 +2508,14 @@ function notauthorised(){
 			$formdisplay.='<table class="icons" border="0">';
 			$formdisplay.='<tr>';
 			$formdisplay.='<td>';
-			$formdisplay.='<a href="http://nhr.app/adminmanage/societysatus">';
+			$formdisplay.='<a href="'.$this->config->item('base_url').'datamanage/chaptersnapshot">';
 			$formdisplay.='<img src="/images/pwh_members.jpg"/></a>';
 			$formdisplay.='</td>';
 			$formdisplay.='<td>';
-			$formdisplay.='<a href="patient_listdataadmin"><img src="/images/pwh_list.jpg"/></a>';
+			$formdisplay.='<a href="#"><img src="/images/pwh_list.jpg"/></a>';
 			$formdisplay.='</td>';
 			$formdisplay.='<td>';
-			$formdisplay.='<a href="'.$this->config->item('base_url').'search/datasearch"><img src="/images/pwh_search.jpg"/></a>';
+			$formdisplay.='<a href="#"><img src="/images/pwh_search.jpg"/></a>';
 			$formdisplay.='</td>';
 			$formdisplay.='</tr>';
 			
