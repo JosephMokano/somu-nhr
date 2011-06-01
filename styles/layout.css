@@ -288,9 +288,14 @@ img{
   border:1px solid #DADADA;
 }
 .factDet th{
-  background-color:#E7E7E7;
+  background-color:#F3F3F3;
+  font-weight:normal;
+  
 }
 .factDet td{
   text-align:center;
   padding:5px
+}
+.max{
+	width:400px;
 }
