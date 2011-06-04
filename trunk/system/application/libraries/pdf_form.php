@@ -22,9 +22,28 @@ class pdf_form {
  	$this->CI =& get_instance();
  	$obj=$this->CI;
  	$obj->load->database();
+ 	$obj->load->library("cezpdf"); 	
+ }
+ function getpwhform($pwhid){
+ 	$obj=$this->CI;
  	$pwdquery=$obj->db->query('select * from tbl_pat_personal a join tbl_chapters b 
- 	on a.chap_id=b.chapter_id where a.patient_id='.$params['pwhid']);
- 	$this->pwhdata=$pwdquery->row(); 	
+ 	on a.chap_id=b.chapter_id where a.patient_id='.$pwhid);
+ 	$this->pwhdata=$pwdquery->row(); 
+ 	$this->generatepdf();
+ 	$obj->cezpdf->ezStream();	
+ }
+ function getchapterforms($chapter_id){
+ 	$obj=$this->CI;
+ 	$pwdquery=$obj->db->query('select * from tbl_pat_personal a join tbl_chapters b 
+ 	on a.chap_id=b.chapter_id where a.chap_id='.$chapter_id.' limit 0,20');
+ 	foreach($pwdquery->result() as $pwhrow){
+ 		$this->pwhdata=$pwhrow; 
+ 		$obj->cezpdf->ezNewPage();
+ 		$this->generatepdf();
+ 	}
+ 	
+ 	
+ 	$obj->cezpdf->ezStream();	
  }
  function generatepdf(){
  	// PDF Generation
@@ -33,6 +52,7 @@ class pdf_form {
  	$obj->load->library("cezpdf");
  	
 		$obj->load->helper('apputility');
+		$obj->cezpdf->setColor(0/255,0/255,0/255);
 		$obj->cezpdf->selectFont($obj->config->item('project_abs_path').'fonts/Helvetica.afm');
 		$obj->cezpdf->ezText($pwhdata->chapter_name, 14, array('justification' => 'center'));
 		$obj->cezpdf->ezText('<b>Hemophilia Federation India</b>', 12, array('justification' => 'center'));		
@@ -47,7 +67,10 @@ class pdf_form {
 		$pwhArray=array();
 		$pwhArray[0]='<b>Full Name</b>:* '.$pwhdata->patient_first_name.' '.$pwhdata->patient_last_name;
 		$pwhArray[1]='<b>Fathers Name</b>:* '.$pwhdata->patient_father_name;
-		$pwhArray[2]='<b>DOB</b>:* '.mysqltohuman($pwhdata->patient_dob);
+		$t=mysqltohuman($pwhdata->patient_dob);
+		if ($t=='00/00/0000')
+			$t='';
+		$pwhArray[2]='<b>DOB</b>:* '.$t;
 		$pwhArray[3]='<b>Sex</b>:* '.checksex($pwhdata->patient_sex);
 		$pwhArray[4]='<b>Address: </b>'.$pwhdata->comm_flat.' '.$pwhdata->comm_building.' '.$pwhdata->commu_road.' '.$pwhdata->commu_locality;
 		/*$pwhArray[]='<b>Flat/Door/Block No: </b>'.$pwhdata->comm_flat;
@@ -154,7 +177,7 @@ will return the remainder of the string.
     	$obj->cezpdf->line(20,95,560,95);
     	$obj->cezpdf->addText(100, 80,7,$disptext);
 		//$obj->cezpdf->ezTable($pwhArray);
-		$obj->cezpdf->ezStream();
+		
  }
  	function dataplacer($arrayData){
  		
