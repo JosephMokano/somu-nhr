@@ -716,13 +716,17 @@ class managepatient extends Controller {
 		$this->template->render();
 	}
 	
-	function downloadform($pwhid=22){
+	function downloadpwdhform($pwhid=22){
 		$params=array('pwhid'=>$pwhid);
 		$this->load->library('pdf_form',$params);
-		$this->pdf_form->generatepdf();
+		$this->pdf_form->getpwhform($pwhid);
 	}
 	
-	
+	function downloadchapterforms($chapter_id=67){
+		$params=array('pwhid'=>$chapter_id);
+		$this->load->library('pdf_form',$params);
+		$this->pdf_form->getchapterforms($chapter_id);
+	}
 	
 
 }
