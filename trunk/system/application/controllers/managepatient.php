@@ -437,9 +437,11 @@ class managepatient extends Controller {
     $buttonlink[]=base_url().'homepage/patient_form/'.$pwh_result['patient_ID'];
     $buttonlink[]=base_url().'managemed/med_list/'.$pwh_result['patient_ID'];
     $buttonlink[]=base_url().'manageclinical/list_clinical/'.$pwh_result['patient_ID'];
+    $buttonlink[]=base_url().'managepatient/downloadform/'.$pwh_result['patient_ID'];
     $pwh_details.='<tr>
       <td></td>
       <td colspan="2">
+      <a href="'.$buttonlink[0].'"><button id="pwhdataedit"><span class="ui-icon ui-icon-folder-open nhrIcon"></span>Download</button></a>
        <a href="'.$buttonlink[0].'"><button id="pwhdataedit"><span class="ui-icon ui-icon-folder-open nhrIcon"></span>Edit</button></a>
        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <a href="'.$buttonlink[1].'"><button id="managemed"><span class="ui-icon ui-icon-document nhrIcon"></span>Medicine Log</button></a>
@@ -714,6 +716,11 @@ class managepatient extends Controller {
 		$this->template->render();
 	}
 	
+	function downloadform($pwhid=22){
+		$params=array('pwhid'=>$pwhid);
+		$this->load->library('pdf_form',$params);
+		$this->pdf_form->generatepdf();
+	}
 	
 	
 	
