@@ -1663,7 +1663,14 @@ class Homepage extends Controller {
          messages: {
            txtfaclel:"Valid input, 0-9 OR < OR ."
          },
-         errorElement: "div"
+         errorPlacement: function(error, element) {
+       		 if (element.attr("name") == "txtfaclel")
+        		{
+        			 error.insertBefore("#tabs");
+        			
+        		}
+       		
+    		}
          
        });
      
@@ -2441,8 +2448,9 @@ function notauthorised(){
 			$formdisplay.='</table>';
 		  
        $this->load->library("nhrpwhdetails");
-      $pwhcount=$this->nhrpwhdetails->fetch_factorwise();
-      $emptycount=$this->nhrpwhdetails->fetch_empty();
+  
+      $pwhcount=$this->nhrpwhdetails->fetch_factorwise($this->session->userdata('chapter'));
+      $emptycount=$this->nhrpwhdetails->fetch_empty($this->session->userdata('chapter'));
 			$formdisplay.='<div id="graph">';
        $formdisplay.='<table width="100%" cellpadding="0" celspacing="0" border="0" >';
        $formdisplay.='<tr><td width="50%">';
