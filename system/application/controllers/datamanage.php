@@ -376,8 +376,10 @@ function chpaterseethroughnot(){
 		
  
   	$varFieldArray=array(
+  		'Ref.Number',
   		'Patient Name',
   		'Patient Last Name',
+  		'Father Name',
   		'DOB',
   		'Blood Group',
   		'Factor Deficiency',
@@ -388,11 +390,27 @@ function chpaterseethroughnot(){
   		'HIV',
   		'HCV',
   		'BPL Eligibility',
-  		'BPL Ref.Number'
+  		'BPL Ref.Number',
+  		'Flat/Door/Block No',
+  		'Premises/Building/Village',
+		'Road/State/Lane/Post Office', 
+		'Area/Locality/Taluk/sub-Division', 
+		'Town/City/District',
+		'State/Union Territory', 
+		'PinCode',
+		'Contact number',
+		'Email id',
+		'Mobile number',
+  		'Employed/Not Employed',
+  		'Employment Type',
+  		'Highest Class'
+  		
   	);
   	
   	$chapQuery=$this->db->query('select 
+  			patient_ID,
   			patient_first_name,patient_last_name,
+  			patient_father_name,
   			patient_dob,
   			patient_bloodgroup,
   			patient_factor_deficient,
@@ -403,15 +421,34 @@ function chpaterseethroughnot(){
 			h2,
 			h3,
 			patient_bpl_eligibility,
-			bpl_ref_number
+			bpl_ref_number,
+			comm_flat,
+			comm_building,
+			commu_road,
+			commu_locality,
+			commu_state,
+			commu_city,
+			commu_pincode,
+			comm_zone,
+			commu_phone,
+			commu_email,
+			commu_cellnumber,
+			patient_working,
+			employment_organization,
+			employment_ref_number,
+			patient_highestedu
 			
   			
   			from tbl_pat_personal where chap_id='.$chapter_id.' order by patient_first_name'	);
   	$empArray=array();
   	
   	foreach($chapQuery->result() as $row){
-  		$row->patient_bloodgroup=$bloodgropuArray[$row->patient_bloodgroup];
   		
+  		if (!empty($row->patient_bloodgroup)){
+  		$row->patient_bloodgroup=$bloodgropuArray[$row->patient_bloodgroup];
+  		}else{
+  			$row->patient_bloodgroup='-';
+  		}
   		$row->patient_factor_deficient=$this->checkFactor($row->patient_factor_deficient);
   		
   		//$row->patient_factor_defother=$factorArray[$row->patient_factor_defother];
@@ -435,7 +472,7 @@ function chpaterseethroughnot(){
   	if ($rValue==1){
   		$retvalue='Yes';
   	}elseif  ($rValue==0){
-	  	$retvalue='No';
+	  	$retvalue='-';
   	}
   	return $retvalue;
   }
