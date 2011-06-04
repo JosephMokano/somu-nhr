@@ -59,5 +59,35 @@ function setValidateVariable($vartocheck){
   } 
    }      
  }
+ function checksex($sexvalue){
+ 	if ($sexvalue==1){
+ 		return 'Male';	
+ 	}else if ($sexvalue==2){
+ 		return 'Female';
+ 	}else{
+ 		return '';
+ 	}
+ 	}
+ 	
+ function humantomysql($dt){
+	$retvalue=explode('/',$dt);
+	$retvalue=$retvalue[2].'-'.$retvalue[0].'-'.$retvalue[1];
+	return $retvalue;
+}
+function mysqltohuman($dt){
+	$retvalue='';
+	if (!empty($dt)){
+	$retvalue=explode('-',$dt);
+	$retvalue=$retvalue[1].'/'.$retvalue[2].'/'.$retvalue[0];
+	}
+	return $retvalue;
+}
+function checkzero($dt){
+	if ($dt==0){
+		return '';
+	}else{
+		return $dt;
+	}
+}
 
 ?>
