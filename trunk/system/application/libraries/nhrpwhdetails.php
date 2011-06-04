@@ -120,20 +120,23 @@ class nhrpwhdetails{
     private function fetch_emptywise(){
       //check for Dob
       $qrydob="select count(patient_ID) as fcount from tbl_pat_personal 
-              where chap_id=".$this->chapterid."  and 
-              (patient_dob is null)";
+              where chap_id=".$this->chapterid."  and ((patient_dob is null) or (patient_dob='0000-00-00'))
+              ";
        $this->arrobjpwh['patient_dob']=$this->getcoutresult($qrydob);
        
       //check for bloodgroup
       $qrybloodgroup="select count(patient_ID) as fcount from tbl_pat_personal 
               where chap_id=".$this->chapterid."  and 
-              patient_bloodgroup is null";
+               patient_bloodgroup=0";
+      
        $this->arrobjpwh['patient_bloodgroup']=$this->getcoutresult($qrybloodgroup);
        
         //check for factor
       $qryfactor="select count(patient_ID) as fcount from tbl_pat_personal 
-              where chap_id=".$this->chapterid."  and 
-              (patient_factor_deficient is null or patient_factor_deficient='0')";             
+              where chap_id=".$this->chapterid."  and (patient_factor_deficient='0') 
+              and (patient_id in 
+              (select patient_ID from tbl_pat_personal where chap_id=".$this->chapterid." and patient_factor_defother=0))";
+                   
        $this->arrobjpwh['patient_factor']=$this->getcoutresult($qryfactor);
 
       //check for level
@@ -177,19 +180,20 @@ class nhrpwhdetails{
        //check for father name
       $qryfathername="select count(patient_ID) as fcount from tbl_pat_personal 
               where chap_id=".$this->chapterid."  and 
-              patient_father_name is null";
+              (length(patient_father_name)=0)";
+      
        $this->arrobjpwh['patient_fathername']=$this->getcoutresult($qryfathername);
        
       //check for Address
       $qryaddress="select count(patient_ID) as fcount from tbl_pat_personal 
               where chap_id=".$this->chapterid."  and 
-              comm_flat is null";
+              	(length(comm_flat)=0)";
        $this->arrobjpwh['patient_address']=$this->getcoutresult($qryaddress);
       
        //check for Phone
       $qryPhone="select count(patient_ID) as fcount from tbl_pat_personal 
               where chap_id=".$this->chapterid."  and 
-              commu_phone is null";
+               (length(commu_phone)=0)";
        $this->arrobjpwh['patient_phone']=$this->getcoutresult($qryPhone);
 
        //check is Studing
