@@ -44,13 +44,23 @@ class managepatient extends Controller {
     $colModel['patient_factor_level'] = array('Severity',40,TRUE,'center',0);
     $colModel['Details'] = array('',40,TRUE,'center',0,0,'rowClick');
     
+    
+    //Check Session
+    $this->load->library("session");
+    $getPage=$this->session->userdata("gridpagenumber");
+    
+    if (empty($getPage)){
+    	$getPage=1;
+    }
      /*
      * Aditional Parameters
      */
     $gridParams = array(
+    
     'width' => 480,
     'height' => 360,
     'rp' => 15,
+    'newp'=>$getPage,
     'rpOptions' => '[10,15,20,25,40]',
     'pagestat' => '{from} to {to} of {total}',
     'blockOpacity' => 0.5,
@@ -84,7 +94,13 @@ class managepatient extends Controller {
     $grid_js = build_grid_js('flex1',site_url("/managepatient/ajaxcall"),$colModel,'patient_id','asc',$gridParams,$buttons);
    
    $this->template->add_js('
- 
+   $(function(){
+   		$("#clickme").click(function () { 
+   			alert();
+			
+	    });
+   
+   });
    function rowClick(celDiv, id){
       $(celDiv).click(
         function() {
@@ -329,9 +345,9 @@ class managepatient extends Controller {
         
         $(".pwhdetailslink").click(function() {
           var clickValue=$(this).attr(\'id\');
-         
+         var pagenumber=$(".pcontrol input").val();
          $.ajax({
-            url: "'.base_url().'homepage/details_pwh_dashboard/"+clickValue,
+            url: "'.base_url().'homepage/details_pwh_dashboard/"+clickValue+"/"+pagenumber,
             success: function(data) {
               // $("#pwh_resultdetails").html(data);
               $("#pwh_resultdetails").html(testobj.pwh_details);
@@ -445,6 +461,7 @@ class managepatient extends Controller {
         function bindcontrols(){
         //  alert("am called");
         /*  $(\'#pwhdataedit\').bind(\'click\', function() {
+        	var pagenumber=$(".pcontrol input").val();
             window.location.replace("'.base_url().'homepage/patient_form/'.$pwh_result['patient_ID'].'");
         
           });
@@ -540,12 +557,14 @@ class managepatient extends Controller {
     
     $this->output->set_header($this->config->item('json_header'));
     
+     $this->load->library("session");
+     $this->session->set_userdata("gridpagenumber",$_POST['page']);
+    
     /*
      * Json build WITH json_encode. If you do not have this function please read
      * http://flexigrid.eyeviewdesign.com/index.php/flexigrid/example#s3 to know how to use the alternative
      */
    
-     
      
      
      $startValuePage=$_POST['rp']*($_POST['page']-1);
