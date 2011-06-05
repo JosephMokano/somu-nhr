@@ -10,7 +10,8 @@ class Homepage extends Controller {
 	function loginscreen(){
 		$this->load->library('session');
 		$getdata=$this->session->userdata('userid');
-		if (isset($getdata)){
+		
+		if (!empty($getdata)){
 			redirect($this->config->item('base_url').'homepage/chapterdashboard');
 		}
 		$this->load->helper('form');
