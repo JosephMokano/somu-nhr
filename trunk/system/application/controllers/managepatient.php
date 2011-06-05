@@ -399,7 +399,7 @@ class managepatient extends Controller {
     $pwh_details.='<tr>';
     $pwh_details.='<th>Name:</th>';
     $pwh_details.='<td>'.$pwh_result['patient_first_name'].' '.$pwh_result['patient_last_name'].'</td>';
-    $pwh_details.='<td rowspan="5" class="pwhimage" ><img src="'.$this->config->item('base_url').'images/miss_image.gif"/>
+    $pwh_details.='<td rowspan="5" class="pwhimage" style="border-bottom:1px solid #CCCCCC"><img src="'.$this->config->item('base_url').'images/miss_image.gif"/>
      <button style="width:100%" >Uload Photo</button>
     </td>';
     $pwh_details.='</tr>';
@@ -429,24 +429,34 @@ class managepatient extends Controller {
     $pwh_details.='</tr>';
     $this->load->helper('form');
     $pwh_details.='<tr>';
-    $pwh_details.='<th>Phone:</th>';
-    $pwh_details.='<td>'.$pwh_result['commu_phone'].' '.$pwh_result['commu_cellnumber'].'</td>';
+    $pwh_details.='<th style="border-bottom:1px solid #CCCCCC">Phone:</th>';
+    $pwh_details.='<td style="border-bottom:1px solid #CCCCCC">'.$pwh_result['commu_phone'].' '.$pwh_result['commu_cellnumber'].'</td>';
 
     $pwh_details.='</tr>';
     $buttonlink=array();
     $buttonlink[]=base_url().'homepage/patient_form/'.$pwh_result['patient_ID'];
     $buttonlink[]=base_url().'managemed/med_list/'.$pwh_result['patient_ID'];
     $buttonlink[]=base_url().'manageclinical/list_clinical/'.$pwh_result['patient_ID'];
-    $buttonlink[]=base_url().'managepatient/downloadform/'.$pwh_result['patient_ID'];
+    $buttonlink[]=base_url().'managepatient/downloadpwdhform/'.$pwh_result['patient_ID'];
+    $buttonlink[]=base_url().'communication/pwhsendmail/'.$pwh_result['patient_ID'];
+    $buttonlink[]=base_url().'communication/sendmessage/'.$pwh_result['patient_ID'];
     $pwh_details.='<tr>
       <td></td>
       <td colspan="2">
-      <a href="'.$buttonlink[0].'"><button id="pwhdataedit"><span class="ui-icon ui-icon-folder-open nhrIcon"></span>Download</button></a>
+      
        <a href="'.$buttonlink[0].'"><button id="pwhdataedit"><span class="ui-icon ui-icon-folder-open nhrIcon"></span>Edit</button></a>
-       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+       &nbsp;&nbsp;
       <a href="'.$buttonlink[1].'"><button id="managemed"><span class="ui-icon ui-icon-document nhrIcon"></span>Medicine Log</button></a>
      
      <a href="'.$buttonlink[2].'"> <button id="manageclinical"><span class="ui-icon ui-icon-contact nhrIcon"></span>Clinical</button></a>
+      </td>
+    </tr>';
+    $pwh_details.='<tr>
+    
+      <td colspan="3">
+      &nbsp;&nbsp;<a href="'.$buttonlink[3].'"><button id="pwhdataedit"><span class="ui-icon ui-icon-folder-open nhrIcon"></span>Download NHR Form</button></a>
+      &nbsp;&nbsp;<a href="'.$buttonlink[4].'"><button id="pwhdataedit"><span class="ui-icon ui-icon-folder-open nhrIcon"></span>Send Mail</button></a>
+     &nbsp;&nbsp; <a href="'.$buttonlink[5].'"><button id="pwhdataedit"><span class="ui-icon ui-icon-folder-open nhrIcon"></span>Send SMS</button></a>
       </td>
     </tr>';
     $pwh_details.='</table>';
