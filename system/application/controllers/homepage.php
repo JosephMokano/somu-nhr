@@ -8,6 +8,11 @@ class Homepage extends Controller {
 		$this->loginscreen();
 	}
 	function loginscreen(){
+		$this->load->library('session');
+		$getdata=$this->session->userdata('userid');
+		if (isset($getdata)){
+			redirect($this->config->item('base_url').'homepage/chapterdashboard');
+		}
 		$this->load->helper('form');
 		$logindisplay='';
 		$logindisplay.='<div align="center" class="login" >';
