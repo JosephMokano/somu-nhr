@@ -173,7 +173,10 @@ class datamanage extends Controller {
       $pwhCountdisplay.='</tr>';
       $pwhCountdisplay.='<tr><td style="font-size:.8em" colspan="5"><b>Note: </b> Total may not come correct if you add-up Factor 8, Factor - 9, Others, Not Known. 
       	Becuase of multiple factor deficiency</td></tr>';
-       $pwhCountdisplay.='<tr><td clospan="5"> <a href="'.$this->config->item('base_url').'datamanage/editchapterdetails/'.$chapter_id.'">Edit this Chapter</td></tr>';
+       $pwhCountdisplay.='<tr><td clospan="5"> 
+       <a href="'.$this->config->item('base_url').'datamanage/editchapterdetails/'.$chapter_id.'">Edit this Chapter</a>
+       &nbsp;&nbsp;&nbsp;&nbsp;<a href="'.$this->config->item('base_url').'datamanage/emailthischapter/'.$chapter_id.'">Email this Chapter</a>
+       </td></tr>';
       $pwhCountdisplay.='</table>';
       
       $emptycount=$this->nhrpwhdetails->fetch_empty($chapter_id);
@@ -575,6 +578,9 @@ function chpaterseethroughnot(){
   	$this->db->update('tbl_chapters',$dataArray);
   	$this->load->helper("url");
   	redirect($this->config->item('base_url').'datamanage/chaptersnapshot');
+  }
+  function emailthischapter($chapter_id){
+  	redirect($this->config->item('baseurl').'nhrcommunication/send_email/'.$chapter_id.'/2');
   }
 }
 ?>
