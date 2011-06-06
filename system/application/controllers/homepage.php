@@ -2442,12 +2442,19 @@ function notauthorised(){
 
 			$formdisplay.='<tr>';
 			$formdisplay.='<td>';
-			$formdisplay.='<a href="'.$this->config->item('base_url').'homepage/loginaccess/logout">';
-			$formdisplay.='<img src="/images/logout1.jpg"/>';
+			
+			
+			$formdisplay.='<a href="'.$this->config->item('base_url').'managepatient/downloadchapterforms/">';
+			$formdisplay.='<img src="/images/downloadlist.jpg"/>';
 			$formdisplay.='</a>';
+			
+			
 			$formdisplay.='</td>';
 			$formdisplay.='<td>';
-			
+			$chapater_id=$this->session->userdata("chapter");
+			$formdisplay.='<a href="'.$this->config->item('base_url').'homepage/loginaccess/logout/'.$chapater_id.'">';
+			$formdisplay.='<img src="/images/logout1.jpg" Title="Download all PWH data"/>';
+			$formdisplay.='</a>';
 			$formdisplay.='</td>';
 			$formdisplay.='</tr>';
 		
