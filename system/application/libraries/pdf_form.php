@@ -35,7 +35,7 @@ class pdf_form {
  function getchapterforms($chapter_id){
  	$obj=$this->CI;
  	$pwdquery=$obj->db->query('select * from tbl_pat_personal a join tbl_chapters b 
- 	on a.chap_id=b.chapter_id where a.chap_id='.$chapter_id.' limit 0,20');
+ 	on a.chap_id=b.chapter_id where a.chap_id='.$chapter_id);
  	foreach($pwdquery->result() as $pwhrow){
  		$this->pwhdata=$pwhrow; 
  		$obj->cezpdf->ezNewPage();
