@@ -720,7 +720,7 @@ class Homepage extends Controller {
 		$formdisplay.=form_label('Date of Birth: ','lbldob');
 		$formdisplay.='</div>';
 		$dobdisp='';
-		if (isset($formdata[0]['patient_dob'])){
+		if (isset($formdata[0]['patient_dob'])&&(!empty($formdata[0]['patient_dob']))){
 			$dobdisp=explode('-',$formdata[0]['patient_dob']);
 			$dobdisp=$dobdisp[1].'/'.$dobdisp[2].'/'.$dobdisp[0];
 			//echo $dobdisp;
@@ -2442,17 +2442,17 @@ function notauthorised(){
 
 			$formdisplay.='<tr>';
 			$formdisplay.='<td>';
+			$chapater_id=$this->session->userdata("chapter");
 			
-			
-			$formdisplay.='<a href="'.$this->config->item('base_url').'managepatient/downloadchapterforms/">';
+			$formdisplay.='<a href="'.$this->config->item('base_url').'managepatient/downloadchapterforms/'.$chapater_id.'">';
 			$formdisplay.='<img src="/images/downloadlist.jpg"/>';
 			$formdisplay.='</a>';
 			
 			
 			$formdisplay.='</td>';
 			$formdisplay.='<td>';
-			$chapater_id=$this->session->userdata("chapter");
-			$formdisplay.='<a href="'.$this->config->item('base_url').'homepage/loginaccess/logout/'.$chapater_id.'">';
+			
+			$formdisplay.='<a href="'.$this->config->item('base_url').'homepage/loginaccess/logout>"';
 			$formdisplay.='<img src="/images/logout1.jpg" Title="Download all PWH data"/>';
 			$formdisplay.='</a>';
 			$formdisplay.='</td>';
