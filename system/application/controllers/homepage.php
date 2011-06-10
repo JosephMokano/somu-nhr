@@ -748,7 +748,7 @@ class Homepage extends Controller {
 				'class'=>'',	
 				'value'=>0,
 			);
-		if($formdata[0]['patient_sex']==0){
+		if($formdata[0]['patient_sex']==1){
 			$formdisplay.=form_radio($txtformElement,0,true);
 		}else{
 			$formdisplay.=form_radio($txtformElement);
@@ -761,7 +761,7 @@ class Homepage extends Controller {
 				'class'=>'',	
 				'value'=>1
 			);
-		if($formdata[0]['patient_sex']==1){
+		if($formdata[0]['patient_sex']==2){
 			$formdisplay.=form_radio($txtformElement,1,true);
 		}else{
 			$formdisplay.=form_radio($txtformElement);
@@ -786,6 +786,22 @@ class Homepage extends Controller {
 				'5'=>'Parsi'
 			);
 		$formdisplay.=form_dropdown('txtreligion',$txtformElement,$formdata[0]['patient_religion']);
+		$formdisplay.='</div>';
+		
+		$formdisplay.='<div class="label">';
+		$formdisplay.=form_label('Religion : ','lblflat');
+		$formdisplay.='</div>';
+		
+		$formdisplay.='<div class="boxarea">';
+		$txtformElement=array(
+				'0'=>'Select',
+				'1'=>'SC',
+				'2'=>'ST',	
+				'3'=>'OBC',
+				'4'=>'GL'
+				
+			);
+		$formdisplay.=form_dropdown('txtcaste',$txtformElement,$formdata[0]['patient_caste']);
 		$formdisplay.='</div>';
 		
 		$formdisplay.='<div class="clearfield"></div>';
@@ -1060,7 +1076,7 @@ class Homepage extends Controller {
 		$formdisplay.='<div class="clearfield"></div>';
 		
 		$formdisplay.='<div class="label">';
-		$formdisplay.=form_label('Employment Type: ','lblEmploymentType');
+		$formdisplay.=form_label('Employment Type:<br/><span style="font-size:.8em">(ESI/CGHS/Other Heath Scheme - Pl. Specify)</span>','lblEmploymentType');
 		$formdisplay.='</div>';
 		
 		$formdisplay.='<div class="boxarea">';
@@ -1076,7 +1092,7 @@ class Homepage extends Controller {
 		$formdisplay.='<div class="clearfield"></div>';
     
 		$formdisplay.='<div class="label">';
-    $formdisplay.=form_label('Remboursement : ','lblrembour');
+    $formdisplay.=form_label('Reimbursement : ','lblrembour');
     $formdisplay.='</div>';
     
     $formdisplay.='<div class="boxarea">';
@@ -1159,7 +1175,7 @@ class Homepage extends Controller {
 		$formdisplay.='<div id="tabs-4">';
 
 		$formdisplay.='<div class="label">';
-		$formdisplay.=form_label('Age of Diagnose: ','lblagdia');
+		$formdisplay.=form_label('Age of Diagnosis: ','lblagdia');
 		$formdisplay.='</div>';
 		
 		$formdisplay.='<div class="boxarea">';
@@ -1664,7 +1680,7 @@ class Homepage extends Controller {
      
        $("#pat_dispform").validate({
          rules:{
-            txtfaclel:{ accept: "[<0-9]" }            
+            txtfaclel:{ accept: "[<0-9 ]" }            
          },
          messages: {
            txtfaclel:"Valid input, 0-9 OR < OR ."
@@ -1729,7 +1745,7 @@ class Homepage extends Controller {
 	}
 	//To insert patient for data value
 	function insert_patdata(){
-	 // echo $_POST['txtfctdef'];
+	
     
    
     
@@ -1761,6 +1777,7 @@ class Homepage extends Controller {
 			'patient_dob' => $this->expdate($_POST["txtdob"]),
 			'patient_sex' => $_POST['radgender'],
 			'patient_religion' => $_POST['txtreligion'],
+			'patient_caste' => $_POST['txtcaste'],
 			'patient_father_name' => $_POST['txtfatname'],
 			'comm_flat' => $_POST['txtflat'],
 			'comm_building' => $_POST['txtbuild'],
@@ -1820,6 +1837,9 @@ class Homepage extends Controller {
 			$this->db->set('patient_last_name', $_POST['txtlname']);
 			$this->db->set('patient_dob',$this->expdate($_POST['txtdob']));
 			$this->db->set('patient_sex', $_POST['radgender']);
+				$this->db->set('patient_religion', $_POST['txtreligion']);
+					$this->db->set('patient_caste', $_POST['txtcaste']);
+		
 			$this->db->set('patient_father_name', $_POST['txtfatname']);
 			$this->db->set('comm_flat', $_POST['txtflat']);
 			$this->db->set('comm_building',$_POST['txtbuild']);
