@@ -35,7 +35,7 @@ class pdf_form {
  function getchapterforms($chapter_id){
  	$obj=$this->CI;
  	$pwdquery=$obj->db->query('select * from tbl_pat_personal a join tbl_chapters b 
- 	on a.chap_id=b.chapter_id where a.chap_id='.$chapter_id);
+ 	on a.chap_id=b.chapter_id where a.chap_id='.$chapter_id	);
  	foreach($pwdquery->result() as $pwhrow){
  		$this->pwhdata=$pwhrow; 
  		$obj->cezpdf->ezNewPage();
@@ -91,7 +91,7 @@ class pdf_form {
 		$pwhArray[13]='<b>Is PWH Deformed</b>:* '.checkzero($pwhdata->patient_Deformity);
 		$pwhArray[14]='<b>Inhibitor Screen</b>: '.checkzero($pwhdata->patient_inhibitor_screen);
 		$pwhArray[15]='<b>Is Studying</b>: '.checkzero($pwhdata->patient_studying);
-		$pwhArray[16]='<b>Is working</b>: '.checkzero($pwhdata->patient_working);
+		$pwhArray[16]='<b>Is working</b>: '.checkzero($pwhdata->patient_working);		
 		$pwhArray[17]='<b>Age of Diagnose</b>: '.checkzero($pwhdata->patient_age_Diagnose);
 		$pwhArray[18]='<b>Diagnose Place</b>: '.checkzero($pwhdata->patient_hospital_diagnose);
 		$pwhArray[19]='<b>Other Family Members</b>: '.checkzero($pwhdata->patient_family_effected);
@@ -100,6 +100,7 @@ class pdf_form {
 		$pwhArray[22]='<b>BPL Ref Number</b>: '.checkzero($pwhdata->bpl_ref_number);
 		$pwhArray[23]='<b>Employed In</b>:* '.checkzero($pwhdata->patient_employment_type);
 		$pwhArray[24]='<b>Employed Organization Name</b>:* '.checkzero($pwhdata->patient_Remboursement_faclity);
+		$pwhArray[25]='<b>Caste: </b> '.checkcaste($pwhdata->patient_caste);
 		
 		//for($i=0;$i<count($pwhArray);$i++){
 			//$obj->cezpdf->ezText($pwhArray[$i],10,array('spacing'=>2));	
@@ -120,7 +121,7 @@ class pdf_form {
 		$disparray[]=$this->dataplacer(array($pwhArray[15]));
 		$disparray[]=$this->dataplacer(array($pwhArray[16]));
 		$disparray[]=$this->dataplacer(array($pwhArray[17],$pwhArray[18]));		
-		$disparray[]=$this->dataplacer(array($pwhArray[19]));
+		$disparray[]=$this->dataplacer(array($pwhArray[19],$pwhArray[25]));
 		$disparray[]=$this->dataplacer(array($pwhArray[20]));
 		$disparray[]=$this->dataplacer(array($pwhArray[21],$pwhArray[22]));
 		$disparray[]=$this->dataplacer(array($pwhArray[23]));
@@ -142,13 +143,9 @@ class pdf_form {
 			
 		}
 		$obj->cezpdf->setLineStyle(.2,'','',array(.2));
-		
+	
 		$obj->cezpdf->rectangle(50,702,480,50);
-		$disptext='Will print the text string to the page at the position (x,y), if the string is longer than width, then it will
-print only the part which will fit within that width (attempting to truncate at a space if possible) and
-will return the remainder of the string. Will print the text string to the page at the position (x,y), if the string is longer than width, then it will
-print only the part which will fit within that width (attempting to truncate at a space if possible) and
-will return the remainder of the string.
+		$disptext='National Hemophilia Registry(NHR) is a database of PWHs in India. Please verify your details and fill information which his missing. * marks are compulsory, Please take help from your Chapter. Contact details and phone number is printed below the page.
 		';
 		$obj->cezpdf->setColor(92/255,94/255,96/255);
 		$disptext=$obj->cezpdf->addTextWrap(60,740,470,9,$disptext,array('justification' => 'left'));
