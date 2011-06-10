@@ -59,6 +59,17 @@ function setValidateVariable($vartocheck){
   } 
    }      
  }
+ 
+ function checkcaste($castid){
+ 	$castArray=array('','SC','ST','OBC','GL');
+ 	if ($castid!=0){
+ 		return $castArray[$castid];
+ 	}else{
+ 		return '';
+ 	}
+ 	
+ }
+ 
  function checksex($sexvalue){
  	if ($sexvalue==1){
  		return 'Male';	
