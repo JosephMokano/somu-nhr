@@ -91,7 +91,7 @@ class managepatient extends Controller {
     $this->template->write('pageheader', 'PWH List');
     $this->template->add_js('js/flexigrid.pack.js','import');
      $this->template->add_css('styles/flexigrid.css');
-    $grid_js = build_grid_js('flex1',site_url("/managepatient/ajaxcall"),$colModel,'patient_id','asc',$gridParams,$buttons);
+    $grid_js = build_grid_js('flex1',site_url("/managepatient/ajaxcall"),$colModel,'patient_first_name','asc',$gridParams,$buttons);
    
    $this->template->add_js('
    $(function(){
