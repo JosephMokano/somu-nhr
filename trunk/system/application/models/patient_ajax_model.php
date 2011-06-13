@@ -41,7 +41,7 @@ class patient_ajax_model extends Model
    patient_factor_deficient,patient_factor_defother from ".$table_name." where chap_id=".$chapfilterid.$querySearchBuild;
    
    $resultQuery["count_query"]="select count(patient_id) as record_count from 
-      ".$table_name." where chap_id=".$chapfilterid.$querySearchBuild;
+      ".$table_name." where chap_id=".$chapfilterid.$querySearchBuild." order by patient_first_name,patient_last_name";
 		$build_querys = $this->CI->flexigrid->build_querys($resultQuery,TRUE); 
 		
 		///Get contents
