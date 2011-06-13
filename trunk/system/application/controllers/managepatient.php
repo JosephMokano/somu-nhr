@@ -737,6 +737,25 @@ class managepatient extends Controller {
 		$this->load->library('pdf_form',$params);
 		$this->pdf_form->getchapterforms($chapter_id);
 	}
-	
+	private function updateusernametemp(){
+		$this->load->database();
+		$qrydb=$this->db->query('select * from tbl_chapters where not (chapter_ID in (67,68))');
+		$reparray=array('Hemophilia','Society','-','Chapter',',',' ','chapter','society','centre');
+		foreach($qrydb->result() as $qrow){
+			$tempname=str_replace($reparray, '', $qrow->chapter_name);
+			$tempname=strtolower($tempname);
+			echo $tempname.'<br/>';
+			$dataArray=array(
+				'username'=>$qrow->chapter_keyperson,
+				'password'=>md5($tempname),
+				'email_id'=>$tempname.'@hemophilia.in',
+				'group_id'=>2,
+				'access_id'=>1,
+				'chap_id'=>$qrow->chapter_ID
+			);
+			$this->db->insert('tbl_users',$dataArray);
+			
+		}
+	}
 
 }
