@@ -56,9 +56,12 @@ class chapterreports extends Controller {
     $reportsdisplay='<table width="950" cellpadding="0" cellspacing="0" border="0">';
     $reportsdisplay.='<tr><td width="400"><div id="chart1" style="height:400px;width:450px; "></div>
       <div id="info3"></div>';
-    $reportsdisplay.='</td><td width="400"><div id="chart2" style="height:400px;width:450px; "></td></tr></table>';  
+    $reportsdisplay.='</td><td width="400"><div id="chart2" style="height:400px;width:450px; "></td></tr>
+    <tr><td><a href="'.$this->config->item('base_url').'reports/chapterreports/reportslist/" ><button>Report List</a></button></td></tr>
+    </table>';  
     $this->load->library("nhrpwhdetails");
-      $pwhcount=$this->nhrpwhdetails->fetch_factorwise();
+    
+      $pwhcount=$this->nhrpwhdetails->fetch_factorwise($this->session->userdata('chapter'));
     
     $data = array('reportsdisplay'=>$reportsdisplay);
     $this->template->add_js('js/jquery.jqplot.min.js','import');
@@ -149,6 +152,34 @@ class chapterreports extends Controller {
 	  
     $this->template->render();
 	}
+	function reportslist(){
+	$headerdata="Factor Info";
+    $reportsdisplay='';
+    $reportsdisplay='<table width="950" cellpadding="0" cellspacing="0" border="0">';
+    $reportsdisplay.='
+    	<ol>
+    			<li><a href="'.$this->config->item('base_url').'reports/chapterreports/factordef" ><button>View Factorwise</button></a></li>
+    		<li><a href="'.$this->config->item('base_url').'reports/chapterreports/agewisereport/8" ><button>Factor VIII</button></a></li>
+    		<li><a href="'.$this->config->item('base_url').'reports/chapterreports/agewisereport/9" ><button>Factor IX</a></button></li>
+    		<li><a href="'.$this->config->item('base_url').'reports/chapterreports/agewisereport" ><button>Factor VIII & IX</a></button></li>
+    	</ol>
+    </td></tr></table>';  
+    
+    
+   
+    $data = array('reportsdisplay'=>$reportsdisplay);
+    $this->template->add_css('
+	   	button{
+	   		width:150px;
+	   	}
+	   ','embed');
+     $this->template->write_view('header','header',$headerdata, True);
+    $this->template->write_view('content', 'reports/adminreports', $data, True);
+    
+	  
+    $this->template->render();
+	}
+	
     function severitygrp(){
       $postval=$_POST['selfactor'];
       if ($postval<2){
@@ -419,6 +450,110 @@ class chapterreports extends Controller {
 			break;
 		}
 		return $returnvalue;
+	}
+	function agewisereport($factor_def=0){
+		$this->load->library("session");
+		$chap_id=$this->session->userdata('chapter');
+		$faclabelarray=array(0=>' VIII & IX',8=>'VIII',9=>'IX');
+		$headerdata='Agewise Graph for Factor '.$faclabelarray[$factor_def];
+		$this->load->database();
+		$ageArray=array();
+		$factor_def_condiation='';
+		if ($factor_def!=0){
+			$factor_def_condiation='and (patient_factor_deficient like ("%'.$factor_def.'%"))';
+		}
+		$ageConditation=array(0,15,30,40,50,130);
+		for($i=1;$i<count($ageConditation);$i++){
+			$strQuery='select count(patient_id) as count
+			 from tbl_pat_personal where chap_id='.$chap_id.'  
+			  '.$factor_def_condiation.'
+			  and
+			  (((Year(CURDATE())-year(patient_dob))>='.$ageConditation[$i-1].') and
+			  ((Year(CURDATE())-year(patient_dob))<'.$ageConditation[$i].'))
+			  ';
+			
+		$dbQuery=$this->db->query($strQuery);
+		$qryRow=$dbQuery->row();
+		$ageArray[]=$qryRow->count;
+		}
+		 $strQuery='select count(patient_id) as count
+			 from tbl_pat_personal where chap_id='.$chap_id.' 
+			 '.$factor_def_condiation.' and
+			  patient_dob="0000-00-00"';
+			
+		$dbQuery=$this->db->query($strQuery);
+		$qryRow=$dbQuery->row();
+		$ageArray[]=$qryRow->count;
+		
+		
+		$reportsdisplay='';
+    $reportsdisplay='<table width="950" cellpadding="0" cellspacing="0" border="0">';
+    $reportsdisplay.='<tr><td>
+
+    		
+    		
+				
+    			<ol>
+    			<li><a href="'.$this->config->item('base_url').'reports/chapterreports/factordef" ><button>View Factorwise</button></a></li>
+    		<li><a href="'.$this->config->item('base_url').'reports/chapterreports/agewisereport/8" ><button>Factor VIII</button></a></li>
+    		<li><a href="'.$this->config->item('base_url').'reports/chapterreports/agewisereport/9" ><button>Factor IX</a></button></li>
+    		<li><a href="'.$this->config->item('base_url').'reports/chapterreports/agewisereport" ><button>Factor VIII & IX</a></button></li>
+    	</ol>
+    		
+    
+    </td>';
+    $reportsdisplay.='<td align="center">
+    	<h3 >'.$headerdata.'</h3>
+    <div id="chart1" style="height:400px;width:500px; "></div>
+      <div id="info3"></div></td>';
+    $reportsdisplay.='</tr></table>';  
+    
+    
+    $data = array('reportsdisplay'=>$reportsdisplay);
+    $this->template->add_js('js/jquery.jqplot.min.js','import');
+     $this->template->add_js('js/plot/jqplot.pieRenderer.js','import');
+    
+     $this->template->add_css('styles/jquery.jqplot.min.css');
+     $this->template->write_view('header','header','', True);
+    $this->template->write_view('content', 'reports/adminreports', $data, True);
+     $this->template->add_js('
+     
+     var selectedfact=-1;
+      $(document).ready(function() {
+           $.jqplot.config.enablePlugins = true;
+          s1 = [["0-15: "+'.$ageArray[0].','.$ageArray[0].'], 
+          ["16-30: "+'.$ageArray[1].','.$ageArray[1].'], 
+          ["31-40: "+'.$ageArray[2].','.$ageArray[2].'], 
+          ["41-50: "+'.$ageArray[3].','.$ageArray[3].'],
+          ["50 & Above: "+'.$ageArray[4].','.$ageArray[4].'],
+          ["Not Known: "+'.$ageArray[5].','.$ageArray[5].']
+          ];
+           plot1 = $.jqplot("chart1", [s1], {
+             title: "Pie Agewise Chart",
+             
+        seriesDefaults:{
+            renderer:$.jqplot.PieRenderer,
+            rendererOptions:{
+                sliceMargin: 4,
+                startAngle: -90,
+                showLabel:true
+            }
+            
+        },
+        legend: {show:true,showLabels:true,placement: "insideGrid"}
+    });
+        
+
+      });
+    
+     ', 'embed');
+	   $this->template->add_css('
+	   	button{
+	   		width:150px;
+	   	}
+	   ','embed');
+    $this->template->render();
+		
 	}
 }
 ?>
