@@ -18,6 +18,8 @@ class datamanage extends Controller {
  public function datamanage(){
       parent::Controller();
       $this->load->database();
+      $this->load->library("session");
+  	$this->session->set_userdata("chapter",0);
   }
   function index(){
     echo "Index Function";  
@@ -116,7 +118,7 @@ class datamanage extends Controller {
 		margin:0px auto;
 	}
 		.factDet1 th{
-			width:70%;
+			width:50%;
 			text-align:right;
 			padding-right:10px;
 		}
@@ -602,21 +604,30 @@ function chpaterseethroughnot(){
   	$pwhCountdisplay='';
   	$this->load->library('session');
   	if ($this->session->userdata('group')==10){
+  		$this->load->library("session");
+
   		$pwhCountdisplay='<tr><td></td><td style="text-align:left">
   		<ol> 
   		<li><a href="'.$this->config->item('base_url').'datamanage/updatecalls/'.$chapter_id.'">Update Calls</a></li>
   		<li><a href="'.$this->config->item('base_url').'datamanage/emailthischapter/'.$chapter_id.'">Email this Chapter</a></li>
        	<li><a href="'.$this->config->item('base_url').'datamanage/smsthischapter/'.$chapter_id.'">SMS this Chapter</a></li>
        	<li><a href="'.$this->config->item('base_url').'datamanage/editchapterdetails/'.$chapter_id.'">Edit this Chapter</a></li> 
+       		<li><br/></li> 
+       		<li><a href="'.$this->config->item('base_url').'datamanage/editpwhlist/'.$chapter_id.'">PWH Edit</a>
+       		
+       		
+       		</li> 
        	
        	</ol>
+       	
        </td></tr>
        ';
+  		
   	}
   	$displaylist='
-  	<table cellpadding="4" cellspacing="2" border="0" width="100%" class="factDet factDet1">
+  	<table cellpadding="4" cellspacing="2" border="1" width="100%" class="factDet factDet1">
   		<tr><td class="'.$this->config->item("secction_head").'" colspan="2" style="font-weight:bold;font-size:1.2em">Chapter Details</td></tr>
-  		<tr><th>Chapter Name: </th><td style="text-align:left">'.$chapterRow->chapter_name.'</td></tr>
+  		<tr><th >Chapter Name: </th><td style="text-align:left">'.$chapterRow->chapter_name.'</td></tr>
   		<tr><th>Chapter Address: </th><td style="text-align:left">'.$chapterRow->chapter_address1.'</td></tr>
   		<tr><th> </th><td style="text-align:left">'.$chapterRow->chapter_address2.'</td></tr>
   		<tr><th>Phone Number: </th><td style="text-align:left">'.$chapterRow->chapter_phone.'</td></tr>
@@ -632,6 +643,12 @@ function chpaterseethroughnot(){
 	
   return $displaylist;
   	
+  }
+  function editpwhlist($chapter_id){
+  	$this->load->library("session");
+  	$this->session->set_userdata("chapter",$chapter_id);
+  	
+  	redirect($this->config->item('base_url').'managepatient/patient_listdata');
   }
   function updatecalls($chapter_id){
   	$formdisplay='';

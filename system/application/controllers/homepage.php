@@ -582,11 +582,11 @@ class Homepage extends Controller {
 		if ($id!=0){ 
 		  foreach($formdata[0] as $key=>$value){
 		   // echo $key.'->'.$value.'<br/>';
-        if (!isset($value)){
-          $formdata[0][$key]='';
-        }
+        	if (!isset($value)){
+         		 $formdata[0][$key]='';
+       		 }
 		  }
-    }
+    	}
 		$formdisplay='';
 		$formAttr=array('name'=>'pat_dispform','id'=>'pat_dispform');
 		
@@ -603,7 +603,7 @@ class Homepage extends Controller {
 		$tabsHead .='<li><a href="#tabs-6">Membership</a></li>';
 		$tabsHead .='</ul>';
 		
-		if($this->session->userdata('group')==2){
+		if(($this->session->userdata('group')==2)||($this->session->userdata('group')==10)){
 			$txtIDhidden=array(
 					'value'=>$id,
 					'id'=>'Pid',
@@ -1637,11 +1637,15 @@ class Homepage extends Controller {
 			//$this->g_framework->setFrameworkValue("Hemophilia Society","Divya");
 		}*/
 		
-		if($this->session->userdata('group')==2){
+		if(($this->session->userdata('group')==2)||($this->session->userdata('group')==10)){
 			$query = $this->db->query('select * from tbl_chapters where chapter_ID='.$this->session->userdata('chapter'));
 			$result = $query->row_array();
+			$admintxt='';
+			if ($this->session->userdata('group')==10){
+				$admintxt='(Logged as Engineer)';
+			}	
 			$headerdata = array(
-				'chapterName' => $result['chapter_name'],
+				'chapterName' => $result['chapter_name'].' '.$admintxt,
 				'username' => $this->session->userdata('username')
 			);
 			$this->template->write_view('header','header',$headerdata, True);
@@ -1765,7 +1769,7 @@ class Homepage extends Controller {
 			$query = $this->db->query("Select * from tbl_chapters where chapter_city='".$chap."'");
 			$result = $query->result_array();
 			$chapterid=$result[0]['chapter_ID'];
-		}else if($this->session->userdata('group')==2){
+		}else if(($this->session->userdata('group')==2)||(($this->session->userdata('group')==10))){
 			//Get chapter id
 			//$chap=$_POST['chapid'];
 			$chapterid=$this->session->userdata('chapter');
@@ -1889,7 +1893,7 @@ class Homepage extends Controller {
 		
 		if($this->session->userdata('group')==1){
 			$this->patient_listdataadmin();
-		} else if($this->session->userdata('group')==2){
+		} else if(($this->session->userdata('group')==2)||($this->session->userdata('group')==10)){
 			redirect($this->config->item('base_url').'managepatient/patient_listdata');
 		}
 		/*$this->load->library('session');
