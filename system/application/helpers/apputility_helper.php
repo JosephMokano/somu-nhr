@@ -47,11 +47,13 @@ function setValidateVariable($vartocheck){
       return $ofactorArray[$defvalue];
  }
  function checkwrongpwhid($pwhid,$chapterid){
+ 	
    if ($pwhid!=0){
     $ci=& get_instance();
    $ci->load->database(); 
    $checkQuery="select * from tbl_pat_personal 
           where patient_id=".$pwhid." and chap_id=".$chapterid;
+  
   $qryResult=$ci->db->query($checkQuery);
   $numrows=$qryResult->num_rows();
   if ($numrows==0){
@@ -59,7 +61,13 @@ function setValidateVariable($vartocheck){
   } 
    }      
  }
- 
+ function getChapterNamefordisplay($chapterid){
+ 	$ci=& get_instance();
+   $ci->load->database(); 
+   $checkquery=$ci->db->query('select * from tbl_chapters where chapter_id='.$chapterid);
+   $row=$checkquery->row();
+   return $row;
+ }
  function checkcaste($castid){
  	$castArray=array('','SC','ST','OBC','GL');
  	if ($castid!=0){
