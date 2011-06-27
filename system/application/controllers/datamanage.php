@@ -48,14 +48,17 @@ class datamanage extends Controller {
    		<div style="margin:10px 0px">
    					<a href="/datamanage/chpaterseethrough">:: List of chapters Data Available 	</a>
    					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   					<a href="/datamanage/chpaterseethrough">:: Chapters Data to be collected 	</a>
-   		</div>	
+   					<a href="/datamanage/chpaterseethroughnot">:: Chapters Data to be collected 	</a>
+   		<div id="chapterdetails"></div>
+   					
+   		</div>
+   			
    ';
    $chapterinfo='<div id="chapterinfodisplay" >
    	
    	</div>';
 	$displaylist.='<table cellpadding="0" cellspacing="4" border="0" width="100%">
-		<tr><td width="50%">'.$formElement.'</td><td width="50%">'.$chapterinfo.'</td></tr></table>';
+		<tr><td width="60%">'.$formElement.'</td><td width="40%">'.$chapterinfo.'</td></tr></table>';
 	$data= array('formdisplay'=>$displaylist);
 	$this->template->add_js('
 		$(document).ready(function() {
@@ -95,7 +98,10 @@ class datamanage extends Controller {
   				"data":"chapter_id="+chapter_id,
   				"url":"'.$this->config->item('base_url').'datamanage/chapterdetails",
   				success:function(data){
-  					$("#chapterinfodisplay").html(data);
+  						jdata=jQuery.parseJSON(data);
+  						
+  					$("#chapterinfodisplay").html(jdata.pwddetails);
+  					$("#chapterdetails").html(jdata.chapterdetails);
   				}
   			});
 		}
@@ -106,7 +112,7 @@ class datamanage extends Controller {
 	$this->template->add_css('/styles/overlay.css');
 	$this->template->add_css('
 	.factDet1{
-		width:80%;
+		width:100%;
 		margin:0px auto;
 	}
 		.factDet1 th{
@@ -121,6 +127,9 @@ class datamanage extends Controller {
 		background-color:#F3EEEE;
 		border-bottom:1px solid #cccccc;
 		border-top:1px solid #cccccc;
+	}
+	.leftalign{
+		text-align:left;
 	}
 	','embed');
     $this->template->write('pageheader', 'Chapter Pending Details');
@@ -173,10 +182,7 @@ class datamanage extends Controller {
       $pwhCountdisplay.='</tr>';
       $pwhCountdisplay.='<tr><td style="font-size:.8em" colspan="5"><b>Note: </b> Total may not come correct if you add-up Factor 8, Factor - 9, Others, Not Known. 
       	Becuase of multiple factor deficiency</td></tr>';
-       $pwhCountdisplay.='<tr><td clospan="5"> 
-       <a href="'.$this->config->item('base_url').'datamanage/editchapterdetails/'.$chapter_id.'">Edit this Chapter</a>
-       &nbsp;&nbsp;&nbsp;&nbsp;<a href="'.$this->config->item('base_url').'datamanage/emailthischapter/'.$chapter_id.'">Email this Chapter</a>
-       </td></tr>';
+       
       $pwhCountdisplay.='</table>';
       
       $emptycount=$this->nhrpwhdetails->fetch_empty($chapter_id);
@@ -216,8 +222,11 @@ class datamanage extends Controller {
       if ($pwhcount['count_total']==0){
       	$chapterinfo.='<div class="alertbox">Data needs to be collected from this Chapter</div><div class="spacer"></div>';
       }
-     
-      echo $chapterinfo.$pwhCountdisplay.'<div class="spacer"></div>'.$emptydisplay;
+     $retValueajax=array(
+     	'pwddetails'=>$chapterinfo.$pwhCountdisplay.'<div class="spacer"></div>'.$emptydisplay,
+     	'chapterdetails'=>$this->_viewchatper($chapter_id)
+     );
+      echo json_encode($retValueajax);
   }
   
   function chpaterseethrough(){
@@ -256,7 +265,7 @@ class datamanage extends Controller {
 				<td>'.$j.'</td>
 				<td>'.$chaprow->chapter_name.'</td>
 				<td>'.$chaprow->pcount.'</td>
-			</tr>
+			</tr>jdata=
 		';
 		$i++;$j++;
 		
@@ -278,7 +287,7 @@ class datamanage extends Controller {
 		.factDet td{
   			text-align:left;
 			border-bottom:1px dotted #E7E7E7;
-		}
+		}<tr><td class="'.$this->config->item("secction_head").'" colspan="2" style="font-weight:bold;font-size:1.2em">Data to be Collected</td></tr>
 	.styleblock{
 		background-color:#F3EEEE;
 		border-bottom:1px solid #cccccc;
@@ -286,6 +295,9 @@ class datamanage extends Controller {
 		text-align:center;
 		font-size:1.2em;
 		font-weight:bold;
+	}
+	.leftalign{
+		text-align:left;
 	}
 	','embed');
     $this->template->write('pageheader', 'Chapters Data Available	');
@@ -333,7 +345,7 @@ function chpaterseethroughnot(){
 	}
 	
 	$displayView.='</table>'; 
-	$data= array('formdisplay'=>$displayView);
+	$data= array('formdisplay'=>$displayViewjdata);
 	$this->template->add_js('','embed');
 	$this->template->add_css('styles/reports.css');
 	$this->template->add_css('
@@ -581,6 +593,122 @@ function chpaterseethroughnot(){
   }
   function emailthischapter($chapter_id){
   	redirect($this->config->item('baseurl').'nhrcommunication/send_email/'.$chapter_id.'/2');
+  }
+  //Chapter Details:
+  private function _viewchatper($chapter_id=0){
+  	$chapterDetails=$this->db->query('select * from tbl_chapters where chapter_ID='.$chapter_id);
+  	$chapterRow=$chapterDetails->row();
+  	
+  	$pwhCountdisplay='';
+  	$this->load->library('session');
+  	if ($this->session->userdata('group')==10){
+  		$pwhCountdisplay='<tr><td></td><td style="text-align:left">
+  		<ol> 
+  		<li><a href="'.$this->config->item('base_url').'datamanage/updatecalls/'.$chapter_id.'">Update Calls</a></li>
+  		<li><a href="'.$this->config->item('base_url').'datamanage/emailthischapter/'.$chapter_id.'">Email this Chapter</a></li>
+       	<li><a href="'.$this->config->item('base_url').'datamanage/smsthischapter/'.$chapter_id.'">SMS this Chapter</a></li>
+       	<li><a href="'.$this->config->item('base_url').'datamanage/editchapterdetails/'.$chapter_id.'">Edit this Chapter</a></li> 
+       	
+       	</ol>
+       </td></tr>
+       ';
+  	}
+  	$displaylist='
+  	<table cellpadding="4" cellspacing="2" border="0" width="100%" class="factDet factDet1">
+  		<tr><td class="'.$this->config->item("secction_head").'" colspan="2" style="font-weight:bold;font-size:1.2em">Chapter Details</td></tr>
+  		<tr><th>Chapter Name: </th><td style="text-align:left">'.$chapterRow->chapter_name.'</td></tr>
+  		<tr><th>Chapter Address: </th><td style="text-align:left">'.$chapterRow->chapter_address1.'</td></tr>
+  		<tr><th> </th><td style="text-align:left">'.$chapterRow->chapter_address2.'</td></tr>
+  		<tr><th>Phone Number: </th><td style="text-align:left">'.$chapterRow->chapter_phone.'</td></tr>
+  		<tr><th>Cell Number: </th><td style="text-align:left">'.$chapterRow->chapter_cell.'</td></tr>
+  		<tr><th>Key Person: </th><td style="text-align:left">'.$chapterRow->chapter_keyperson.'</td></tr>
+  		<tr><th>Fax: </th><td style="text-align:left">'.$chapterRow->chapter_fax.'</td></tr>
+  		<tr><th>Email: </th><td style="text-align:left">'.$chapterRow->chapter_email.'</td></tr>
+  		
+  		'.$pwhCountdisplay.'
+  		
+  	</table>';
+  	
+	
+  return $displaylist;
+  	
+  }
+  function updatecalls($chapter_id){
+  	$formdisplay='';
+  	
+  	$chapterDetails=$this->db->query('select * from tbl_chapters where chapter_ID='.$chapter_id);
+  	$chapterRow=$chapterDetails->row();
+  	
+  	$pwhCountdisplay='';
+  	$this->load->library('session');
+  	
+  	$displaylist='
+  	<form method="post" action="'.$this->config->item('base_url').'datamanage/updatecallsdb" id="commentForm" name="commentForm">
+  	<table cellpadding="4" cellspacing="2" border="0" width="100%" class="factDet factDet1">
+  		<tr><td class="'.$this->config->item("secction_head").'" colspan="2" style="font-weight:bold;font-size:1.2em">Chapter Details</td></tr>
+  		<tr><th>Chapter Name: </th><td style="text-align:left">'.$chapterRow->chapter_name.'</td></tr>
+  		<tr><th>Phone Number: </th><td style="text-align:left">'.$chapterRow->chapter_phone." ".$chapterRow->chapter_cell.'</td></tr>
+  		
+  		<tr><th>Key Person: </th><td style="text-align:left">'.$chapterRow->chapter_keyperson.'</td></tr> 		
+  		'.$pwhCountdisplay.'
+  		<tr><th>Call </th><td style="text-align:left;"><input type="radio" value="in" name="calltype" /> Incoming&nbsp&nbsp; <input type="radio" value="Out" name="calltype" validate="required:true" /> Outgoing</td></tr>
+  		<tr><th>Spoke to: </th><td style="text-align:left;" class="required"><input type="text" value="" name="spoketo" class="max"/> </td></tr>
+  		<tr><th>Notes: </th><td style="text-align:left;" class="required"><textarea   name="callnotes" class="max" rows="5"></textarea> </td></tr>
+  		<tr><th>Priority: </th><td style="text-align:left;">
+  				<select name="priority" validate="required:true">
+  					<option value="0">--Select--</option>
+  					<option value="1">Low</option>
+  					<option value="2">Medium</option>
+  					<option value="3">High</option>
+  				</select>
+  				
+  		</td></tr>
+  		<tr><td></td><td style="text-align:left;"><input type="submit" value="submit" /></td></tr>
+  	</table>
+  		<input type="hidden" value="'.$chapter_id.'" name="chapter_id" />
+  	</from>
+  	';
+  		
+  	
+  	
+  	$data= array(
+				'formdisplay'=>$displaylist,
+	);
+	$headerdata = array(
+		'username'=>$this->session->userdata('username'),
+		'chapterName'=>'Hemophilia Federation (India)'
+	);
+	$this->template->add_js('js/jquery.validate.js');
+	$this->template->add_css('
+		.leftalign{
+			text-align:left;
+		}
+	','embed');
+	$this->template->add_js('
+	$().ready(function() {
+	
+			$("#commentForm").validate();
+		});
+	','embed');
+	$this->session->set_userdata('headerdata',$headerdata);
+	$this->template->write('pageheader', 'Dashboard');
+	$this->template->write_view('header','header',$headerdata, True);
+	$this->template->write_view('content','members/list_member',$data, True);
+	$this->template->render();
+  }
+  function updatecallsdb(){
+  	$this->load->library("session");
+  	$dataarray=array(
+  		'chapter_id'=>$_POST['chapter_id'],
+  		'spoketo'=>$_POST['spoketo'],
+  		'calltype'=>$_POST['calltype'],
+  		'callnotes'=>$_POST['callnotes'],
+  		'priority'=>$_POST['priority'],
+  		'user_id'=>$this->session->userdata('userid')
+  	);
+  	$this->load->database();
+  	$this->db->insert('tbl_nhr_call_log',$dataarray);
+  	redirect($this->config->item('base_url').'datamanage/chaptersnapshot');
   }
 }
 ?>
