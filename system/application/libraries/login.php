@@ -31,6 +31,7 @@ class login{
 			$query = $obj->db->query("SELECT * from tbl_users where email_id='".$username."' and access_id=1");		
 			$details = $query->result_array();
 			
+			
 			$username = $details[0]['username'];
 			$group = $details[0]['group_id'];
 			$loginname = $details[0]['email_id'];
@@ -65,6 +66,21 @@ class login{
 			$processval=False;
 		}
 		return $processval;
+	}
+	function checkpassword(){
+		$obj =& get_instance();
+		$obj->load->database();
+		$obj->load->library('session');
+		//Fetch Data from Database
+		$dbquery=$obj->db->query('select * from tbl_users where user_id='.$obj->session->userdata('userid'));
+		$dbquery=$dbquery->row();
+		$password_string=str_replace('@hemophilia.in', '', $dbquery->email_id);
+		if (md5($password_string)==$dbquery->password){
+			return  1;
+		}else{
+			return 0;
+		}
+		
 	}
 }
 ?>
