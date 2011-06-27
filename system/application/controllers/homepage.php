@@ -110,6 +110,7 @@ class Homepage extends Controller {
 			//echo $_POST['serverdet'];exit;
 			$processVal = $this->login->processLogin($username,$password);
 		}
+		
 		if($checkLog=='logout')
 		{
 			$this->login->logout();
@@ -2431,9 +2432,10 @@ function notauthorised(){
 		
 		// Finally send the graph to the browser
 		$graph->Stroke($graph_file_location); 
-		
+		$this->load->library('login');
+		$passcheck=$this->login->checkpassword();
 		$formdisplay='';
-		if($this->session->userdata('group')==2){
+		if(($this->session->userdata('group')==2)){
 			$formdisplay.='<table class="icons">';
 			$formdisplay.='<tr>';
 			$formdisplay.='<td>';
@@ -2485,6 +2487,7 @@ function notauthorised(){
       $pwhcount=$this->nhrpwhdetails->fetch_factorwise($this->session->userdata('chapter'));
       $emptycount=$this->nhrpwhdetails->fetch_empty($this->session->userdata('chapter'));
 			$formdisplay.='<div id="graph">';
+			
        $formdisplay.='<table width="100%" cellpadding="0" celspacing="0" border="0" >';
        $formdisplay.='<tr><td width="50%">';
       $formdisplay.='<table width="100%" cellpadding="0" celspacing="0" border="0" class="factDet">';
@@ -2521,6 +2524,10 @@ function notauthorised(){
       ui-corner-all nhrpaneltitle" colspan="5">From NHR Team</div>
       
       </td></tr>';
+		if ($passcheck==1){
+				$formdisplay.='<tr><td id="error1">You need to change your password to secure PWH data.<br/>
+				<a href="'.$this->config->item('base_url').'chaptermanage/changepassword">Please clhick here to change password.</a></td></tr>';
+			}
       $formdisplay.='</table>';
        $formdisplay.='</tr></table>';
 			$formdisplay.='</div>';
@@ -2544,7 +2551,7 @@ function notauthorised(){
 			$this->template->write_view('content','members/list_member',$data, True);
         		$this->template->render();
 		
-		}else if ($this->session->userdata('group')==1){
+		}else if (($this->session->userdata('group')==1)||($this->session->userdata('group')==10)){
 
 			$formdisplay.='<table class="icons" border="0">';
 			$formdisplay.='<tr>';
