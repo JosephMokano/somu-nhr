@@ -43,7 +43,13 @@ class managepatient extends Controller {
     $colModel['patient_factor'] = array('Factor',40,TRUE,'center',0);
     $colModel['patient_factor_level'] = array('Severity',40,TRUE,'center',0);
     $colModel['Details'] = array('',40,TRUE,'center',0,0,'rowClick');
-    
+	 $techChapterName='';
+	 $backlinktechadmin='';
+       if ($this->session->userdata('group')==10){
+       	$retvalue=getChapterNamefordisplay($this->session->userdata('chapter'));
+       	$techChapterName=$retvalue->chapter_name;
+       	$backlinktechadmin='<a href="'.$this->config->item('base_url').'datamanage/chaptersnapshot">[ Back to Chapters List ]</a>';
+       }
     
     //Check Session
     $this->load->library("session");
@@ -64,7 +70,7 @@ class managepatient extends Controller {
     'rpOptions' => '[10,15,20,25,40]',
     'pagestat' => '{from} to {to} of {total}',
     'blockOpacity' => 0.5,
-    'title' => 'List of PWH',
+    'title' => 'List of PWH - '.$techChapterName,
     'singleSelect'=> true,
     
     'showTableToggleBtn' => false
@@ -170,7 +176,8 @@ class managepatient extends Controller {
    // $data['grid_js'] = $grid_js;
    //$this->template->write('pageheader1', 'upload profile photo');
        //FlexGrid Data Ends Here
-      $data['topnavlinks']='<div class="topnewright"><a 
+      
+      $data['topnavlinks']='<div class="topnewright">'.$backlinktechadmin.' &nbsp;<a 
         href="'.base_url().'managemembers/patient_addform">Add New PWH</a></div>';
      
        $data['grid_js']=$grid_js;
