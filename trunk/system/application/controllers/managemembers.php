@@ -219,7 +219,7 @@ class managemembers extends Controller {
           var clickID=$("#selectedid").val();
           //alert("I am clicked selectedid: "+chkValue+" "+clickID);
           if (chkValue=="on"){
-          $.post("'.base_url().'managepatient/details_pwh_dashboard", { selectedid: clickID },
+          $.post("'.$this->config->item("base_path").'managepatient/details_pwh_dashboard", { selectedid: clickID },
             function(data){
               
             });          
