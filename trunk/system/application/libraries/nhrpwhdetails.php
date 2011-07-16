@@ -127,7 +127,7 @@ class nhrpwhdetails{
       //check for bloodgroup
       $qrybloodgroup="select count(patient_ID) as fcount from tbl_pat_personal 
               where chap_id=".$this->chapterid."  and 
-               patient_bloodgroup=0";
+               ((patient_bloodgroup=0) || (patient_bloodgroup is null))";
       
        $this->arrobjpwh['patient_bloodgroup']=$this->getcoutresult($qrybloodgroup);
        
@@ -180,14 +180,14 @@ class nhrpwhdetails{
        //check for father name
       $qryfathername="select count(patient_ID) as fcount from tbl_pat_personal 
               where chap_id=".$this->chapterid."  and 
-              (length(patient_father_name)=0)";
+              (length(patient_father_name)=0 || (patient_father_name is null))";
       
        $this->arrobjpwh['patient_fathername']=$this->getcoutresult($qryfathername);
        
       //check for Address
       $qryaddress="select count(patient_ID) as fcount from tbl_pat_personal 
               where chap_id=".$this->chapterid."  and 
-              	(length(comm_flat)=0)";
+              	(length(comm_flat)=0 || (comm_flat is null))";
        $this->arrobjpwh['patient_address']=$this->getcoutresult($qryaddress);
       
        //check for Phone
