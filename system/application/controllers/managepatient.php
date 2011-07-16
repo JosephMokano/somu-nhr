@@ -41,7 +41,7 @@ class managepatient extends Controller {
     $colModel['patient_id'] = array('ID',40,TRUE,'center',2);
     $colModel['patient_first_name'] = array('Name',180,TRUE,'left',1);
     $colModel['patient_factor'] = array('Factor',40,TRUE,'center',0);
-    $colModel['patient_factor_level'] = array('Severity',40,TRUE,'center',0);
+    $colModel['patient_factor_level'] = array('Factor<br/>Level',40,TRUE,'center',0);
     $colModel['Details'] = array('',40,TRUE,'center',0,0,'rowClick');
 	 $techChapterName='';
 	 $backlinktechadmin='';

@@ -267,7 +267,7 @@ class datamanage extends Controller {
 				<td>'.$j.'</td>
 				<td>'.$chaprow->chapter_name.'</td>
 				<td>'.$chaprow->pcount.'</td>
-			</tr>jdata=
+			</tr>
 		';
 		$i++;$j++;
 		
@@ -307,7 +307,10 @@ class datamanage extends Controller {
    $this->template->render();
   }
 function chpaterseethroughnot(){
-  	$chapterquery='select chapter_name,chapter_zone from tbl_chapters where not (chapter_id in (select DISTINCT chap_id from tbl_pat_personal))';		
+  	//$chapterquery='select chapter_name,chapter_zone from tbl_chapters where not (chapter_id in (select DISTINCT chap_id from tbl_pat_personal))';
+  	$chapterquery='select a.chapter_name,a.chapter_zone,count(b.patient_id) as co from 
+  	tbl_chapters a left join tbl_pat_personal b on a.chapter_id=b.chap_id   group by a.chapter_id order by a.chapter_zone';
+  			
 	$qrychapter=$this->db->query($chapterquery);
 	$i=1;
 	$displayView='';
@@ -334,6 +337,7 @@ function chpaterseethroughnot(){
 			$displayView.='<tr><td class="styleblock"></td><td colspan="3" class="styleblock">'.$zonearray[$zoneid-1].'</td></tr>';
 			$j=1;
 		}
+		if ($chaprow->co==0){
 		$displayView.='
 			<tr>
 				<td>'.$i.'</td>
@@ -343,11 +347,12 @@ function chpaterseethroughnot(){
 			</tr>
 		';
 		$i++;$j++;
+		}
 		
 	}
 	
 	$displayView.='</table>'; 
-	$data= array('formdisplay'=>$displayViewjdata);
+	$data= array('formdisplay'=>$displayView);
 	$this->template->add_js('','embed');
 	$this->template->add_css('styles/reports.css');
 	$this->template->add_css('
