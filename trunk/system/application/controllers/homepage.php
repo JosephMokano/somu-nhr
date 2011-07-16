@@ -747,10 +747,10 @@ class Homepage extends Controller {
 				'id'=>'radgender',
 				'name'=>'radgender',
 				'class'=>'',	
-				'value'=>0,
+				'value'=>1,
 			);
 		if($formdata[0]['patient_sex']==1){
-			$formdisplay.=form_radio($txtformElement,0,true);
+			$formdisplay.=form_radio($txtformElement,1,true);
 		}else{
 			$formdisplay.=form_radio($txtformElement);
 		}
@@ -760,7 +760,7 @@ class Homepage extends Controller {
 				'id'=>'radgender',
 				'name'=>'radgender',
 				'class'=>'',	
-				'value'=>1
+				'value'=>2
 			);
 		if($formdata[0]['patient_sex']==2){
 			$formdisplay.=form_radio($txtformElement,1,true);
@@ -790,7 +790,7 @@ class Homepage extends Controller {
 		$formdisplay.='</div>';
 		
 		$formdisplay.='<div class="label">';
-		$formdisplay.=form_label('Religion : ','lblflat');
+		$formdisplay.=form_label('Caste : ','lblflat');
 		$formdisplay.='</div>';
 		
 		$formdisplay.='<div class="boxarea">';
