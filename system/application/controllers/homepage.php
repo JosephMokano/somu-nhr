@@ -1300,11 +1300,16 @@ class Homepage extends Controller {
 		$formdisplay.='</div>';
 		
 		$formdisplay.='<div class="boxarea">';
+		if (empty($formdata[0]['patient_factor_level'])){
+			$factvaluetemp='.';
+		}else{
+			$factvaluetemp=$formdata[0]['patient_factor_level'];
+		}
 		$txtformElement=array(
 				'id'=>'txtfactlel',
 				'name'=>'txtfaclel',
 				'class'=>'valfactor',	
-				'value'=>$formdata[0]['patient_factor_level']
+				'value'=>$factvaluetemp
 			);
 		$formdisplay.=form_input($txtformElement);
 		$formdisplay.='&nbsp;%</div>';
@@ -1685,10 +1690,12 @@ class Homepage extends Controller {
      
        $("#pat_dispform").validate({
          rules:{
-            txtfaclel:{ accept: "[<0-9 ]" }            
+            txtfaclel:{           
+            accept: "[<0-9.]" 
+			}            
          },
          messages: {
-           txtfaclel:"Valid input, 0-9 OR < OR ."
+           txtfaclel:"Factor Level Valid input, 0-9 OR < OR ."
          },
          errorPlacement: function(error, element) {
        		 if (element.attr("name") == "txtfaclel")
@@ -1798,7 +1805,7 @@ class Homepage extends Controller {
 			'patient_bloodgroup' => $_POST['bloodgrop'],
 			'patient_factor_defother' => $_POST['fctdefother'],
 			'patient_factor_deficient' => implode(',',$_POST['txtfctdef']),
-			'patient_factor_level' => $_POST['txtfaclel'],
+			'patient_factor_level' => $_POST['txtfaclel']=='.'?'':$_POST['txtfaclel'],
 			'patient_inhibitor_screen' => $_POST['radinhi'],
 
 		//	'patient_inhibitor_date' => $this->expdate($_POST['txtinhidate']),
@@ -1860,7 +1867,7 @@ class Homepage extends Controller {
 			$this->db->set('patient_bloodgroup' ,$_POST['bloodgrop']);
 			$this->db->set('patient_factor_defother' , $_POST['fctdefother']);
 			$this->db->set('patient_factor_deficient', implode(',',$_POST['txtfctdef']));
-			$this->db->set('patient_factor_level' , $_POST['txtfaclel']);
+			$this->db->set('patient_factor_level' ,  $_POST['txtfaclel']=='.'?'':$_POST['txtfaclel']);
 			$this->db->set('patient_inhibitor_screen' , $_POST['radinhi']);
 
 		
@@ -2414,6 +2421,14 @@ function notauthorised(){
 		//redirect('chapterdashboard');
 		$this->patient_listdataadmin();
 	}
+	private function _ae_detect_ie()
+	{
+    	if (isset($_SERVER['HTTP_USER_AGENT']) && 
+    		(strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false))
+        	return true;
+    	else
+        	return false;
+	}
 	function chapterdashboard(){
 		//to generate the chart
 		$this->load->plugin('jpgraph');
@@ -2532,6 +2547,10 @@ function notauthorised(){
 				$formdisplay.='<tr><td id="error1">You need to change your password to secure PWH data.<br/>
 				<a href="'.$this->config->item('base_url').'chaptermanage/changepassword">Please clhick here to change password.</a></td></tr>';
 			}
+		if ($this->_ae_detect_ie()){
+			$formdisplay.='<tr><td id="error1">Your are Using Internet Explorer<br/>
+				For Safe browsing and to get best benefit use Firefox or Chrome </td></tr>';
+		}	
       $formdisplay.='</table>';
        $formdisplay.='</tr></table>';
 			$formdisplay.='</div>';
