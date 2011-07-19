@@ -38,8 +38,9 @@ class pdf_form {
  	on a.chap_id=b.chapter_id where a.chap_id='.$chapter_id	);
  	foreach($pwdquery->result() as $pwhrow){
  		$this->pwhdata=$pwhrow; 
- 		$obj->cezpdf->ezNewPage();
+ 		
  		$this->generatepdf();
+ 		$obj->cezpdf->ezNewPage();
  	}
  	
  	
@@ -170,7 +171,7 @@ class pdf_form {
     	$disptext='<i>     Email:</i> '.$pwhdata->chapter_email;
     	$obj->cezpdf->addText(20, 100,8,$disptext);
     	$obj->cezpdf->setColor(160/255,164/255,160/255);
-    	$disptext='<b>NHR Helpline:</b>  <i>Phone Number:</i> +91.797890789.           <i>Email:</i> registry@hemophilia.in     <i>Ref.Id:</i> '.$pwhdata->patient_ID;
+    	$disptext='<b>NHR Helpline:</b>  <i>Phone Number:</i> +91.7353777778/+91.9845188706.           <i>Email:</i> registry@hemophilia.in     <i>Ref.Id:</i> '.$pwhdata->patient_ID;
     	$obj->cezpdf->line(20,95,560,95);
     	$obj->cezpdf->addText(100, 80,7,$disptext);
 		//$obj->cezpdf->ezTable($pwhArray);
