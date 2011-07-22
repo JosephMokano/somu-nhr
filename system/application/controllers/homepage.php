@@ -2550,7 +2550,11 @@ function notauthorised(){
 		if ($this->_ae_detect_ie()){
 			$formdisplay.='<tr><td id="error1">Your are Using Internet Explorer<br/>
 				For Safe browsing and to get best benefit use Firefox or Chrome </td></tr>';
-		}	
+		}else{
+			$formdisplay.='<tr><td>
+				Please use <a href="http://download.mozilla.org/?product=firefox-5.0.1&os=win&lang=en-GB" target="_blank" title="Firefox" alt="Firefox">
+				Firefox</a> or <a href="http://www.google.com/chrome/eula.html" target="_blank">Chrome</a> to have safe browsing</td></tr>';
+		}
       $formdisplay.='</table>';
        $formdisplay.='</tr></table>';
 			$formdisplay.='</div>';
