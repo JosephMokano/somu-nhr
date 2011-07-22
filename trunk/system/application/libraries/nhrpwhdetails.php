@@ -193,7 +193,7 @@ class nhrpwhdetails{
        //check for Phone
       $qryPhone="select count(patient_ID) as fcount from tbl_pat_personal 
               where chap_id=".$this->chapterid."  and 
-               (length(commu_phone)=0)";
+               (length(commu_phone)=0  || (commu_phone is null))";
        $this->arrobjpwh['patient_phone']=$this->getcoutresult($qryPhone);
 
        //check is Studing
