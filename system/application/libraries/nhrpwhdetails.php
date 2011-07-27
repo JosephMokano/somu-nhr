@@ -228,4 +228,23 @@ class nhrpwhdetails{
    
       return $tempvar->fcount; 
     }
+    function updateAudit($auditDataArray){
+    	$this->obj->load->database();
+    	$oldData='';
+    	if ($auditDataArray['pid']>0){
+    		$resQuery="Select * from tbl_pat_personal where patient_ID=".$auditDataArray['pid'];
+    		 
+      		 $qryObj= $this->obj->db->query($resQuery);
+      		 $oldData=json_encode($qryObj->row());
+    	}else{
+    		$resQuery="select max(patient_id) as maxdata from tbl_pat_personal where chap_id=".$auditDataArray['chap_id'];
+    		$qryObj= $this->obj->db->query($resQuery);
+      		 $qryrow=$qryObj->row();
+      		 $auditDataArray['pid']=$qryrow->maxdata;
+    	}
+    	$auditDataArray['previousdata']=$oldData;
+    	print_r($auditDataArray);
+    	
+    	$this->obj->db->insert('tbl_patient_audit',$auditDataArray);
+    }
 }
