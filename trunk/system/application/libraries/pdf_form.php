@@ -93,14 +93,14 @@ class pdf_form {
 		$pwhArray[14]='<b>Inhibitor Screen</b>: '.checkzero($pwhdata->patient_inhibitor_screen);
 		$pwhArray[15]='<b>Is Studying</b>: '.checkzero($pwhdata->patient_studying);
 		$pwhArray[16]='<b>Is working</b>: '.checkzero($pwhdata->patient_working);		
-		$pwhArray[17]='<b>Age of Diagnose</b>: '.checkzero($pwhdata->patient_age_Diagnose);
-		$pwhArray[18]='<b>Diagnose Place</b>: '.checkzero($pwhdata->patient_hospital_diagnose);
+		$pwhArray[17]='<b>Age of Diagnose</b>: '.$pwhdata->patient_age_Diagnose;
+		$pwhArray[18]='<b>Diagnose Place</b>: '.$pwhdata->patient_hospital_diagnose;
 		$pwhArray[19]='<b>Other Family Members</b>: '.checkzero($pwhdata->patient_family_effected);
 		$pwhArray[20]='<b>Family Income</b>:* '.checkzero($pwhdata->patient_family_income);
 		$pwhArray[21]='<b>Do You Have BPL</b>:* '.checkzero($pwhdata->patient_bpl_eligibility);
-		$pwhArray[22]='<b>BPL Ref Number</b>: '.checkzero($pwhdata->bpl_ref_number);
-		$pwhArray[23]='<b>Employed In</b>:* '.checkzero($pwhdata->patient_employment_type);
-		$pwhArray[24]='<b>Employed Organization Name</b>:* '.checkzero($pwhdata->patient_Remboursement_faclity);
+		$pwhArray[22]='<b>BPL Ref Number</b>: '.$pwhdata->bpl_ref_number;
+		$pwhArray[23]='<b>Employed In</b>:* '.$pwhdata->patient_employment_type;
+		$pwhArray[24]='<b>Employed Organization Name</b>:* '. $pwhdata->employment_organization;
 		$pwhArray[25]='<b>Caste: </b> '.checkcaste($pwhdata->patient_caste);
 		
 		//for($i=0;$i<count($pwhArray);$i++){
