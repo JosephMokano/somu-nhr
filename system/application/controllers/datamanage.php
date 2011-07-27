@@ -198,12 +198,13 @@ class datamanage extends Controller {
       $emptydisplay.='<tr><th>Factor Deficiency</th><td>'.$emptycount['patient_factor'].'</td></tr>';
       $emptydisplay.='<tr><th>Factor Assay/Level</th><td>'.$emptycount['patient_level'].'</td></tr>';
       $emptydisplay.='<tr><th>Deformity</th><td>'.$emptycount['patient_Deformity'].'</td></tr>';
+       $emptydisplay.='<tr><th>BPL Eligibility</th><td>'.$emptycount['patient_bpl_eligibility'].'</td></tr>';
       
       $emptydisplay.='<tr><td colspan="2" class="styleblock">Priority</td></tr>';
       $emptydisplay.='<tr><th>Inhibitors</th><td>'.$emptycount['patient_inhibitor_screen'].'</td></tr>';
       $emptydisplay.='<tr><th>HIV</th><td>'.$emptycount['h2'].'</td></tr>';
       $emptydisplay.='<tr><th>HCV</th><td>'.$emptycount['h3'].'</td></tr>';
-      $emptydisplay.='<tr><th>BPL Eligibility</th><td>'.$emptycount['patient_bpl_eligibility'].'</td></tr>';
+     
       $emptydisplay.='<tr><th>BPL Refrence</th><td>'.$emptycount['patient_bpl_eligibility'].'</td></tr>';
       
       $emptydisplay.='<tr><td colspan="2" class="styleblock">Important</td></tr>';
