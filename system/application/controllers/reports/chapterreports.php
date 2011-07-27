@@ -57,7 +57,7 @@ class chapterreports extends Controller {
     $reportsdisplay.='<tr><td width="400"><div id="chart1" style="height:400px;width:450px; "></div>
       <div id="info3"></div>';
     $reportsdisplay.='</td><td width="400"><div id="chart2" style="height:400px;width:450px; "></td></tr>
-    <tr><td><a href="'.$this->config->item('base_url').'reports/chapterreports/reportslist/" ><button>Report List</a></button></td></tr>
+    <tr><td><a href="'.$this->config->item('base_url').'reports/chapterreports/reportslist/" ><button>Report List</button></a></td></tr>
     </table>';  
     $this->load->library("nhrpwhdetails");
     
@@ -160,8 +160,8 @@ class chapterreports extends Controller {
     	<ol>
     			<li><a href="'.$this->config->item('base_url').'reports/chapterreports/factordef" ><button>View Factorwise</button></a></li>
     		<li><a href="'.$this->config->item('base_url').'reports/chapterreports/agewisereport/8" ><button>Factor VIII</button></a></li>
-    		<li><a href="'.$this->config->item('base_url').'reports/chapterreports/agewisereport/9" ><button>Factor IX</a></button></li>
-    		<li><a href="'.$this->config->item('base_url').'reports/chapterreports/agewisereport" ><button>Factor VIII & IX</a></button></li>
+    		<li><a href="'.$this->config->item('base_url').'reports/chapterreports/agewisereport/9" ><button>Factor IX</button></a></li>
+    		<li><a href="'.$this->config->item('base_url').'reports/chapterreports/agewisereport" ><button>Factor VIII & IX</button></a></li>
     	</ol>
     </td></tr></table>';  
     
@@ -496,8 +496,8 @@ class chapterreports extends Controller {
     			<ol>
     			<li><a href="'.$this->config->item('base_url').'reports/chapterreports/factordef" ><button>View Factorwise</button></a></li>
     		<li><a href="'.$this->config->item('base_url').'reports/chapterreports/agewisereport/8" ><button>Factor VIII</button></a></li>
-    		<li><a href="'.$this->config->item('base_url').'reports/chapterreports/agewisereport/9" ><button>Factor IX</a></button></li>
-    		<li><a href="'.$this->config->item('base_url').'reports/chapterreports/agewisereport" ><button>Factor VIII & IX</a></button></li>
+    		<li><a href="'.$this->config->item('base_url').'reports/chapterreports/agewisereport/9" ><button>Factor IX</button></a></li>
+    		<li><a href="'.$this->config->item('base_url').'reports/chapterreports/agewisereport" ><button>Factor VIII & IX</button></a></li>
     	</ol>
     		
     
