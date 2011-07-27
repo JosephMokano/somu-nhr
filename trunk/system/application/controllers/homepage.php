@@ -1772,6 +1772,11 @@ class Homepage extends Controller {
 		
 		$lastupdated=date("Y-m-d H:i:s");
 		
+		
+		
+		
+		
+		
 		if($this->session->userdata('group')==1){
 			$query = $this->db->query("Select * from tbl_chapters where chapter_city='".$chap."'");
 			$result = $query->result_array();
@@ -1897,6 +1902,14 @@ class Homepage extends Controller {
 			$this->db->where('patient_ID',$Pid);
 			$this->db->update('tbl_pat_personal');	
 		}
+		//Audit Trial
+		$this->load->library('nhrpwhdetails');
+		$auditDataArray=array(
+			'pid'=>$Pid,
+			'chap_id'=>$chap,
+			'updateddate'=>json_encode($_POST)
+		);
+		$retValue=$this->nhrpwhdetails->updateAudit($auditDataArray);
 		
 		if($this->session->userdata('group')==1){
 			$this->patient_listdataadmin();
@@ -2609,6 +2622,7 @@ function notauthorised(){
 			$formdisplay.='</a>';
 			$formdisplay.='</td>';
 			$formdisplay.='</tr>';
+			$formdisplay.='<tr><td colspan="3" style="padding:10px;"><a href="'.$this->config->item('base_url').'dataentrytrack/chapterlogindetails">Chapter Update Audit</a></td></tr>';
 			$formdisplay.='</table>';
 			
 			$formdisplay.='<div style="clear:both"></div>';
