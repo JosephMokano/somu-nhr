@@ -105,6 +105,9 @@ function checkzero($dt){
 	if ($dt==0){
 		return '';
 	}else{
+		if ($dt==1){
+			$dt="Yes";
+		}
 		return $dt;
 	}
 }
