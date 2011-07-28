@@ -1786,7 +1786,14 @@ class Homepage extends Controller {
 			//$chap=$_POST['chapid'];
 			$chapterid=$this->session->userdata('chapter');
 		}
-		
+		//Audit Trial
+		$this->load->library('nhrpwhdetails');
+		$auditDataArray=array(
+			'pid'=>$Pid,
+			'chap_id'=>$chap,
+			'updateddate'=>json_encode($_POST)
+		);
+		$retValue=$this->nhrpwhdetails->updateAudit($auditDataArray);
 		if($Pid==0){
 		$tabledata=array(
 			'patient_first_name' => $_POST['txtfname'],
@@ -1902,14 +1909,7 @@ class Homepage extends Controller {
 			$this->db->where('patient_ID',$Pid);
 			$this->db->update('tbl_pat_personal');	
 		}
-		//Audit Trial
-		$this->load->library('nhrpwhdetails');
-		$auditDataArray=array(
-			'pid'=>$Pid,
-			'chap_id'=>$chap,
-			'updateddate'=>json_encode($_POST)
-		);
-		$retValue=$this->nhrpwhdetails->updateAudit($auditDataArray);
+		
 		
 		if($this->session->userdata('group')==1){
 			$this->patient_listdataadmin();
