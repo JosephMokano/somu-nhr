@@ -1,0 +1,25 @@
+@CHARSET "UTF-8";
+fieldset label{
+	width:100%;
+	float:left;
+	text-align:left;
+	
+	background-color:#F3EEEE;
+	padding:6px 0px;
+	font-weight:bold;
+	margin:5px 0px;
+}
+
+.spacer{
+	height:5px;
+}
+.alertbox{
+	background-color:#FFD7D7;
+	border:1px solid #000000;
+		text-align:center;
+		padding:5px 0px;
+		font-size:1.5em;
+}
+#chap_names{
+	width:100%;
+}
