@@ -960,7 +960,7 @@ class Homepage extends Controller {
 		$txtformElement=array(
 				'id'=>'txtemail',
 				'name'=>'txtemail',
-				 'class'=>'email',	
+				 'class'=>'email1',	
 				'value'=>$formdata[0]['commu_email']
 			);
 		$formdisplay.=form_input($txtformElement);
@@ -1688,7 +1688,7 @@ class Homepage extends Controller {
           });
         
      
-       $("#pat_dispform").validate({
+     /*  $("#pat_dispform").validate({
          rules:{
             txtfaclel:{           
             accept: "[<0-9.]" 
@@ -1706,7 +1706,7 @@ class Homepage extends Controller {
        		
     		}
          
-       });
+       });*/
      
       
     });','embed');
@@ -1795,6 +1795,7 @@ class Homepage extends Controller {
 		);
 		$retValue=$this->nhrpwhdetails->updateAudit($auditDataArray);
 		if($Pid==0){
+			
 		$tabledata=array(
 			'patient_first_name' => $_POST['txtfname'],
 			'patient_last_name' => $_POST['txtlname'],
