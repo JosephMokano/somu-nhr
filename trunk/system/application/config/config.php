@@ -16,12 +16,14 @@ $config['images_url']	= $config['base_url']."images/";
 $config['styles_url']	= $config['base_url']."styles/";
 $config['scripts_url']	= $config['base_url']."js/";
 $config['adminMailId'] = 'somu@tatwaa.in';
-$config['abspro_path'] = "/home/tatwa/projects/nhr_national/development/trunk/profilepic";
-$config['abs_path'] = "/home/tatwa/projects/nhr_national/development/trunk/graphimage";
+$config['abspro_path'] = "/home/tatwa/projects/nhrnational/trunk/profilepic";
+$config['abs_path'] = "/home/tatwa/projects/nhrnational/trunk/graphimage";
 $config['project_abs_path']=FCPATH;
 $config['abs_path_server'] = FCPATH."graphimage";
 $config['secction_head']="ui-accordion-header ui-state-default 
       ui-corner-all nhrpaneltitle";
+$config['nhrsmtpuser']='somu.hemophilia@gmail.com';
+$config['nhrsmtppassword']='Hanuman40';
 /*
 |--------------------------------------------------------------------------
 | Index File

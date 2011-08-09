@@ -35,8 +35,8 @@
 */
 if (APPMODE=='development'){
 	$active_group = "db_development";
-}else if(APPMODE=='production'){
-	$active_group = "db_production";
+}else if(APPMODE=='testing'){
+	$active_group = "db_testing";
 }
 //To make Zend like Dyanimc
 
@@ -46,7 +46,7 @@ $active_record = TRUE;
 $db['db_development']['hostname'] = "localhost";
 $db['db_development']['username'] = "root";
 $db['db_development']['password'] = "root12";
-$db['db_development']['database'] = "nhrdevelopment";
+$db['db_development']['database'] = "pwhdatabase";
 $db['db_development']['dbdriver'] = "mysql";
 $db['db_development']['dbprefix'] = "";
 $db['db_development']['pconnect'] = TRUE;
@@ -57,17 +57,17 @@ $db['db_development']['char_set'] = "utf8";
 $db['db_development']['dbcollat'] = "utf8_general_ci";
 
 
-$db['db_production']['hostname'] = "localhost";
-$db['db_production']['username'] = "hemophil_SPDnhr";
-$db['db_production']['password'] = "NHR1234sdp";
-$db['db_production']['database'] = "hemophil_nhrRegistry";
-$db['db_production']['dbdriver'] = "mysql";
-$db['db_production']['dbprefix'] = "";
-$db['db_production']['pconnect'] = TRUE;
-$db['db_production']['db_debug'] = TRUE;
-$db['db_production']['cache_on'] = FALSE;
-$db['db_production']['cachedir'] = "";
-$db['db_production']['char_set'] = "utf8";
-$db['db_production']['dbcollat'] = "utf8_general_ci";
+$db['db_testing']['hostname'] = "localhost";
+$db['db_testing']['username'] = "root";
+$db['db_testing']['password'] = "root12";
+$db['db_testing']['database'] = "pwhdatabase";
+$db['db_testing']['dbdriver'] = "mysql";
+$db['db_testing']['dbprefix'] = "";
+$db['db_testing']['pconnect'] = TRUE;
+$db['db_testing']['db_debug'] = TRUE;
+$db['db_testing']['cache_on'] = FALSE;
+$db['db_testing']['cachedir'] = "";
+$db['db_testing']['char_set'] = "utf8";
+$db['db_testing']['dbcollat'] = "utf8_general_ci";
 /* End of file database.php */
 /* Location: ./system/application/config/database.php */
