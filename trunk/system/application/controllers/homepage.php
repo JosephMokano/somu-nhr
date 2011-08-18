@@ -723,7 +723,7 @@ class Homepage extends Controller {
 		$dobdisp='';
 		if (isset($formdata[0]['patient_dob'])&&(!empty($formdata[0]['patient_dob']))){
 			$dobdisp=explode('-',$formdata[0]['patient_dob']);
-			$dobdisp=$dobdisp[1].'/'.$dobdisp[2].'/'.$dobdisp[0];
+			$dobdisp=$dobdisp[2].'/'.$dobdisp[1].'/'.$dobdisp[0];
 			//echo $dobdisp;
 		}
 		$formdisplay.='<div class="boxarea">';
@@ -1686,7 +1686,8 @@ class Homepage extends Controller {
         $( "#txtdob" ).datepicker({
                changeMonth: true,
                changeYear: true,
-                yearRange: "1950:2011" 
+                yearRange: "1950:2011" ,
+                dateFormat:"dd/mm/yy"
           });
         
      
@@ -1753,7 +1754,7 @@ class Homepage extends Controller {
 			return $davalue;
 		}else{
 			$dobdate=explode('/',$datval);
-			$davalue=$dobdate[2].'-'.$dobdate[0].'-'.$dobdate[1];
+			$davalue=$dobdate[2].'-'.$dobdate[1].'-'.$dobdate[0];
 			return $davalue;
 		}
 	}
