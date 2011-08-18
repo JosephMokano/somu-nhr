@@ -799,7 +799,9 @@ class Homepage extends Controller {
 				'1'=>'SC',
 				'2'=>'ST',	
 				'3'=>'OBC',
-				'4'=>'GL'
+				'4'=>'GL',
+				'5'=>'FC',
+				'6'=>'BC',
 				
 			);
 		$formdisplay.=form_dropdown('txtcaste',$txtformElement,$formdata[0]['patient_caste']);
