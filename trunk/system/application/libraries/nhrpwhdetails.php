@@ -141,7 +141,7 @@ class nhrpwhdetails{
 
       //check for level
       $qrylevel="select count(patient_ID) as fcount from tbl_pat_personal 
-      		where chap_id=".$this->chapterid." and (patient_inhibitor_screen='0' or (patient_inhibitor_screen is null)) ";
+      		where chap_id=".$this->chapterid." and (patient_factor_level='' ) ";
        $this->arrobjpwh['patient_level']=$this->getcoutresult($qrylevel);
 
       //check Deformity
