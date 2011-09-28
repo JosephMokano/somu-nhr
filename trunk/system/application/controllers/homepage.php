@@ -102,6 +102,7 @@ class Homepage extends Controller {
 		$this->load->view('login',$data);
 	}
 	function loginaccess($checkLog=''){
+	  $displayform='';
 		$this->load->library('login');
 		
 		if ($checkLog=='') {
@@ -127,6 +128,7 @@ class Homepage extends Controller {
 			'content' => '<div align="center" style="padding:10px 0px"><b>Incorrect Username and Password</b> <a href="'.$this->config->item("base_url").'">Back</a></div>'
 	        	);
 			$this->load->view('login',$data);
+      $displayform.='hi';
 		}
 	}
 	function need_assistance(){
@@ -2508,6 +2510,7 @@ function notauthorised(){
 			
 			
 			$formdisplay.='</td>';
+			//$formdisplay.='hi';
 			$formdisplay.='<td>';
 			
 			$formdisplay.='<a href="'.$this->config->item('base_url').'homepage/loginaccess/logout>"';
@@ -2515,7 +2518,8 @@ function notauthorised(){
 			$formdisplay.='</a>';
 			$formdisplay.='</td>';
 			$formdisplay.='</tr>';
-		
+		  $formdisplay.='<tr>';
+      $formdisplay.='</tr>';
 			$formdisplay.='</table>';
 		  
        $this->load->library("nhrpwhdetails");
@@ -2526,6 +2530,7 @@ function notauthorised(){
 			
        $formdisplay.='<table width="100%" cellpadding="0" celspacing="0" border="0" >';
        $formdisplay.='<tr><td width="50%">';
+       
       $formdisplay.='<table width="100%" cellpadding="0" celspacing="0" border="0" class="factDet">';
       $formdisplay.='<tr><td class="'.$this->config->item("secction_head").'" colspan="5">PwH Factorwise Count</td></tr>';
        $formdisplay.='<tr>';
@@ -2552,10 +2557,14 @@ function notauthorised(){
          $formdisplay.='<tr><th>Father Name</th><td>'.$emptycount['patient_fathername'].'</td></tr>';
           $formdisplay.='<tr><th>Address</th><td>'.$emptycount['patient_address'].'</td></tr>';
           $formdisplay.='<tr><th>Phone number</th><td>'.$emptycount['patient_phone'].'</td></tr>';
+      
       $formdisplay.='</table>';
+       $formdisplay.='<a href="'.$this->config->item('base_url').'company/company_view">Company</a>&nbsp;&nbsp;&nbsp;';
+        $formdisplay.='<a href="'.$this->config->item('base_url').'medicine/medicine_view">Medicine Form</a>';
         $formdisplay.='</td><td width="50%" style="padding-left:10px;">';
 			$formdisplay.='<table width="100%" cellpadding="0" celspacing="0" border="0" class="factDet">';
       $formdisplay.='<tr><td>
+     
       <div class="ui-accordion-header ui-state-default 
       ui-corner-all nhrpaneltitle" colspan="5">From NHR Team</div>
       
@@ -2575,6 +2584,7 @@ function notauthorised(){
       $formdisplay.='</table>';
        $formdisplay.='</tr></table>';
 			$formdisplay.='</div>';
+        
 		
 			$formdisplay.='<div style="clear:both"></div>';
 		
@@ -2889,7 +2899,7 @@ function notauthorised(){
 			$txtformElement=array(
 				'id'=>'subject',
 				'name'=>'subject',
-				'size'=>'37',
+				'size'=>'33',
 				'value'=>'',
 				'alt'=>'Title' );
 		$formdata.=form_input($txtformElement);
