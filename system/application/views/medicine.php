@@ -52,8 +52,20 @@
         </div>
       </div>
       </div>
+      <script>
+      function validateForm()
+{
+var x=document.forms["medicine"]["medicineName"].value;
+if (x==null || x=="")
+  {
+  alert("Medicine name must be filled out");
+  document.forms["medicine"]["medicineName"].focus();
+  return false;
+  }
+}
+      </script>
     <!-- Content Page -->
-    <form name="medicine" id="medicine" action="/medicine/add_medicine" method="post">
+    <form name="medicine" id="medicine" action="/medicine/add_medicine" onsubmit="return validateForm()" method="post">
 <table cellspacing="2" cellpadding="5" align="center"  align='center'>
 <tr>
 <td>Medicine Name:</td><td><input type="text"  name="medicineName" id="medicineName" value="" size="18%" class="required"/></td>
@@ -62,32 +74,22 @@
 <td>Company Name:</td><td><select name="companyName" >
 <option>Select company</option>
 <?php foreach($feed as $row)  { ?>
-   <option><?php echo $row->comp_name ?></option>
+   <option value="<?php echo $row['comp_id']; ?>"><?php echo $row['comp_name']; ?></option>
 <?php  } ?>
 </select>
 </td>
 </tr>
 <tr>
-<td>Medicine Type:</td><td><select name="type">
-<option value="0">Choose one</option>
-<option value="FActor 1">FActor 1</option>
-<option value="FActor 2">FActor 2</option>
-<option value="FActor 3">FActor 3</option>
-<option value="FActor 4">FActor 4</option>
-<option value="FActor 5">FActor 5</option>
-<option value="Factor 6">FActor 6</option>
-<option value="FActor 7">FActor 7</option>
-<option value="FActor 8">FActor 8</option>
-<option value="FActor 9">FActor 9</option>
-<option value="FActor 10">FActor 10</option>
-<option value="FActor 11">FActor 11</option>
-<option value="FActor 12">FActor 12</option>
-<option value="FActor 13">FActor 13</option>
+<td>Factor Type:</td><td><select name="type">
+<option>Choose one</option>
+<?php foreach($feed1 as $row)  { ?>
+   <option value="<?php echo $row['fact_id']; ?>"><?php echo $row['factor_type']; ?></option>
+<?php  } ?>
 </select>
 </td>
 </tr>
 <tr>
-<td>Notes:</td><td><textarea rows="3" cols="23" name="notes"></textarea></td>
+<td>Notes:</td><td><TEXTAREA input type="text" name="notes" ROWS=2 COLS=23 </TEXTAREA><!--<input type="text" style="width:175px; height:40px;" name="notes" size="18%"/>--></td>
 </tr>
 <tr>
 <td>Others:</td><td><input type="text"  name="others" id="others" value="" size="18%" class="required"/></td>
@@ -95,7 +97,7 @@
 <td></td><td><input type="submit"  name="submit"  value="submit" /></td>
 </tr>
 </table>
-</form><br /><br /><br /><br /><br /><br /><br /><br />
+</form>
             <!-- Footer Block -->
 
        <div id="footer">

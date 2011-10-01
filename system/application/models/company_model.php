@@ -37,9 +37,16 @@
       }
       
       function comp_name(){
-      $qry="select comp_name from tbl_pharmacompany";
+      $qry="select comp_id,comp_name from tbl_pharmacompany";
       $res=$this->db->query($qry);
-      return $res->result(); 
+      return $res->result_array(); 
+      }
+      
+      function factor(){
+      //$data['feed1']=$feed1;
+      $qry="select * from factors order by fact_id";
+      $res=$this->db->query($qry);
+      return $res->result_array();  
       }
       
       function list_medicine(){

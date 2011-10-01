@@ -52,8 +52,20 @@
         </div>
       </div>
       </div>
+      <script>
+      function validateForm()
+{
+var x=document.forms["company"]["companyName"].value;
+if (x==null || x=="")
+  {
+  alert("Company name must be filled out");
+  document.forms["company"]["companyName"].focus();
+  return false;
+  }
+}
+      </script>
     <!-- Content Page -->
-    <form name="company" id="company" action="/company/add_company" method="post">
+    <form name="company" id="company" action="/company/add_company" onsubmit="return validateForm()" method="post">
 <table cellspacing="2" cellpadding="5" align="center" style='font-size:1.0em' align='center'>
 <tr>
 <td>Compamy name:</td><td><input type="text" name="companyName" id="companyName"/></td>
