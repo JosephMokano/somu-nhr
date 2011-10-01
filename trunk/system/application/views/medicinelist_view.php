@@ -1,49 +1,3 @@
-<!--<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-loose.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<html> 
-<head>
-<link rel="stylesheet" type="text/css" href="/css/print_card.css"/>
-</head>
-</head>
-<body>
-<a href="/medicine/medicine_view">back</a>
-<?php 
-echo "<table cellspacing='3', cellpadding='3', border='0', align='center'>";
-echo "<tr>
-    <th>SlNo</th>
-    <th>Medicine Name</th>  
-    <th>Company Name</th>
-    <th>Medicine Type</th>
-    <th>Notes</th>
-    <th>Others</th>
-    </tr>";
-    $i=1;
-    foreach($feed as $row) {  
-    echo "<tr style=text-align:center>";
-    echo "<td>".$i."</td>";
-    echo "<td>".$row['medicine_name']."</td>";
-    echo "<td>".$row['comp_name']."</td>";
-    echo "<td>".$row['medicine_type']."</td>";
-    echo "<td>".$row['Notes']."</td>";
-    echo "<td>".$row['others']."</td>";
-    //echo "<td><a href='/branch/branch_list/".$row['company_id']."'><img src='../images/branch.gif' title='Branch'></a><a href='/user/user_add/".$row['company_id']."'><img src='../images/images.jpeg' title='Add user'></a></td>";
-    echo "<td><a href='/medicine/edit_medicine/".$row['medical_id']."'>Edit </a></td>";
-    //echo "<td><a href='/dashboard/mail/".$row['company_id']."'>Send mail </a></td>";
-    echo "</tr>";
-    $i++;
-  }
-  
-  echo "</table>";
-
-?>
-</body>
-</html>-->
-
-
-
-
-
-
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -101,12 +55,29 @@ echo "<tr>
     <!-- Content Page -->
    <a href="/medicine/medicine_view">back</a>
 <?php 
+require_once ('../Pager/Pager.php');
+mysql_select_db("$db_name")or die("cannot select DB");
+$result=mysql_query("SELECT COUNT(*) AS total FROM  tbl_pharmacompany");
+$row = mysql_fetch_array($result);
+$totalItems = $row['total'];
+$pager_options = array(
+'mode'       => 'Sliding',   // Sliding or Jumping mode. See below.
+'perPage'    => 6,   // Total rows to show per page
+'delta'      => 4,   // See below
+'totalItems' => $totalItems,
+);
+$pager = Pager::factory($pager_options);
+echo $pager->links;
+list($from, $to) = $pager->getOffsetByPageId();
+$from = $from - 1;
+$perPage = $pager_options['perPage'];
+//$result = mysql_query("SELECT * FROM  tbl_company_details  LIMIT $from , $perPage");
 echo "<table cellspacing='3', cellpadding='3', border='0', align='center'>";
 echo "<tr>
     <th>SlNo</th>
     <th>Medicine Name</th>  
-    <th>Company Name</th>
-    <th>Medicine Type</th>
+    <th>Company ID</th>
+    <th>Factor Type</th>
     <th>Notes</th>
     <th>Others</th>
     </tr>";
@@ -115,8 +86,8 @@ echo "<tr>
     echo "<tr style=text-align:center>";
     echo "<td>".$i."</td>";
     echo "<td>".$row['medicine_name']."</td>";
-    echo "<td>".$row['comp_name']."</td>";
-    echo "<td>".$row['medicine_type']."</td>";
+    echo "<td>".$row['comp_id']."</td>";
+    echo "<td>".$row['factor_type']."</td>";
     echo "<td>".$row['Notes']."</td>";
     echo "<td>".$row['others']."</td>";
     //echo "<td><a href='/branch/branch_list/".$row['company_id']."'><img src='../images/branch.gif' title='Branch'></a><a href='/user/user_add/".$row['company_id']."'><img src='../images/images.jpeg' title='Add user'></a></td>";
@@ -126,7 +97,7 @@ echo "<tr>
     $i++;
   }
   echo "</table>";
-?><br /><br /><br /><br />
+?>
             <!-- Footer Block -->
 
        <div id="footer">

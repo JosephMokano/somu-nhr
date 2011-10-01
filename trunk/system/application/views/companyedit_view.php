@@ -68,7 +68,7 @@
 <td></td><td><input type="submit"  name="submit"  value="submit" /></td>
 </tr>
 </table>
-</form><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+</form>
             <!-- Footer Block -->
 
        <div id="footer">

@@ -1131,7 +1131,7 @@ class Homepage extends Controller {
     $formdisplay.='<div class="clearfield"></div>';
     $formdisplay.='<div class="infoMessage">
    
-    <b>Note: </b> If PWH has remboursement faclity, please fill below details</div>';
+    <b>Note: </b> If PWH has remboursement facility, please fill below details</div>';
     $formdisplay.='<div class="label">';
     $formdisplay.=form_label('Empl. Org. Name: ','lblEmployedOrgName');
     $formdisplay.='</div>';
