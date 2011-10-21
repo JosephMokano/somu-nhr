@@ -1,6 +1,6 @@
 <?php
 class profile_model extends Model{
-	var profilepic_path;
+	//var profilepic_path;
 	function profile_model(){
 	parent::Model();
 		$this->profilepic_path = realpath(APPPATH. '../prfilepic');
