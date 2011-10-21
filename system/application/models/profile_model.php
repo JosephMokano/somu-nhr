@@ -8,7 +8,7 @@ class profile_model extends Model{
 	function pro_upload(){
 		$config = array(
 			'allowed_types'=>'gif|jpg|png',
-			'upload_path'=> $this->profilepic_path;
+			'upload_path'=> $this->profilepic_path
 		);
 		$this->load->libaray('upload',$config);
 	}
