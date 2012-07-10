@@ -603,6 +603,7 @@ class Homepage extends Controller {
 		$tabsHead .='<li><a href="#tabs-7">Other Medical</a></li>';
 		$tabsHead .='<li><a href="#tabs-5">Family Details</a></li>';
 		$tabsHead .='<li><a href="#tabs-6">Membership</a></li>';
+   
 		$tabsHead .='</ul>';
 		
 		if(($this->session->userdata('group')==2)||($this->session->userdata('group')==10)){
@@ -662,12 +663,12 @@ class Homepage extends Controller {
 		//$formdisplay.=$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 		$formdisplay.='<div id="tabs">';
 		$formdisplay.=$tabsHead;
-		
+		$compulsorystyle=array('class'=>'compulsorystyle');
 		//open first tab tabs-1
 		$formdisplay.='<div id="tabs-1">';
 		
 		$formdisplay.='<div class="label">';
-		$formdisplay.=form_label('First Name: ','lblfname');
+		$formdisplay.=form_label('First Name: ','lblfname',$compulsorystyle);
 		$formdisplay.='</div>';
 		
 		$formdisplay.='<div class="boxarea">';
@@ -704,7 +705,7 @@ class Homepage extends Controller {
 		$formdisplay.='<div class="clearfield"></div>';
 		
 		$formdisplay.='<div class="label">';
-		$formdisplay.=form_label('Guardian/Father Name: ','lblfatname');
+		$formdisplay.=form_label('Guardian/Father Name: ','lblfatname',$compulsorystyle);
 		$formdisplay.='</div>';
 		
 		$formdisplay.='<div class="boxarea">';
@@ -734,7 +735,7 @@ class Homepage extends Controller {
     
     $formdisplay.='<div class="clearfield"></div>';
 		$formdisplay.='<div class="label">';
-		$formdisplay.=form_label('Date of Birth: ','lbldob');
+		$formdisplay.=form_label('Date of Birth: ','lbldob',$compulsorystyle);
 		$formdisplay.='</div>';
 		$dobdisp='';
 		if (isset($formdata[0]['patient_dob'])&&(!empty($formdata[0]['patient_dob']))){
@@ -755,7 +756,7 @@ class Homepage extends Controller {
 		$formdisplay.='<div class="clearfield"></div>';
 		
 		$formdisplay.='<div class="label">';
-		$formdisplay.=form_label('Gender : ','lblFBB');
+		$formdisplay.=form_label('Gender : ','lblFBB',$compulsorystyle);
 		$formdisplay.='</div>';
 		
 		$formdisplay.='<div class="boxarea">';
@@ -1061,7 +1062,7 @@ class Homepage extends Controller {
 		$formdisplay.='<div id="tabs-3">';
 		
 		$formdisplay.='<div class="label">';
-		$formdisplay.=form_label('Employed/Not Employed: ','lblemp');
+		$formdisplay.=form_label('Employed/Not Employed: ','lblemp',$compulsorystyle);
 		$formdisplay.='</div>';
 		
 		$formdisplay.='<div class="boxarea">';
@@ -1242,7 +1243,7 @@ class Homepage extends Controller {
 		$formdisplay.='<div class="clearfield"></div>';
 		
 		$formdisplay.='<div class="label">';
-		$formdisplay.=form_label('Blood Group with RH Factor: ','lblblodgrp');
+		$formdisplay.=form_label('Blood Group with RH Factor: ','lblblodgrp',$compulsorystyle);
 		$formdisplay.='</div>';
 		
 		$formdisplay.='<div class="boxarea">';
@@ -1263,7 +1264,7 @@ class Homepage extends Controller {
 		$formdisplay.='<div class="clearfield"></div>';
 		
 		$formdisplay.='<div class="label">';
-		$formdisplay.=form_label('Factor Deficiency : ','lblfctdef');
+		$formdisplay.=form_label('Factor Deficiency : ','lblfctdef',$compulsorystyle);
 		$formdisplay.='</div>';
 		
 		$formdisplay.='<div class="boxarea">';
@@ -1314,7 +1315,7 @@ class Homepage extends Controller {
 		$formdisplay.='<div class="clearfield"></div>';
 		
 		$formdisplay.='<div class="label">';
-		$formdisplay.=form_label('Factor Level: ','lblfctlel');
+		$formdisplay.=form_label('Factor Level: ','lblfctlel',$compulsorystyle);
 		$formdisplay.='</div>';
 		
 		$formdisplay.='<div class="boxarea">';
@@ -1374,7 +1375,7 @@ class Homepage extends Controller {
 		$formdisplay.='<div id="tabs-7">';
 		
 		$formdisplay.='<div class="label">';
-		$formdisplay.=form_label('Inhibitors :','lblinhi');
+		$formdisplay.=form_label('Inhibitors :','lblinhi',$compulsorystyle);
 		$formdisplay.='</div>';
 		
 		$formdisplay.='<div class=""boxarea>';
@@ -1546,7 +1547,7 @@ class Homepage extends Controller {
 		$formdisplay.='<div class="clearfield"></div>';
 		
 		$formdisplay.='<div class="label">';
-		$formdisplay.=form_label('BPL Eligibility : ','lblbplelig');
+		$formdisplay.=form_label('BPL Eligibility : ','lblbplelig',$compulsorystyle);
 		$formdisplay.='</div>';
 		
 		$formdisplay.='<div class="boxarea">';
@@ -1733,7 +1734,12 @@ class Homepage extends Controller {
       width: auto;
         
         color:#ff0000;
-      }', 'embed', 'all');
+      }
+      
+      .compulsorystyle{
+        color:#FE6602;
+      }
+      ', 'embed', 'all');
 			$this->template->render();
 		}else if($this->session->userdata('group')==1){
 			$headerdata = array(
