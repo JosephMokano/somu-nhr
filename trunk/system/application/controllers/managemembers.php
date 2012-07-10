@@ -21,10 +21,10 @@ class managemembers extends Controller {
     $formAttr=array('name'=>'members_form','id'=>'members_form');
     $displayVar='';
     $displayVar.='<div style="width:500px;margin:0px auto">';
-    $displayVar.='
+    $displayVar.='<div class="error"></div>
     <div class="ui-state-highlight ui-corner-all infoMessage" style="margin:10px 0px;">
       <p>
-        <div class="ui-icon ui-icon-info nhrIcon" /></div>Before adding data, program will scan through for existing data from your chapter 
+        <div class="ui-icon ui-icon-info nhrIcon" /></div>Before adding PWH data, Software will scan through for matching PWH data from your chapter 
         to avoid duplication entry. 
       </p>
     </div>
@@ -38,7 +38,7 @@ class managemembers extends Controller {
     $txtformElement=array(
         'id'=>'txtfname',
         'name'=>'txtfname',
-        'class'=>'',  
+        'class'=>'required',  
         'value'=>'',
       );
     $displayVar.=form_input($txtformElement);
@@ -67,7 +67,7 @@ class managemembers extends Controller {
     $displayVar.='</div>';
     
     $displayVar.='<div class="boxarea">';
-    $Mulattr='id="txtfctdef" class=""';
+    $Mulattr=' id="txtfctdef" class="factorvalidate" size="14" style="width:230px"';
     $txtformElement=array(
         '0'=>'',
         '1'=>'1 (Factor - I)',
@@ -82,16 +82,39 @@ class managemembers extends Controller {
         '10'=>'10 (Factor - X)',
         '11'=>'11 (Factor - XI)',
         '12'=>'12 (Factor - XII)',
-        '13'=>'13 (Factor - XIII)'
+        '13'=>'13 (Factor - XIII)',
+        
       );
       
       $fDefaultValue=0;
       
-    $displayVar.=form_multiselect('txtfctdef[]',$txtformElement,$fDefaultValue);
+    $displayVar.=form_multiselect('txtfctdef[]',$txtformElement,$fDefaultValue,$Mulattr );
     $displayVar.='</div>';
     
     $displayVar.='<div class="clearfield"></div>';
+    $displayVar.='<div class="label">';
+    $displayVar.=form_label('Other Deficiency : ','lblOtherdef');
+    $displayVar.='</div>';
     
+    $displayVar.='<div class="boxarea">';
+    $Mulattr=' id="txtOtherdef" class="factorvalidate" size="6" style="width:230px"';
+    $txtformElement=array(
+        '0'=>'',
+        '1'=>'Von Willebrand',
+        '2'=>'Glanzmann',
+        '3'=>'Fibrinogenemia', 
+        '4'=>'Hypofibrinogenemia',
+        '5'=>'Functional Platelet Disorder',
+        
+        
+      );
+      
+      $fDefaultValue=0;
+      
+    $displayVar.=form_multiselect('txtOtherdef[]',$txtformElement,$fDefaultValue,$Mulattr );
+    $displayVar.='</div>';
+    
+    $displayVar.='<div class="clearfield"></div>';
     $displayVar.='<div style="border:0px solid #000;text-align:center">';
     $attri=array(
       'name'=>'patsubmit',
@@ -103,6 +126,41 @@ class managemembers extends Controller {
     $displayVar.='</div>';
     $data = array('formdisplay'=>$displayVar,'cur_class'=>$this->router->class,'cur_method'=>$this->router->method);
     $this->template->add_css('styles/form.css');
+      $this->template->add_js('js/jquery.validate.js','import');
+    $this->template->add_js('$(document).ready(function() {
+      
+        
+        
+        jQuery.validator.addMethod("accept", function(value, element, param) {
+            return value.match(new RegExp(param ));
+        });
+        jQuery.validator.addMethod("factorvalidate",function(value) {
+          
+            var1=parseInt($("#txtfctdef").val());
+            var2=parseInt($("#txtOtherdef").val());
+            dbvalue = parseInt(value);
+            if ((var1==0)&&(var2==0)){
+              return false;
+            }else{
+              return true;
+            }
+          
+      }, "Select Factor deficiency");
+        
+         $("#members_form").validate();
+        
+     
+       
+         
+        
+     
+      
+    });','embed');
+    $this->template->add_css('#members_form .error {
+      width: auto;
+        
+        color:#ff0000;
+      }', 'embed', 'all');
     $this->template->write('pageheader', 'Add PWH Data ');
     $this->template->write_view('content','members/list_member',$data,True);
     $this->template->render();
