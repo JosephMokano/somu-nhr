@@ -1,7 +1,7 @@
 <?php
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-function test_method($var==0)
+function test_method($var=0)
 {
 	$valarry = array(
 		'0' => '--',
