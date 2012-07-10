@@ -718,7 +718,21 @@ class Homepage extends Controller {
 		$formdisplay.='</div>';
 		
 		$formdisplay.='<div class="clearfield"></div>';
-		
+		$formdisplay.='<div class="label">';
+    $formdisplay.=form_label('Mothers Name: ','lblfatname');
+    $formdisplay.='</div>';
+    
+    $formdisplay.='<div class="boxarea">';
+    $txtformElement=array(
+        'id'=>'txtmothersname',
+        'name'=>'txtmothersname',
+        'class'=>'',  
+        'value'=>$formdata[0]['patient_mother_name'],
+      );
+    $formdisplay.=form_input($txtformElement);
+    $formdisplay.='</div>';
+    
+    $formdisplay.='<div class="clearfield"></div>';
 		$formdisplay.='<div class="label">';
 		$formdisplay.=form_label('Date of Birth: ','lbldob');
 		$formdisplay.='</div>';
@@ -1693,10 +1707,10 @@ class Homepage extends Controller {
           });
         
      
-     /*  $("#pat_dispform").validate({
+        $("#pat_dispform").validate({
          rules:{
             txtfaclel:{           
-            accept: "[<0-9.]" 
+            accept: "[<0-9.]+" 
 			}            
          },
          messages: {
@@ -1711,7 +1725,7 @@ class Homepage extends Controller {
        		
     		}
          
-       });*/
+       }); 
      
       
     });','embed');
@@ -1809,6 +1823,7 @@ class Homepage extends Controller {
 			'patient_religion' => $_POST['txtreligion'],
 			'patient_caste' => $_POST['txtcaste'],
 			'patient_father_name' => $_POST['txtfatname'],
+			'patient_mother_name'=> $_POST['txtmothersname'],
 			'comm_flat' => $_POST['txtflat'],
 			'comm_building' => $_POST['txtbuild'],
 			'commu_road' => $_POST['txtlane'],
@@ -1871,6 +1886,8 @@ class Homepage extends Controller {
 					$this->db->set('patient_caste', $_POST['txtcaste']);
 		
 			$this->db->set('patient_father_name', $_POST['txtfatname']);
+          $this->db->set('patient_mother_name', $_POST['txtmothersname']);
+       
 			$this->db->set('comm_flat', $_POST['txtflat']);
 			$this->db->set('comm_building',$_POST['txtbuild']);
 			$this->db->set('commu_road' , $_POST['txtlane']);
@@ -2499,7 +2516,16 @@ function notauthorised(){
 			$formdisplay.='<a href="'.$this->config->item('base_url').'search/datasearch"><img src="/images/pwh_search.jpg"/></a>';
 			$formdisplay.='</td>';
 			$formdisplay.='</tr>';
-
+      
+      $formdisplay.='<tr>';
+      $formdisplay.='<td><a href="/south_monthly_report/listreports">';
+      $formdisplay.='<img src="/images/chapter_reports.png"  />';
+      $formdisplay.='</a></td>';
+      $formdisplay.='<td><a href="/chapter_activity/listactivity">';
+      $formdisplay.='<img src="/images/chapter_activity.png"  />';
+      $formdisplay.='</a></td>';
+      $formdisplay.='</tr>';
+      
 			$formdisplay.='<tr>';
 			$formdisplay.='<td>';
 			$chapater_id=$this->session->userdata("chapter");
