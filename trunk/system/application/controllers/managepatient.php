@@ -400,14 +400,19 @@ class managepatient extends Controller {
     $pwh_result = $pwh_query->result_array();
     $pwh_result=$pwh_result[0];
     $pwh_details='';
-    $pwh_details='<div class="ui-accordion-header ui-state-default ui-corner-all nhrpaneltitle" style="margin:5px 0px">PWH Details</div>';
+    $pwh_details='<div class="ui-accordion-header ui-state-default ui-corner-all nhrpaneltitle"
+     style="margin:5px 0px">PWH Details</div>';
     $pwh_details.='<table width="100%" class="pwhdetails" border="0">';
 
     $pwh_details.='<tr>';
     $pwh_details.='<th>Name:</th>';
     $pwh_details.='<td>'.$pwh_result['patient_first_name'].' '.$pwh_result['patient_last_name'].'</td>';
-    $pwh_details.='<td rowspan="5" class="pwhimage" style="border-bottom:1px solid #CCCCCC"><img src="'.$this->config->item('base_url').'images/miss_image.gif"/>
-     <button style="width:100%" >Uload Photo</button>
+    
+    //Profile Photo Check and Place
+    $this->load->library('pwh_info');
+    $imginfo=$this->pwh_info->getProfilePicture($id);
+    $pwh_details.='<td rowspan="5" class="pwhimage" style="border-bottom:1px solid #CCCCCC">'.$imginfo.'
+    <a href="'.$this->config->item('base_url').'mediaupload/view_uploadform/'.$id.'/1"> <button style="width:100%" >Uload Photo</button></a>
     </td>';
     $pwh_details.='</tr>';
 
