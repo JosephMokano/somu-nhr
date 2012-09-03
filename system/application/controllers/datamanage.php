@@ -19,7 +19,7 @@ class datamanage extends Controller {
       parent::Controller();
       $this->load->database();
       $this->load->library("session");
-  	$this->session->set_userdata("chapter",0);
+  	
   }
   function index(){
     echo "Index Function";  
@@ -156,6 +156,38 @@ class datamanage extends Controller {
 		return $chapterelement;
 	}
 	
+  }
+  function getstates($para=0){
+    $queryobject=$this->db->query('select * from tbl_states order by stateName');
+    $retValue='';
+    $retValue.='<select name="state">';
+    $retValue.='<option value="0">--Select--</option>';
+    foreach($queryobject->result() as $row){
+      $selected='';  
+      if  ($para==$row->State_ID){
+        $selected='selected';
+      }
+      $retValue.='<option value="'.$row->State_ID.'" '.$selected.'>'.$row->stateName.'</option>';
+    }
+    $retValue.='</select>';
+    return  $retValue;
+  }
+  function getstatescount($para=0){
+    $queryobject=$this->db->query('select * from tbl_states order by stateName');
+    $retValue='';
+      
+    foreach($queryobject->result() as $row){
+      $queryStateCount=$this->db->query('
+        select b.chapter_name,count(*) as countx from tbl_pat_personal 
+        a join tbl_chapters b on a.chap_id=b.chapter_id 
+        where b.chapter_state='.$row->State_ID.'
+        
+      ');
+      $dataRow=$queryStateCount->row();
+      echo $row->stateName.','.$dataRow->countx.'<br/>';
+    }
+     
+    return  $retValue;
   }
   function chapterdetails(){
   	$chapter_id=$_POST['chapter_id'];
@@ -543,7 +575,12 @@ function chpaterseethroughnot(){
 		return $retValue;		
   
   }
-  function editchapterdetails($chapterid){
+  function editchapterdetails($chapterid=0){
+    $entryMode=0;
+    if ($chapterid==0){
+      $entryMode=1;
+      $chapterid=$this->session->userdata("chapter");
+    }
   	$chapterDetails=$this->db->query('select * from tbl_chapters where chapter_ID='.$chapterid);
   	$chapterRow=$chapterDetails->row();
   	$displaylist='<form method="post" action="'.$this->config->item('base_url').'datamanage/savechapterdetails">
@@ -551,12 +588,17 @@ function chpaterseethroughnot(){
   		<tr><th width="30%">Chapter Name: </th><td>'.$chapterRow->chapter_name.'</td></tr>
   		<tr><th width="30%">Chapter Address: </th><td><input type="text" name="chapter_address1" class="max" value="'.$chapterRow->chapter_address1.'"/></td></tr>
   		<tr><th width="30%"> </th><td><input type="text" name="chapter_address2" class="max" value="'.$chapterRow->chapter_address2.'"/></td></tr>
+            <tr><th width="30%">Chapter City: </th><td><input type="text" name="chapter_citytext" class="max" value="'.$chapterRow->chapter_citytext.'"/></td></tr>
+            <tr><th width="30%">Pincode: </th><td><input type="text" name="chapter_pin" class="max" value="'.$chapterRow->chapter_pin.'"/></td></tr>
   		<tr><th width="30%">Phone Number: </th><td><input type="text" name="chapter_phone" class="max" value="'.$chapterRow->chapter_phone.'"/></td></tr>
   		<tr><th width="30%">Cell Number: </th><td><input type="text" name="chapter_cell" class="max" value="'.$chapterRow->chapter_cell.'"/></td></tr>
   		<tr><th width="30%">Key Person: </th><td><input type="text" name="chapter_keyperson" class="max" value="'.$chapterRow->chapter_keyperson.'"/></td></tr>
   		<tr><th width="30%">Fax: </th><td><input type="text" name="chapter_fax" class="max" value="'.$chapterRow->chapter_fax.'"/></td></tr>
   		<tr><th width="30%">Email: </th><td><input type="text" name="chapter_email" class="max" value="'.$chapterRow->chapter_email.'"/></td></tr>
+  		<tr><th widht="30%">State: </th><td>'.$this->getstates($chapterRow->chapter_state).'</td>
+  		<input type="hidden" name="entryMode" value="'.$entryMode.'" />
   		<tr><th width="30%"> </th><td><input type="submit"   value="Submit"/></td></tr>
+  		
   		<input type="hidden" name="chapter_ID" value="'.$chapterid.'" />
   	</table></form>';
   	
@@ -587,17 +629,24 @@ function chpaterseethroughnot(){
   		"chapter_address2"=>$_POST['chapter_address2'],
  		"chapter_city"=>$_POST['chapter_city'],
  		"chapter_state"=>$_POST['chapter_state'],
+ 		"chapter_citytext"=>$_POST['chapter_citytext'],
   		
   		"chapter_phone"=>$_POST['chapter_phone'],
   		"chapter_cell"=>$_POST['chapter_cell'],
   		"chapter_keyperson"=>$_POST['chapter_keyperson'],
   		"chapter_fax"=>$_POST['chapter_fax'],
-  		"chapter_email"=>$_POST['chapter_email']
+  		"chapter_email"=>$_POST['chapter_email'],
+  		"chapter_state"=>$_POST['state']
   	);
   	$this->db->where('chapter_ID',$_POST['chapter_ID']);
   	$this->db->update('tbl_chapters',$dataArray);
   	$this->load->helper("url");
-  	redirect($this->config->item('base_url').'datamanage/chaptersnapshot');
+    if ($_POST['entryMode']==0){
+      redirect($this->config->item('base_url').'datamanage/chaptersnapshot');
+    }else{
+       redirect($this->config->item('base_url').'homepage');
+    }
+  	
   }
   function emailthischapter($chapter_id){
   	redirect($this->config->item('baseurl').'nhrcommunication/send_email/'.$chapter_id.'/2');
@@ -732,6 +781,91 @@ function chpaterseethroughnot(){
   	$this->load->database();
   	$this->db->insert('tbl_nhr_call_log',$dataarray);
   	redirect($this->config->item('base_url').'datamanage/chaptersnapshot');
+  }
+  //Other Prople Chapter data 
+  function editchapterusers($chapter_user_id=0){
+     
+     
+       
+      $chapterid=$this->session->userdata("chapter");
+    
+    
+      
+    if ($chapter_user_id==0){
+      
+      $dataRow=array(
+        'user_name'=>'',
+          'user_phone'=>'',
+            'user_email'=>'',
+      );
+      $dataRow=(object)$dataRow;
+    }else{
+      $chapterUserDetails=$this->db->query('select * from  tbl_chapterusers   where chapter_user_id='.$chapter_user_id);
+    $dataRow=$chapterUserDetails->row();
+    }
+    $chapterDetails=$this->db->query('select * from tbl_chapters where chapter_ID='.$chapterid);
+    $chapterRow=$chapterDetails->row();
+    $displaylist='<form method="post" action="'.$this->config->item('base_url').'datamanage/savechapteruserdetails">
+    <table cellpadding="4" cellspacing="2" border="0" width="90%">
+      <tr><th width="30%">Chapter Name: </th><td>'.$chapterRow->chapter_name.'</td></tr>
+      <tr> <th>NHR Key Person Name:
+        
+      </th><td><input name="user_name" value="'.$dataRow->user_name.'" /></td></tr>
+     <tr><th>Phone Number: 
+        
+      </th><td><input name="user_phone" value="'.$dataRow->user_phone.'" /></td></tr>
+       </tr>
+     <tr><th>Email Id: 
+       
+      </th><td> <input name="user_email" value="'.$dataRow->user_email.'" /></td></tr>
+      <input type="hidden" name="chapter_id" value="'.$chapterid.'" />
+      <input type="hidden" name="chapter_user_id" value="'.$chapter_user_id.'" />
+      <input type="hidden" name="chapter_id" value="'.$chapterid.'" />
+      <tr><th width="30%"> </th><td><input type="submit"   value="Submit"/></td></tr>
+      
+      
+    </table></form>';
+    
+  $data= array('formdisplay'=>$displaylist);
+  $this->template->add_js('
+    $(document).ready(function() {
+      
+    })
+  
+  ','embed');
+  
+  
+  
+  $this->template->add_css('
+  
+  ','embed');
+    $this->template->write('pageheader', 'Chapter Edit Details');
+    $this->template->write_view('content','members/list_member',$data, True);
+   $this->template->render();
+    
+    
+    
+  }
+  function  savechapteruserdetails(){
+    $dataArray=array(
+      
+      'user_name'=>$_POST['user_name'],
+          'user_phone'=>$_POST['user_phone'],
+            'user_email'=>$_POST['user_email'],
+            'chapter_id'=>$_POST['chapter_id'],
+    );
+    if (  $_POST['chapter_user_id']==0){
+       $this->db->insert('tbl_chapterusers',$dataArray);
+    }else{
+      $this->db->where('chapter_user_id',$_POST['chapter_user_id']);
+    $this->db->update('tbl_chapterusers',$dataArray);
+    }
+    
+    $this->load->helper("url");
+  
+       redirect($this->config->item('base_url').'homepage');
+   
+    
   }
 }
 ?>
