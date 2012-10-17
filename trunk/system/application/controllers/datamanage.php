@@ -589,6 +589,7 @@ function chpaterseethroughnot(){
   		<tr><th width="30%">Chapter Address: </th><td><input type="text" name="chapter_address1" class="max" value="'.$chapterRow->chapter_address1.'"/></td></tr>
   		<tr><th width="30%"> </th><td><input type="text" name="chapter_address2" class="max" value="'.$chapterRow->chapter_address2.'"/></td></tr>
             <tr><th width="30%">Chapter City: </th><td><input type="text" name="chapter_citytext" class="max" value="'.$chapterRow->chapter_citytext.'"/></td></tr>
+            <tr><th width="30%">latlong: </th><td><input type="text" name="latlong" class="max" value="'.$chapterRow->latlong.'"/></td></tr>
             <tr><th width="30%">Pincode: </th><td><input type="text" name="chapter_pin" class="max" value="'.$chapterRow->chapter_pin.'"/></td></tr>
   		<tr><th width="30%">Phone Number: </th><td><input type="text" name="chapter_phone" class="max" value="'.$chapterRow->chapter_phone.'"/></td></tr>
   		<tr><th width="30%">Cell Number: </th><td><input type="text" name="chapter_cell" class="max" value="'.$chapterRow->chapter_cell.'"/></td></tr>
@@ -635,6 +636,7 @@ function chpaterseethroughnot(){
   		"chapter_cell"=>$_POST['chapter_cell'],
   		"chapter_keyperson"=>$_POST['chapter_keyperson'],
   		"chapter_fax"=>$_POST['chapter_fax'],
+  		"latlong"=>$_POST['latlong'],
   		"chapter_email"=>$_POST['chapter_email'],
   		"chapter_state"=>$_POST['state']
   	);
@@ -654,7 +656,9 @@ function chpaterseethroughnot(){
   //Chapter Details:
   private function _viewchatper($chapter_id=0){
   	$chapterDetails=$this->db->query('select * from tbl_chapters where chapter_ID='.$chapter_id);
-  	$chapterRow=$chapterDetails->row();
+  	 
+  		$chapterRow=$chapterDetails->row();
+  	 
   	
   	$pwhCountdisplay='';
   	$this->load->library('session');
@@ -667,9 +671,9 @@ function chpaterseethroughnot(){
   		<li><a href="'.$this->config->item('base_url').'datamanage/emailthischapter/'.$chapter_id.'">Email this Chapter</a></li>
        	<li><a href="'.$this->config->item('base_url').'datamanage/smsthischapter/'.$chapter_id.'">SMS this Chapter</a></li>
        	<li><a href="'.$this->config->item('base_url').'datamanage/editchapterdetails/'.$chapter_id.'">Edit this Chapter</a></li> 
-       		<li><br/></li> 
+       	
        		<li><a href="'.$this->config->item('base_url').'datamanage/editpwhlist/'.$chapter_id.'">PWH Edit</a>
-       		
+       		 <li><a href="'.$this->config->item('base_url').'datamanage/editchapterusers/0/'.$chapter_id.'">Edit NHR Key Person</a>
        		
        		</li> 
        	
@@ -678,6 +682,16 @@ function chpaterseethroughnot(){
        </td></tr>
        ';
   		
+  	}
+    $queryNHRkeyObject=$this->db->query('select * from tbl_chapterusers where chapter_id='.$chapter_id);
+   if ($queryNHRkeyObject->num_rows()>0){
+  		$quryKeyObject=$queryNHRkeyObject->row();
+  	}else{
+  		$quryKeyObject=array(
+  			'user_name'=>'',
+  			'user_phone'=>''
+  		);
+  		$quryKeyObject=(object)$quryKeyObject;
   	}
   	$displaylist='
   	<table cellpadding="4" cellspacing="2" border="1" width="100%" class="factDet factDet1">
@@ -690,6 +704,7 @@ function chpaterseethroughnot(){
   		<tr><th>Key Person: </th><td style="text-align:left">'.$chapterRow->chapter_keyperson.'</td></tr>
   		<tr><th>Fax: </th><td style="text-align:left">'.$chapterRow->chapter_fax.'</td></tr>
   		<tr><th>Email: </th><td style="text-align:left">'.$chapterRow->chapter_email.'</td></tr>
+  		<tr><th>NHR Key Person: </th><td style="text-align:left">'.$quryKeyObject->user_name.'<br/>'.$quryKeyObject->user_phone.'</td></tr>
   		
   		'.$pwhCountdisplay.'
   		
@@ -783,14 +798,14 @@ function chpaterseethroughnot(){
   	redirect($this->config->item('base_url').'datamanage/chaptersnapshot');
   }
   //Other Prople Chapter data 
-  function editchapterusers($chapter_user_id=0){
-     
-     
-       
+  function editchapterusers($chapter_user_id=0,$chapterid=0){
+     $editmode=0;
+     if ($chapterid==0){
+       $editmode=1;
       $chapterid=$this->session->userdata("chapter");
     
-    
-      
+    }
+     
     if ($chapter_user_id==0){
       
       $dataRow=array(
@@ -818,7 +833,7 @@ function chpaterseethroughnot(){
      <tr><th>Email Id: 
        
       </th><td> <input name="user_email" value="'.$dataRow->user_email.'" /></td></tr>
-      <input type="hidden" name="chapter_id" value="'.$chapterid.'" />
+      <input type="hidden" name="editmode" value="'.$editmode.'" />
       <input type="hidden" name="chapter_user_id" value="'.$chapter_user_id.'" />
       <input type="hidden" name="chapter_id" value="'.$chapterid.'" />
       <tr><th width="30%"> </th><td><input type="submit"   value="Submit"/></td></tr>
@@ -862,10 +877,15 @@ function chpaterseethroughnot(){
     }
     
     $this->load->helper("url");
-  
-       redirect($this->config->item('base_url').'homepage');
+    if($_POST['editmode']==1){
+      redirect($this->config->item('base_url').'homepage');
+    }else{
+      redirect($this->config->item('base_url').'datamanage/chaptersnapshot');
+    }       
    
     
   }
+//Graphs Ploting
+
 }
 ?>
