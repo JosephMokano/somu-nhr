@@ -293,5 +293,146 @@ class managemembers extends Controller {
        redirect($this->config->item("base_path")."homepage/patient_form/");
      }
   }
+  function missingdata_list(){
+    $displayVar='';
+    $dataQueryObject=$this->db->query('select * from
+            tbl_pat_personal where chap_id='.$this->session->userdata('chapter').' and dv_mode=0
+              order by patient_first_name,patient_last_name
+            ');
+    $displayVar='
+      <table cellpadding="5" cellspacing="0" width="100%" border="0" class="memberList">
+      <tr>
+        <th>
+          Sl.No
+        </th>
+        <th>
+          Full Name
+        </th>
+       <th>
+          Father Name
+        </th>
+        <th class="midwidth">
+          Sex
+        </th> 
+         <th class="midwidth">
+          DOB
+        </th> 
+        <th class="midwidth">
+          Address
+        </th>  
+         <th class="midwidth">
+          Blood Group
+        </th> 
+           
+       <th class="midwidth">
+          Factor Deficient
+        </th>  
+       <th class="midwidth">
+          Factor Assay
+        </th>      
+         <th></th>    
+          <th>Comments</th>              
+      </tr>
+    ';
+    $i=1;
+    foreach($dataQueryObject->result() as $pwhrow){
+      $this->load->library('lib_missingdata');
+      $displayVar.='<tr>';
+      $displayVar.='<td align="right" width="10" >'.$i.'&nbsp;&nbsp;</td>';
+      $displayVar.='<td><a href="/homepage/patient_form/'.$pwhrow->patient_ID.'">'.$pwhrow->patient_first_name.' '.$pwhrow->patient_last_name.'</a></td>';
+      $displayVar.='<td>'.$pwhrow->patient_father_name.'</td>';
+      $displayVar.='<td class="midwidth">'.$this->lib_missingdata->ui_marker($this->lib_missingdata->patient_sex($pwhrow->patient_sex)).'</td>';
+      $displayVar.='<td class="midwidth">'.$this->lib_missingdata->ui_marker($this->lib_missingdata->patient_dob($pwhrow->patient_dob)).'</td>';
+      $displayVar.='<td class="midwidth">'.$this->lib_missingdata->ui_marker($this->lib_missingdata->patient_address($pwhrow->comm_flat)).'</td>';
+      $displayVar.='<td class="midwidth">'.$this->lib_missingdata->ui_marker($this->lib_missingdata->patient_bloodgroup($pwhrow->patient_bloodgroup)).'</td>';
+      $displayVar.='<td class="midwidth">'.$this->lib_missingdata->ui_marker($this->lib_missingdata->patient_factor_deficient($pwhrow->patient_factor_deficient,$pwhrow->patient_factor_defother)).'</td>';
+      $displayVar.='<td class="midwidth">'.$this->lib_missingdata->ui_marker($this->lib_missingdata->patient_factor_level($pwhrow->patient_factor_level)).'</td>';
+      $displayVar.='<td class="midwidth"><a href="/managepatient/downloadpwdhform/'.$pwhrow->patient_ID.'"><img src="/images/Download_icon.png" width="20"/></a></td>';
+      $displayVar.='<td class="midwidth"><a href="/core_tracker/dv_communication/'.$pwhrow->patient_ID.'"><img src="/images/report1-icon.png" width="20"/></a></td>';
+      $displayVar.='</tr>';
+      $i++;
+    }      
+      $displayVar.='</table>'; 
+    $data = array('formdisplay'=>$displayVar);
+    $this->template->add_css('
+      .midwidth{
+        width:40px;
+        text-align:center;
+      }
+    ','embed');
+    $this->template->add_js('
+       $(document).ready(function(){
+         $("tr:even").css("background-color","#F6F4F2");
+       })
+    ','embed');
+    $this->template->write('pageheader', 'List of Missing Data');
+    $this->template->write_view('content','members/list_member',$data,True);
+    $this->template->render();
+  }
+  function update_dv_mode(){
+    $queryobject=$this->db->query('select * from tbl_pat_personal');
+    $this->load->library('lib_missingdata');
+    
+    foreach($queryobject->result() as $pwhrow){
+    $getVar=$this->lib_missingdata->getMissingPWH($pwhrow);
+    if ($getVar==0){
+      $this->db->where('patient_ID',$pwhrow->patient_ID);
+      $this->db->update('tbl_pat_personal',array('dv_mode'=>1));
+    }
+    }
+  }
+/* Missing Data Download */
+function downloadpdfdata(){
+    $displayVar='';
+    $dataQueryObject=$this->db->query('select * from
+            tbl_pat_personal where chap_id='.$this->session->userdata('chapter').' and dv_mode=0
+              order by patient_first_name,patient_last_name
+            ');
+    $outdata=array();
+    $outdata[]=array( 'Sl.No',
+      ' Full Name ',     
+     ' Father Name ',    
+     ' Sex ',
+     ' DOB ',
+     ' Address ',
+     ' Blood Group ',
+     ' Factor Deficient ',
+     ' Factor Assay '
+     );        
+   
+    $i=1;
+    foreach($dataQueryObject->result() as $pwhrow){
+      $dataTempArray=array(); 
+      $this->load->library('lib_missingdata');
+     
+      $dataTempArray[]=$i;
+       $dataTempArray[]=$pwhrow->patient_first_name.' '.$pwhrow->patient_last_name;
+       $dataTempArray[]=$pwhrow->patient_father_name;
+      $dataTempArray[]=$this->lib_missingdata->ui_marker($this->lib_missingdata->patient_sex($pwhrow->patient_sex));
+      $dataTempArray[]=$this->lib_missingdata->ui_marker($this->lib_missingdata->patient_dob($pwhrow->patient_dob));
+      $dataTempArray[]=$this->lib_missingdata->ui_marker($this->lib_missingdata->patient_address($pwhrow->comm_flat));
+      $dataTempArray[]=$this->lib_missingdata->ui_marker($this->lib_missingdata->patient_bloodgroup($pwhrow->patient_bloodgroup));
+      $dataTempArray[]=$this->lib_missingdata->ui_marker($this->lib_missingdata->patient_factor_deficient($pwhrow->patient_factor_deficient,$pwhrow->patient_factor_defother));
+      $dataTempArray[]=$this->lib_missingdata->ui_marker($this->lib_missingdata->patient_factor_level($pwhrow->patient_factor_level));
+      
+      $i++;
+      $outdata[]=$dataTempArray;
+    }   
+    
+    
+    $queryObject=$this->db->query('select * from tbl_chapters 
+          where chapter_id='.$this->session->userdata('chapter'));
+    $chapterRow=$queryObject->row();      
+    $filename1=str_replace(" ","_",$chapterRow->chapter_name)."_".date("j_m_Y_g_i_s").".csv";
+      
+      $filename=$this->config->item('project_abs_path')."uploads/".$filename1;
+      $fp = fopen($filename, 'w');
+      foreach ($outdata as $fields) {
+          fputcsv($fp, $fields);
+      }
+
+      fclose($fp);
+    redirect($this->config->item("base_url")."uploads/".$filename1);
+  }
 }
 ?>
