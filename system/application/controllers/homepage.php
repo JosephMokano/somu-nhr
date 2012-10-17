@@ -1880,63 +1880,76 @@ class Homepage extends Controller {
 			'last_updated' => $lastupdated
 			
 		);
-		
+		$this->load->library('lib_missingdata');
+    $validation_Check=$this->lib_missingdata->getMissingPWH($tabledata);
+    if ($validation_Check==0){
+      $tabledata['dv_mode']=1;
+    }
 		$this->db->insert('tbl_pat_personal',$tabledata);
 		
 		}else{
-			$this->db->set('patient_first_name',$_POST['txtfname']);
-			$this->db->set('patient_last_name', $_POST['txtlname']);
-			$this->db->set('patient_dob',$this->expdate($_POST['txtdob']));
-			$this->db->set('patient_sex', $_POST['radgender']);
-				$this->db->set('patient_religion', $_POST['txtreligion']);
-					$this->db->set('patient_caste', $_POST['txtcaste']);
+		  $tabledata=array(
+			'patient_first_name' =>$_POST['txtfname'],
+			 'patient_last_name' =>$_POST['txtlname'],
+			 'patient_dob' =>$this->expdate($_POST['txtdob']),
+			 'patient_sex' =>$_POST['radgender'],
+				 'patient_religion' => $_POST['txtreligion'],
+					 'patient_caste' => $_POST['txtcaste'] ,
 		
-			$this->db->set('patient_father_name', $_POST['txtfatname']);
-          $this->db->set('patient_mother_name', $_POST['txtmothersname']);
+			  'patient_father_name' =>$_POST['txtfatname'],
+           'patient_mother_name' => $_POST['txtmothersname'],
        
-			$this->db->set('comm_flat', $_POST['txtflat']);
-			$this->db->set('comm_building',$_POST['txtbuild']);
-			$this->db->set('commu_road' , $_POST['txtlane']);
-			$this->db->set('commu_locality' , $_POST['txtATS']);
-			$this->db->set('commu_state', $_POST['txtTCD']);
-			$this->db->set('commu_city', $_POST['txtSU']);
-			$this->db->set('commu_pincode' , $_POST['txtpincode']);
-			$this->db->set('comm_zone', $_POST['drpzone']);
-			$this->db->set('commu_phone', $_POST['txtcont']);
-			$this->db->set('commu_email', $_POST['txtemail']);
-			$this->db->set('commu_cellnumber' , $_POST['txtmob']);
-			$this->db->set('patient_bloodgroup' ,$_POST['bloodgrop']);
-			$this->db->set('patient_factor_defother' , $_POST['fctdefother']);
-			$this->db->set('patient_factor_deficient', implode(',',$_POST['txtfctdef']));
-			$this->db->set('patient_factor_level' ,  $_POST['txtfaclel']=='.'?'':$_POST['txtfaclel']);
-			$this->db->set('patient_inhibitor_screen' , $_POST['radinhi']);
+			 'comm_flat' => $_POST['txtflat'],
+			 'comm_building'=>$_POST['txtbuild'],
+			 'commu_road'=> $_POST['txtlane'],
+			 'commu_locality' => $_POST['txtATS'],
+			 'commu_state'=> $_POST['txtTCD'],
+			 'commu_city'=> $_POST['txtSU'],
+			 'commu_pincode' => $_POST['txtpincode'],
+			 'comm_zone'=> $_POST['drpzone'],
+			 'commu_phone'=> $_POST['txtcont'],
+			 'commu_email'=> $_POST['txtemail'],
+			 'commu_cellnumber' => $_POST['txtmob'],
+		    'patient_bloodgroup' =>$_POST['bloodgrop'],
+			 'patient_factor_defother' => $_POST['fctdefother'],
+			 'patient_factor_deficient'=> implode(',',$_POST['txtfctdef']),
+			 'patient_factor_level' =>  $_POST['txtfaclel']=='.'?'':$_POST['txtfaclel'],
+			 'patient_inhibitor_screen' => $_POST['radinhi'],
 
 		
-			$this->db->set('h2' , $_POST['radhiv']);
-			$this->db->set('h3' , $_POST['radhcv']);
+			 'h2' =>  $_POST['radhiv'],
+			 'h3' =>  $_POST['radhcv'],
 
-			$this->db->set('patient_studying' ,$_POST['radstudy']);
-			$this->db->set('patient_highestedu' , $_POST['txthighEdu']);
-			$this->db->set('patient_working' , $_POST['rademp']);
-			$this->db->set('patient_age_Diagnose', $_POST['txtagdia']);
-			$this->db->set('patient_hospital_diagnose' , $_POST['txthosdia']);
-			$this->db->set('patient_form_diagnose',$_POST['txtfrmdia']);
-			$this->db->set('patient_Deformity',$_POST['raddefor']);
-			$this->db->set('patient_family_effected' , $_POST['txtnumaff']);
-			$this->db->set('patient_effected_nhrid' , $_POST['txtaffnhr']);
-			$this->db->set('patient_family_income' , $_POST['txtfmyinc']);
-			$this->db->set('patient_bpl_eligibility' , $_POST['radbpl']);
-			$this->db->set('patient_Remboursement_faclity' ,$_POST['radrembour']);
-			$this->db->set('patient_membership_id' , $_POST['txtmemid']);
-      $this->db->set('employment_organization' , $_POST['txtEmplOrgName']);
-      $this->db->set('employment_ref_number' , $_POST['txtEmplReferenceNumber']);
-      $this->db->set('bpl_ref_number' , $_POST['txtBPLrefNo']);
-      $this->db->set('patient_employment_type' , $_POST['txtEmploymentType']);
+			 'patient_studying' => $_POST['radstudy'],
+			 'patient_highestedu' =>  $_POST['txthighEdu'],
+			  'patient_working' =>  $_POST['rademp'],
+			 'patient_age_Diagnose' =>  $_POST['txtagdia'],
+			 'patient_hospital_diagnose'  =>  $_POST['txthosdia'],
+			  'patient_form_diagnose' => $_POST['txtfrmdia'],
+			 'patient_Deformity' => $_POST['raddefor'],
+			 'patient_family_effected' =>  $_POST['txtnumaff'],
+			 'patient_effected_nhrid' =>  $_POST['txtaffnhr'],
+			  'patient_family_income' =>  $_POST['txtfmyinc'],
+			 'patient_bpl_eligibility' =>  $_POST['radbpl'],
+			 'patient_Remboursement_faclity' => $_POST['radrembour'],
+			 'patient_membership_id' =>  $_POST['txtmemid'],
+       'employment_organization' =>  $_POST['txtEmplOrgName'],
+       'employment_ref_number' =>  $_POST['txtEmplReferenceNumber'],
+       'bpl_ref_number' =>  $_POST['txtBPLrefNo'],
+        'patient_employment_type'  =>  $_POST['txtEmploymentType'],
+      
 			//$this->db->set('chap_id' , $this->session->userdata('chapter'));
-			$this->db->set('chap_id' , $chapterid);
-			$this->db->set('last_updated', $lastupdated);
+			 'chap_id'   =>  $chapterid,
+			 'last_updated' =>  $lastupdated
+      );
+      $this->load->library('lib_missingdata');
+    $validation_Check=$this->lib_missingdata->getMissingPWH($tabledata);
+    if ($validation_Check==0){
+      $tabledata['dv_mode']=1;
+    }
+     
 			$this->db->where('patient_ID',$Pid);
-			$this->db->update('tbl_pat_personal');	
+			$this->db->update('tbl_pat_personal',$tabledata);	
 		}
 		
 		
@@ -2522,7 +2535,10 @@ function notauthorised(){
 			$formdisplay.='<a href="'.$this->config->item('base_url').'search/datasearch"><img src="/images/pwh_search.jpg"/></a>';
 			$formdisplay.='</td>';
 			$formdisplay.='</tr>';
-      
+      // Check for Zone
+      $chapObject=$this->db->query('select * from tbl_chapters where chapter_id='.$this->session->userdata('chapter'));
+      $chapRow=$chapObject->row();
+      if ($chapRow->chapter_zone==4){
       $formdisplay.='<tr>';
       $formdisplay.='<td><a href="/south_monthly_report/listreports">';
       $formdisplay.='<img src="/images/chapter_reports.png"  />';
@@ -2531,7 +2547,7 @@ function notauthorised(){
       $formdisplay.='<img src="/images/chapter_activity.png"  />';
       $formdisplay.='</a></td>';
       $formdisplay.='</tr>';
-      
+      }     
 			$formdisplay.='<tr>';
 			$formdisplay.='<td>';
 			$chapater_id=$this->session->userdata("chapter");
@@ -2583,16 +2599,21 @@ function notauthorised(){
       $formdisplay.='<br/><table width="100%" cellpadding="0" celspacing="0" border="0" class="factDet">';
       $formdisplay.='<tr><td class="ui-accordion-header ui-state-default 
       ui-corner-all nhrpaneltitle" colspan="2">Data to be Collected</td></tr>';
+      
       $formdisplay.='<tr><th width="180">Data of Birth</td><td>'.$emptycount['patient_dob'].'</td></tr>';
        $formdisplay.='<tr><th>Factor Deficiency</th><td>'.$emptycount['patient_factor'].'</td></tr>';
+        $formdisplay.='<tr><th>Factor Assay</th><td>'.$emptycount['patient_level'].'</td></tr>';
         $formdisplay.='<tr><th>Blood Group</th><td>'.$emptycount['patient_bloodgroup'].'</td></tr>';
          $formdisplay.='<tr><th>Father Name</th><td>'.$emptycount['patient_fathername'].'</td></tr>';
           $formdisplay.='<tr><th>Address</th><td>'.$emptycount['patient_address'].'</td></tr>';
           $formdisplay.='<tr><th>Phone number</th><td>'.$emptycount['patient_phone'].'</td></tr>';
-      
+        $formdisplay.='<tr><td><a href="/managemembers/downloadpdfdata"><button>Download List</button></a></td><td>
+        
+        &nbsp;
+        <a href="/managemembers/missingdata_list"><button>View List</button></a></td></tr>';
       $formdisplay.='</table>';
-       $formdisplay.='<a href="'.$this->config->item('base_url').'company/company_view">Company</a>&nbsp;&nbsp;&nbsp;';
-        $formdisplay.='<a href="'.$this->config->item('base_url').'medicine/medicine_view">Medicine Form</a>';
+      // $formdisplay.='<a href="'.$this->config->item('base_url').'company/company_view">Company</a>&nbsp;&nbsp;&nbsp;';
+      //  $formdisplay.='<a href="'.$this->config->item('base_url').'medicine/medicine_view">Medicine Form</a>';
         $formdisplay.='</td><td width="50%" style="padding-left:10px;">';
 			$formdisplay.='<table width="100%" cellpadding="0" celspacing="0" border="0" class="factDet">';
       $formdisplay.='<tr><td>
@@ -2613,10 +2634,100 @@ function notauthorised(){
 				Please use <a href="http://download.mozilla.org/?product=firefox-5.0.1&os=win&lang=en-GB" target="_blank" title="Firefox" alt="Firefox">
 				Firefox</a> or <a href="http://www.google.com/chrome/eula.html" target="_blank">Chrome</a> to have safe browsing</td></tr>';
 		}
-      $formdisplay.='</table>';
-       $formdisplay.='</tr></table>';
+      $formdisplay.='
+        <tr>
+            <td>
+              <b>NHR: </b>+91-73537-77778, <b>Seema: </b>+91-90356-12348<br/>
+ 
+              <b>Prem: </b>+91-98860-50060, <b>Somu: </b>+91-98451-88706 
+            </td>
+        </tr>
+      
+      </table>';
+      $formdisplay.='
+       <br/>
+        <table width="100%" cellpadding="0" celspacing="0" border="0" class="factDet">';
+        //Get Chapter Details
+        $chapter_id=$this->session->userdata("chapter");
+       
+        $queryData=$this->db->query("select * from tbl_chapters a  
+            where a.chapter_id=".$chapter_id);
+          $queryRow=$queryData->row();
+          //For State Patch
+          $queryState=$this->db->query('select * from tbl_states where State_ID='.$queryRow->chapter_state);
+          $stateName='';
+          if ($queryState->num_rows()>0){
+          	$queryStateRow=$queryState->row();
+          	$stateName=$queryStateRow->stateName;
+          }
+         // This is for NHR Person Contact Details
+         $nhrUserObject=$this->db->query('select * from tbl_chapterusers where chapter_id='.$chapter_id);
+         if ($nhrUserObject->num_rows()==0){
+           $nhrUserRow=array(
+        'user_name'=>'',
+          'user_phone'=>'',
+            'user_email'=>'',
+      );
+      $nhrUserRow=(object)$nhrUserRow;
+         }else{
+           $nhrUserRow=$nhrUserObject->row();
+         }
+      $formdisplay.='<tr><td colspan="2">
+     
+      <div class="ui-accordion-header ui-state-default 
+      ui-corner-all nhrpaneltitle" colspan="5">Chapter Details</div>
+      
+      </td></tr>
+      <tr>
+        <th width="120" style="width:120px">Key Person Name</th><td>'.$queryRow->chapter_keyperson.'</td></tr>
+        <tr>
+        <th colspan="2"  >Address</th>
+        </tr>
+        <tr>
+        <td colspan="2" style="text-align:left">
+        '.str_replace(',','<br/>',$queryRow->chapter_address1.', '.$queryRow->chapter_address2).'
+        </td></tr>
+        <tr>
+        <th>City</th><td>'.$queryRow->chapter_citytext.'-'.$queryRow->chapter_pin.'</td></tr>
+        <tr>
+        <th>State</th><td>'.$stateName.'</td></tr>
+        <tr>
+        <th>Phone</th><td>'.$queryRow->chapter_phone.'</td></tr>
+         <tr>
+        <th>Cell</th><td>'.$queryRow->chapter_cell.'</td></tr>
+        <tr>
+        <th>Fax</th><td>'.$queryRow->chapter_fax.'</td></tr>
+        <tr>
+        <th colspan="2"  >Email</th>
+        <tr></tr><td colspan="2" style="text-align:left">'.str_replace(',','<br/>',$queryRow->chapter_email).'</td>
+      </tr>
+      <tr>
+        <td style="background-color: #D3D3D3"></td><td style="background-color: #D3D3D3"><a href="/datamanage/editchapterdetails">Edit Detail</a></td>
+      </tr>
+       
+       '; 
+       $formdisplay.='</tr>
+        <tr>
+          <th>NHR Co-ordinator</th>
+          <td>'.$nhrUserRow->user_name.'</td>
+        </tr>
+       <tr>
+          <th>Phone</th>
+          <td>'.$nhrUserRow->user_phone.'</td>
+        </tr>
+        <tr>
+          <th>Phone</th>
+          <td>'.$nhrUserRow->user_email.'</td>
+        </tr>
+        <tr>
+        <td style="background-color: #D3D3D3"></td><td style="background-color: #D3D3D3"><a href="/datamanage/editchapterusers">Edit Detail</a></td>
+      </tr>
+      </table>
+      </td></tr>
+       </table>';
 			$formdisplay.='</div>';
-        
+      
+       
 		
 			$formdisplay.='<div style="clear:both"></div>';
 		
@@ -3041,4 +3152,26 @@ function notauthorised(){
 	function testzacl($resource='memUser') {
 		$this->load->library('zacl');
 	}
+  function listallchatpersempty($zone=0){
+     $queryobject=$this->db->query('select * from tbl_chapters where chapter_zone='.$zone.' order by chapter_name');
+     $this->load->library('nhrpwhdetails');
+     $retValue="<table>";
+     foreach($queryobject->result() as $row){
+       $emptycount=$this->nhrpwhdetails->fetch_empty($row->chapter_ID);
+       $pwhcount=$this->nhrpwhdetails->fetch_factorwise($row->chapter_ID);
+       $retValue.='<tr>';
+       $retValue.='<td>'.$row->chapter_name.'</td>';
+         $retValue.='<td>'.$emptycount['patient_dob'].'</td>';
+       $retValue.='<td>'.$emptycount['patient_factor'].'</td>';
+        $retValue.='<td>'.$emptycount['patient_level'].'</td>';
+       $retValue.='<td>'.$emptycount['patient_bloodgroup'].'</td>';
+       $retValue.='<td>'.$emptycount['patient_fathername'].'</td>';
+       $retValue.='<td>'.$emptycount['patient_address'].'</td>';
+       $retValue.='<td>'.$emptycount['patient_phone'].'</td>';
+        $retValue.='<td>'.$pwhcount['count_total'].'</td>';
+       $retValue.='</tr>';
+     }
+     $retValue.="</table>";
+      echo $retValue;    
+  }
 }
