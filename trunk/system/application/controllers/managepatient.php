@@ -39,7 +39,8 @@ class managepatient extends Controller {
      */
      
     $colModel['patient_id'] = array('ID',40,TRUE,'center',2);
-    $colModel['patient_first_name'] = array('Name',180,TRUE,'left',1);
+    $colModel['patient_first_name'] = array('Name',130,TRUE,'left',1);
+    $colModel['patient_father_name'] = array('Father Name',110,TRUE,'left',1);
     $colModel['patient_factor'] = array('Factor',40,TRUE,'center',0);
     $colModel['patient_factor_level'] = array('Factor<br/>Level',40,TRUE,'center',0);
     $colModel['Details'] = array('',40,TRUE,'center',0,0,'rowClick');
@@ -177,7 +178,9 @@ class managepatient extends Controller {
    //$this->template->write('pageheader1', 'upload profile photo');
        //FlexGrid Data Ends Here
       
-      $data['topnavlinks']='<div class="topnewright">'.$backlinktechadmin.' &nbsp;<a 
+      $data['topnavlinks']='<div class="topnewright">'.$backlinktechadmin.' 
+      <a href="/managemembers/missingdata_list"> Filter Missing PWH List </a>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a 
         href="'.base_url().'managemembers/patient_addform">Add New PWH</a></div>';
      
        $data['grid_js']=$grid_js;
@@ -452,25 +455,28 @@ class managepatient extends Controller {
     $buttonlink[]=base_url().'managepatient/downloadpwdhform/'.$pwh_result['patient_ID'];
     $buttonlink[]=base_url().'communication/pwhsendmail/'.$pwh_result['patient_ID'];
     $buttonlink[]=base_url().'communication/sendmessage/'.$pwh_result['patient_ID'];
+    $buttonlink[]=base_url().'core_tracker/maintenance_mode/'.$pwh_result['patient_ID'];
+    $buttonlink[]=base_url().'mediaupload/view_uploadform/'.$pwh_result['patient_ID'].'/3';
     $pwh_details.='<tr>
-      <td></td>
-      <td colspan="2">
       
-       <a href="'.$buttonlink[0].'"><button id="pwhdataedit"><span class="ui-icon ui-icon-folder-open nhrIcon"></span>Edit</button></a>
-       &nbsp;&nbsp;
-      <a href="'.$buttonlink[1].'"><button id="managemed"><span class="ui-icon ui-icon-document nhrIcon"></span>Medicine Log</button></a>
-     
-     <a href="'.$buttonlink[2].'"> <button id="manageclinical"><span class="ui-icon ui-icon-contact nhrIcon"></span>Clinical</button></a>
-      </td>
-    </tr>';
-    $pwh_details.='<tr>
-    
       <td colspan="3">
-      &nbsp;&nbsp;<a href="'.$buttonlink[3].'"><button id="pwhdataedit"><span class="ui-icon ui-icon-folder-open nhrIcon"></span>Download NHR Form</button></a>
-      &nbsp;&nbsp;<a href="'.$buttonlink[4].'"><button id="pwhdataedit"><span class="ui-icon ui-icon-folder-open nhrIcon"></span>Send Mail</button></a>
-     &nbsp;&nbsp; <a href="'.$buttonlink[5].'"><button id="pwhdataedit"><span class="ui-icon ui-icon-folder-open nhrIcon"></span>Send SMS</button></a>
+      
+       <a href="'.$buttonlink[0].'"><button id="pwhdataedit"><span class=" "></span>Edit</button></a>
+        
+       &nbsp; <a href="'.$buttonlink[3].'"><button id="pwhdataedit"><span class=""></span>Download</button></a>
+
+      &nbsp;<a href="'.$buttonlink[5].'"><button id="pwhdataedit"><span class=""></span> SMS</button></a>
+     
+      &nbsp;<a href="'.$buttonlink[6].'"><button id="pwhdataedit"><span class=""></span> Manage</button></a>
+        &nbsp;<a href="'.$buttonlink[7].'"><button id="pwhdataedit"><span class=""></span> Attach</button></a>
       </td>
     </tr>';
+    if ($pwh_result['maintenance_mode']!=0){
+      $pwh_details.='<tr>
+      <td colspan="3" style="background-color:#EDEDED"><b>This PWH is Marked as: </b>'.pwhTagging($pwh_result['maintenance_mode']).'</td>
+     </tr>';
+    }
+     
     $pwh_details.='</table>';
    
     /*$pwh_details.='<div class="pwhnavigation">';
@@ -569,7 +575,7 @@ class managepatient extends Controller {
     $this->load->library('flexigrid');
       //List of all fields that can be sortable. This is Optional.
     //This prevents that a user sorts by a column that we dont want him to access, or that doesnt exist, preventing errors.
-    $valid_fields = array('patient_id','patient_first_name','patient_factor_level');
+    $valid_fields = array('patient_id','patient_first_name','patient_last_name','patient_father_name','patient_factor_level');
     $this->load->helper('apputility');
     $this->flexigrid->validate_post('patient_id','asc',$valid_fields);
     $this->load->model('patient_ajax_model','ajax_model');
@@ -596,9 +602,10 @@ class managepatient extends Controller {
     foreach ($records['records']->result() as $row)
     {
       $i++;
+      $tmpName=$row->patient_first_name.' '.$row->patient_last_name;
       $record_items[] = array( $row->patient_id,
       $i,
-      $row->patient_first_name,
+      $tmpName,$row->patient_father_name,
       factordeficiencyreturn($row->patient_factor_deficient),
       $row->patient_factor_level,
       '<span class="pwh_detailscall">Details</span>'
