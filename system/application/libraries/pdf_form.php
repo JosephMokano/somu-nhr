@@ -181,5 +181,8 @@ class pdf_form {
  		
  		return $arrayData;
  	}
+  function genmissingdatapdf($chap_id=0){
+    
+  }
 }
 ?>
