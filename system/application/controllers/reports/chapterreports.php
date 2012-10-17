@@ -555,5 +555,7 @@ class chapterreports extends Controller {
     $this->template->render();
 		
 	}
+
+ 
 }
 ?>
