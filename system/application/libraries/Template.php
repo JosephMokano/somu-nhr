@@ -448,7 +448,15 @@ class CI_Template {
             }
             $js .= "></script>";
             break;
-         
+         case 'cdnlink':
+            $filepath = $script;
+            $js = '<script type="text/javascript" src="'. $filepath .'"';
+            if ($defer)
+            {
+               $js .= ' defer="defer"';
+            }
+            $js .= "></script>";
+            break;
          case 'embed':
             $js = '<script type="text/javascript"';
             if ($defer)
