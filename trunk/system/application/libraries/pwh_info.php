@@ -89,5 +89,25 @@ class pwh_info{
    
       return $tempvar; 
     }
+   function getProfilePicture($profile_id){
+     $retLink='';
+      $this->obj->load->database();
+      $qryObj= $this->obj->db->query('select * from tbl_profile_attachments where 
+      profile_id='.$profile_id.' order by lastupdated desc limit 0,1');
+      if ($qryObj->num_rows()>0){
+        $objRow=$qryObj->row();
+        $imagelink='profilephoto/'.$objRow->a_filename;
+        $retLink=$retLink='<img src="'.$this->obj->config->item('base_url').$imagelink.'" width="120" height="133"/>';
+      }else{
+        $retLink='<img src="'.$this->obj->config->item('base_url').'images/miss_image.gif"/>';
+      }
+      return $retLink;
+   }
+    function getpwh_information($pwh_id){
+       $this->obj->load->database();
+      $pwhQuery="select * from tbl_pat_personal where patient_ID=".$pwh_id;
+      $qryObject=$this->obj->db->query($pwhQuery);
+      return $qryObject->row();
+    }
 } 
 ?>
