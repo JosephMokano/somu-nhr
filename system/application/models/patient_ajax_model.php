@@ -37,7 +37,7 @@ class patient_ajax_model extends Model
   
 		//Build contents query
 		//$this->db->select('patient_id,patient_first_name,patient_factor_level,patient_factor_deficient,patient_factor_defother')->from($table_name);
-   $resultQuery["main_query"]="Select patient_id,patient_first_name,patient_factor_level,
+   $resultQuery["main_query"]="Select patient_id,patient_first_name,patient_last_name,patient_father_name,patient_factor_level,
    patient_factor_deficient,patient_factor_defother from ".$table_name." where chap_id=".$chapfilterid.$querySearchBuild;
    
    $resultQuery["count_query"]="select count(patient_id) as record_count from 
