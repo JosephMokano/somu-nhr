@@ -111,5 +111,42 @@ function checkzero($dt){
 		return $dt;
 	}
 }
+function pwhTagging($para=0){
+   $maintenance_mode=array(
+        '0'=>'--Select--',
+        '1'=>'Transferred ',
+        '2'=>'Deceased ',
+        '3'=>'Blocked ',
+        '4'=>'Duplicate ',
+        '5'=>'Non-PWH ',
+     );
+  if ($para==0){
+    return $maintenance_mode;
+  }else{
+    return $maintenance_mode[$para];
+  }
+}
+function monthutility($para=0){
+  $monthArray=array(
+    '0'=>'--Select--',
+    '1'=>'Jan',
+    '2'=>'Feb',
+    '3'=>'Mar',
+    '4'=>'Apr',
+    '5'=>'May',
+    '6'=>'Jun',
+    '7'=>'Jul',
+    '8'=>'Aug',
+    '9'=>'Sep',
+    '10'=>'Oct',
+    '11'=>'Nov',
+    '12'=>'Dec',
+  );
+  if ($para==0){
+    return $monthArray;
+  }else{
+    return $monthArray[$para];
+  }
+}
 
 ?>
