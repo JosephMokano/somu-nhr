@@ -1,0 +1,1 @@
+National Hemophilia Registry for India. This registry is Visualized, architected  and developed by Person with Hemophilia(PwH) in India. We are team of PwH who want to create clinical management next generation online application to all our regional chapters to manage their patients data.
